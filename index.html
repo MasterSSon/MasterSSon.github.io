@@ -1,0 +1,1044 @@
+<!doctype html><html lang="pl"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>MasterSSon Studio · szablony Excel z demem</title>
+<meta name="description" content="18 polskich szablonów Excel i Google Sheets: kosztorysy dla fachowców, rejestr DAC7, ryczałt, Allegro i więcej. Przetestuj każdy w przeglądarce przed zakupem.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="MasterSSon Studio">
+<meta property="og:title" content="MasterSSon · szablony Excel, które liczą za Ciebie">
+<meta property="og:description" content="Kosztorysy dla fachowców, rejestr DAC7, ryczałt, Allegro i więcej. Wypróbuj demo każdego szablonu, zanim kupisz.">
+<meta property="og:url" content="https://mastersson.github.io/">
+<meta property="og:image" content="https://mastersson.github.io/og-mastersson.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta property="og:locale" content="pl_PL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://mastersson.github.io/og-mastersson.png">
+<link rel="icon" href="og-mastersson.png"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: katalog szablonów (karty) → po kliknięciu pełny warsztat demo: symulator arkusza po lewej, panel zakupu po prawej */
+:root{
+  --bg:#F2F5F3; --surface:#FFFFFF; --ink:#13201A; --muted:#56675F; --line:#D5DED9; --line2:#E6ECE9;
+  --accent:#0F7A4C; --accent-2:#0B5E3A; --on-accent:#FFFFFF; --accent-soft:#E0F1E8;
+  --in:#FFF7D4; --in-line:#E3D07E; --calc:#F5F8F6; --hdr:#E8EFEB; --sel:#0F7A4C;
+  --good:#0D6E44; --good-bg:#DBF0E4; --warn:#8A5200; --warn-bg:#FFEFCC; --bad:#B42318; --bad-bg:#FDE2DE;
+  --shadow:0 1px 2px rgba(19,32,26,.06),0 10px 30px rgba(19,32,26,.07);
+  --f-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --f-body:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --f-data:'IBM Plex Mono',ui-monospace,'Cascadia Mono',Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0E1512; --surface:#151F1B; --ink:#E3ECE7; --muted:#97A89F; --line:#2B3B34; --line2:#1F2C27;
+  --accent:#3DBE85; --accent-2:#62D49F; --on-accent:#05130C; --accent-soft:#16352A;
+  --in:#2D2914; --in-line:#5E5326; --calc:#18231F; --hdr:#1C2925; --sel:#3DBE85;
+  --good:#62D49F; --good-bg:#14342A; --warn:#F2B85C; --warn-bg:#3A2C10; --bad:#FF8C7C; --bad-bg:#3F1A15;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.3); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0E1512; --surface:#151F1B; --ink:#E3ECE7; --muted:#97A89F; --line:#2B3B34; --line2:#1F2C27;
+  --accent:#3DBE85; --accent-2:#62D49F; --on-accent:#05130C; --accent-soft:#16352A;
+  --in:#2D2914; --in-line:#5E5326; --calc:#18231F; --hdr:#1C2925; --sel:#3DBE85;
+  --good:#62D49F; --good-bg:#14342A; --warn:#F2B85C; --warn-bg:#3A2C10; --bad:#FF8C7C; --bad-bg:#3F1A15;
+  --shadow:0 1px 2px rgba(0,0,0,.35),0 10px 30px rgba(0,0,0,.3); color-scheme:dark }
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px;padding-block:0}
+a{color:var(--accent)}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--sel);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+
+/* top */
+.top{border-bottom:1px solid var(--line);background:var(--surface)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);font-family:var(--f-display);font-weight:700;font-size:18px}
+.mark{display:grid;grid-template-columns:repeat(3,7px);grid-template-rows:repeat(3,7px);gap:2px}
+.mark i{background:var(--line);border-radius:1px}
+.mark i.on{background:var(--accent)}
+.toplink{font-size:14px;font-weight:500;text-decoration:none;border:1px solid var(--line);padding:7px 12px;border-radius:8px;color:var(--ink)}
+.toplink:hover{border-color:var(--accent);color:var(--accent)}
+
+/* intro */
+.intro{padding-block:44px 20px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:36px;align-items:end}
+.eyebrow{font-family:var(--f-data);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.intro h1{font-size:clamp(32px,5vw,52px);line-height:1.05;font-weight:700}
+.intro p{color:var(--muted);max-width:58ch;margin:16px 0 0;font-size:16.5px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.facts div{padding:14px 16px;border-right:1px solid var(--line2)}
+.facts div:last-child{border-right:0}
+.facts b{display:block;font-family:var(--f-display);font-size:24px;font-variant-numeric:tabular-nums}
+.facts span{font-size:12.5px;color:var(--muted)}
+
+/* filters + grid */
+.filters{display:flex;flex-wrap:wrap;gap:8px;padding-block:18px 18px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 14px;font-size:14px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip small{color:inherit;opacity:.6;margin-left:4px;font-variant-numeric:tabular-nums}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;padding-bottom:56px}
+.card{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;text-align:left;color:var(--ink);transition:border-color .15s,transform .15s}
+.card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.card .cat{font-family:var(--f-data);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.card h3{font-size:18.5px;line-height:1.2;font-weight:700}
+.card p{margin:0;color:var(--muted);font-size:14px;flex:1}
+.card .row{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px}
+.price{font-family:var(--f-display);font-weight:700;font-size:20px;font-variant-numeric:tabular-nums}
+.try{font-weight:600;font-size:14px;color:var(--accent);display:inline-flex;gap:6px;align-items:center}
+.minisheet{display:grid;grid-template-columns:18px repeat(4,1fr);gap:1px;background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;font-family:var(--f-data);font-size:10.5px}
+.minisheet span{background:var(--surface);padding:3px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--muted)}
+.minisheet span.h{background:var(--hdr);text-align:center}
+.minisheet span.y{background:var(--in);color:var(--ink)}
+.minisheet span.g{color:var(--good);font-weight:500}
+
+/* demo view */
+.demo{padding-block:22px 80px}
+.back{background:none;border:0;color:var(--muted);padding:6px 0;font-size:14px}
+.back:hover{color:var(--accent)}
+.dhead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin:8px 0 18px}
+.dhead h2{font-size:clamp(24px,3.4vw,34px);line-height:1.1;max-width:30ch}
+.dhead p{margin:6px 0 0;color:var(--muted);max-width:70ch}
+.dgrid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:18px;align-items:start}
+
+.sim{background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;user-select:none;-webkit-user-select:none}
+.simbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:10px 14px;background:var(--accent-2);color:#fff}
+.simbar .fn{font-family:var(--f-data);font-size:13px}
+.badge{font-family:var(--f-data);font-size:11px;letter-spacing:.08em;background:rgba(255,255,255,.18);padding:2px 8px;border-radius:4px}
+.simbar .note{margin-left:auto;font-size:12px;opacity:.85}
+.simbar button{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);color:#fff;border-radius:6px;padding:3px 10px;font-size:12.5px}
+.fx{display:flex;align-items:center;gap:0;border-bottom:1px solid var(--line);font-family:var(--f-data);font-size:12.5px;background:var(--surface)}
+.fx .addr{width:64px;padding:6px 10px;border-right:1px solid var(--line);color:var(--muted)}
+.fx .fi{padding:6px 10px;color:var(--muted);font-style:italic;border-right:1px solid var(--line)}
+.fx .fv{padding:6px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sheet{position:relative;padding:16px;min-height:420px;display:flex;flex-direction:column;gap:18px}
+.sheet::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:var(--wm);z-index:3}
+.tabs{display:flex;gap:2px;padding:0 8px;background:var(--hdr);border-top:1px solid var(--line);overflow-x:auto}
+.tab{border:0;background:transparent;padding:9px 14px;font-size:13px;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap;display:inline-flex;gap:6px;align-items:center}
+.tab[aria-selected="true"]{background:var(--surface);color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+.tab.locked{opacity:.75}
+.lk{display:inline-flex;vertical-align:-1px}
+
+.blk{display:flex;flex-direction:column;gap:8px;min-width:0}
+.blk-t{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.blk-t h4{margin:0;font-family:var(--f-display);font-size:16px;font-weight:700}
+.blk-t span{font-size:12.5px;color:var(--muted)}
+.cols2{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px}
+
+.xlwrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px}
+table.xl{border-collapse:collapse;width:100%;font-size:13px;font-variant-numeric:tabular-nums}
+.xl th,.xl td{border:1px solid var(--line2);padding:0;height:30px;vertical-align:middle}
+.xl thead th{background:var(--hdr);color:var(--muted);font-family:var(--f-data);font-weight:400;font-size:11px;height:22px;text-align:center}
+.xl .rn{background:var(--hdr);color:var(--muted);font-family:var(--f-data);font-size:11px;text-align:center;width:34px;min-width:34px}
+.xl tr.hdr td:not(.rn){background:var(--hdr);font-weight:600;font-size:12px;padding:4px 8px;white-space:nowrap;color:var(--ink)}
+.xl td.t{padding:4px 8px;white-space:nowrap}
+.xl td.calc{background:var(--calc);padding:4px 8px;text-align:right;white-space:nowrap;font-family:var(--f-data);font-size:12.5px}
+.xl td.calc.l{text-align:left}
+.xl td.in{background:var(--in)}
+.xl td.sel-cell{outline:2px solid var(--sel);outline-offset:-2px}
+.xl tr.tot td:not(.rn){background:var(--hdr);font-weight:600}
+.xl tr.tot td.calc{font-size:13px}
+.xl td.x{width:30px;text-align:center}
+.cell-in{width:100%;min-width:70px;height:29px;border:0;background:transparent;color:var(--ink);font:inherit;font-size:13px;padding:0 8px;user-select:text}
+.cell-in.num{text-align:right;font-family:var(--f-data);font-size:12.5px;min-width:80px}
+.cell-in.w-l{min-width:190px}
+.cell-in.w-m{min-width:130px}
+.cell-in[type="date"]{min-width:132px}
+.cell-in[type="time"]{min-width:90px}
+select.cell-in{padding-right:4px}
+input[type="checkbox"].cb{width:16px;height:16px;accent-color:var(--accent);margin:0 auto;display:block}
+.xdel{border:0;background:none;color:var(--muted);font-size:16px;line-height:1;padding:4px 8px}
+.xdel:hover{color:var(--bad)}
+tr.lockrow td{background:repeating-linear-gradient(-45deg,var(--calc) 0 8px,var(--surface) 8px 16px);color:var(--muted);font-size:12.5px;padding:6px 10px}
+.out{font-variant-numeric:tabular-nums}
+.pill{display:inline-block;padding:1px 8px;border-radius:999px;font-family:var(--f-body);font-size:12px;font-weight:600}
+.out.good{color:var(--good)} .out.warn{color:var(--warn)} .out.bad{color:var(--bad)}
+.out.pg{background:var(--good-bg);color:var(--good);padding:1px 8px;border-radius:999px;font-family:var(--f-body);font-size:12px;font-weight:600}
+.out.pw{background:var(--warn-bg);color:var(--warn);padding:1px 8px;border-radius:999px;font-family:var(--f-body);font-size:12px;font-weight:600}
+.out.pb{background:var(--bad-bg);color:var(--bad);padding:1px 8px;border-radius:999px;font-family:var(--f-body);font-size:12px;font-weight:600}
+.link-tag{font-family:var(--f-body);font-size:10.5px;color:var(--accent);background:var(--accent-soft);border-radius:4px;padding:0 5px;margin-right:6px;cursor:pointer;border:0}
+
+.addrow{align-self:flex-start;border:1px dashed var(--line);background:none;color:var(--accent);padding:6px 12px;border-radius:6px;font-size:13px}
+.addrow:hover{border-color:var(--accent)}
+.limit{align-self:flex-start;display:inline-flex;gap:6px;align-items:center;font-size:12.5px;color:var(--muted);background:var(--calc);border:1px solid var(--line2);border-radius:6px;padding:6px 10px;cursor:pointer}
+
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--surface)}
+.kpi span{display:block;font-size:12px;color:var(--muted)}
+.kpi b{display:block;font-family:var(--f-data);font-size:18px;font-weight:500;margin-top:2px;white-space:nowrap}
+.kpi.main{border-color:var(--accent);background:var(--accent-soft)}
+.kpi b.good{color:var(--good)} .kpi b.bad{color:var(--bad)} .kpi b.warn{color:var(--warn)}
+.meter{height:8px;border-radius:99px;background:var(--line2);overflow:hidden;min-width:80px}
+.meter i{display:block;height:100%;background:var(--good);border-radius:99px;transition:width .25s}
+.meter i.warn{background:var(--warn)} .meter i.bad{background:var(--bad)}
+.legend{font-size:12.5px;color:var(--muted);margin:0;max-width:80ch}
+
+.bars{display:grid;grid-template-columns:repeat(12,1fr);gap:6px;align-items:end;height:150px;padding:8px 4px 0;border-bottom:1px solid var(--line);position:relative}
+.bars .b{display:flex;flex-direction:column;justify-content:flex-end;height:100%;position:relative}
+.bars .b i{display:block;background:var(--accent);border-radius:3px 3px 0 0;min-height:2px;transition:height .25s}
+.bars .b i.neg{background:var(--bad)}
+.bars .ref{position:absolute;left:0;right:0;border-top:2px dashed var(--warn);pointer-events:none}
+.barl{display:grid;grid-template-columns:repeat(12,1fr);gap:6px;font-family:var(--f-data);font-size:10.5px;color:var(--muted);text-align:center;padding:4px 4px 0}
+
+/* offer document */
+.doc{position:relative;background:#FFFFFF;color:#1A1A1A;border:1px solid var(--line);border-radius:4px;padding:28px;max-width:720px;margin:0 auto;width:100%;box-shadow:var(--shadow);font-size:13.5px;overflow:hidden}
+.doc::before{content:"PODGLĄD DEMO";position:absolute;top:44%;left:50%;transform:translate(-50%,-50%) rotate(-22deg);font-family:var(--f-display);font-weight:700;font-size:64px;color:rgba(15,122,76,.12);white-space:nowrap;pointer-events:none;letter-spacing:.04em}
+.doc h5{font-family:var(--f-display);font-size:22px;margin:0 0 2px}
+.doc .dh{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:2px solid #1A1A1A;padding-bottom:12px;margin-bottom:14px}
+.doc .blur{filter:blur(4px);user-select:none}
+.doc table{width:100%;border-collapse:collapse;margin:10px 0;font-variant-numeric:tabular-nums}
+.doc th,.doc td{padding:6px 4px;border-bottom:1px solid #DDD;text-align:left}
+.doc th{font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:#666}
+.doc td.r,.doc th.r{text-align:right}
+.doc .sum{margin-left:auto;width:min(280px,100%);display:grid;grid-template-columns:1fr auto;gap:4px 16px}
+.doc .sum b{font-size:16px}
+.doc .muted{color:#666;font-size:12px}
+.docbar{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.lockbtn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:8px;padding:8px 14px;font-size:13.5px}
+.lockbtn:hover{border-color:var(--accent);color:var(--accent)}
+
+.instr{position:relative}
+.instr .fake{filter:blur(5px);color:var(--muted);display:flex;flex-direction:column;gap:10px}
+.instr .fake p{margin:0}
+.instr .ov{position:absolute;inset:0;display:grid;place-items:center;z-index:4}
+.instr .ov div{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px 22px;max-width:380px;text-align:center;box-shadow:var(--shadow)}
+
+/* buy panel */
+.buy{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);display:flex;flex-direction:column;gap:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px}
+.buy .price{font-size:32px}
+.buy .ptag{font-size:12.5px;color:var(--muted)}
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--accent);color:var(--on-accent);text-decoration:none;font-weight:600;font-size:16px;padding:13px 16px;border-radius:10px;border:0}
+.cta:hover{background:var(--accent-2)}
+.buy h4{margin:0;font-size:12px;font-family:var(--f-data);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.buy ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;font-size:13.5px}
+.buy li{display:grid;grid-template-columns:16px 1fr;gap:8px;align-items:start}
+.buy li .ic{color:var(--accent);font-weight:700;line-height:1.4}
+.buy li.lim .ic{color:var(--muted)}
+.buy .fine{font-size:12px;color:var(--muted);border-top:1px solid var(--line2);padding-top:12px}
+.other{display:flex;flex-direction:column;gap:6px}
+.other button{text-align:left;background:none;border:1px solid var(--line2);border-radius:8px;padding:8px 10px;color:var(--ink);font-size:13px;display:flex;justify-content:space-between;gap:8px}
+.other button:hover{border-color:var(--accent)}
+.other b{white-space:nowrap}
+
+.nudge{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin:0 16px 16px;padding:12px 14px;border-radius:10px;background:var(--accent-soft);border:1px solid var(--accent);font-size:14px}
+.nudge a{white-space:nowrap}
+
+.mbuy{display:none}
+@media (max-width:920px){
+  .intro{grid-template-columns:1fr;padding-block:28px 10px}
+  .dgrid{grid-template-columns:1fr}
+  .buy{position:static}
+  .mbuy{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);border-top:1px solid var(--line);padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px))}
+  .mbuy .cta{padding:10px 16px;font-size:15px}
+  .simbar .note{display:none}
+}
+@media (max-width:520px){ .facts b{font-size:20px} .sheet{padding:12px} .doc{padding:18px} .doc::before{font-size:40px} }
+
+.foot{border-top:1px solid var(--line);padding-block:22px 40px;color:var(--muted);font-size:13px}
+.foot p{margin:0 0 6px;max-width:90ch}
+
+.modal{position:fixed;inset:0;z-index:50;background:rgba(10,20,15,.45);display:grid;place-items:center;padding:16px}
+.modal .box{background:var(--surface);color:var(--ink);border-radius:14px;padding:22px;max-width:420px;width:100%;display:flex;flex-direction:column;gap:12px;box-shadow:var(--shadow)}
+.modal h3{font-size:20px}
+.modal p{margin:0;color:var(--muted)}
+.modal .acts{display:flex;gap:8px;flex-wrap:wrap}
+.ghost{background:none;border:1px solid var(--line);color:var(--ink);border-radius:10px;padding:12px 14px}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;z-index:60;max-width:calc(100% - 32px);text-align:center}
+@media (prefers-reduced-motion: reduce){ *{transition:none!important} }
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#katalog" aria-label="MasterSSon Studio, katalog">
+      <span class="mark" aria-hidden="true"><i class="on"></i><i></i><i></i><i class="on"></i><i class="on"></i><i></i><i class="on"></i><i class="on"></i><i class="on"></i></span>
+      MasterSSon Studio
+    </a>
+    <a class="toplink" href="https://www.naffy.io/mastersson?utm_source=demo&amp;utm_medium=strona&amp;utm_campaign=sklep" target="_blank" rel="noopener">Sklep na naffy ↗</a>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>Dema pokazują działanie arkuszy na przykładowych danych. Pełne pliki .xlsx działają w Excelu i Google Sheets i pobierasz je od razu po zakupie na naffy.</p>
+    <p>Arkusze podatkowe (DAC7, działalność nierejestrowana, ryczałt) są narzędziem pomocniczym, a nie poradą podatkową. Ceny w cennikach są przykładowe, w pełnej wersji wpisujesz własne.</p>
+    <p>© 2026 MasterSSon Studio</p>
+  </div>
+</footer>
+
+<script>
+'use strict';
+/* ---------- helpers ---------- */
+function h(tag, attrs, ...kids){
+  const el = document.createElement(tag);
+  if (attrs) for (const [k,v] of Object.entries(attrs)){
+    if (v == null || v === false) continue;
+    if (k === 'class') el.className = v;
+    else if (k === 'html') el.innerHTML = v;
+    else if (k.startsWith('on') && typeof v === 'function') el.addEventListener(k.slice(2), v);
+    else el.setAttribute(k, v === true ? '' : v);
+  }
+  for (const k of kids.flat(Infinity)){
+    if (k == null || k === false) continue;
+    el.append(k instanceof Node ? k : document.createTextNode(String(k)));
+  }
+  return el;
+}
+const NF = d => new Intl.NumberFormat('pl-PL',{minimumFractionDigits:d,maximumFractionDigits:d});
+const F2 = NF(2), F0 = NF(0), F1 = NF(1);
+const ok = n => typeof n === 'number' && isFinite(n);
+const zl = n => ok(n) ? F2.format(n) + ' zł' : '–';
+const zl0 = n => ok(n) ? F0.format(n) + ' zł' : '–';
+const eur = n => ok(n) ? F2.format(n) + ' €' : '–';
+const pct = n => ok(n) ? F1.format(n*100) + '%' : '–';
+const num = (n,d=2) => ok(n) ? NF(d).format(n) : '–';
+const parseNum = s => { const v = parseFloat(String(s).replace(/\s/g,'').replace(',','.')); return isFinite(v) ? v : 0; };
+const fmtIn = v => (v === '' || v == null) ? '' : String(v).replace('.', ',');
+const sum = (arr, f) => arr.reduce((a,x) => a + (f(x) || 0), 0);
+const r2 = n => Math.round(n*100)/100;
+const pd = s => { if(!s) return null; const [y,m,d] = s.split('-').map(Number); return (y&&m&&d) ? new Date(y, m-1, d) : null; };
+const fmtD = d => d ? String(d.getDate()).padStart(2,'0') + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + d.getFullYear() : '–';
+const dayDiff = (a,b) => { const A = pd(a), B = pd(b); return (A && B) ? Math.round((B - A) / 864e5) : NaN; };
+const hrs = (a,b) => { if(!a||!b) return 0; const [h1,m1] = a.split(':').map(Number), [h2,m2] = b.split(':').map(Number); const v = (h2*60+m2 - h1*60 - m1)/60; return v > 0 ? v : 0; };
+const nice9 = x => { if (!ok(x) || x <= 0) return 0; let p = Math.ceil(x/10)*10 - 1; if (p < x) p += 10; return p; };
+const up5 = x => ok(x) ? Math.ceil(x/5)*5 : 0;
+const LOCK = '<svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M5 7V5a3 3 0 0 1 6 0v2h.5A1.5 1.5 0 0 1 13 8.5v5A1.5 1.5 0 0 1 11.5 15h-7A1.5 1.5 0 0 1 3 13.5v-5A1.5 1.5 0 0 1 4.5 7H5Zm1.5 0h3V5a1.5 1.5 0 0 0-3 0v2Z"/></svg>';
+const lk = () => h('span', {class:'lk', html:LOCK});
+const MONTHS = ['sty','lut','mar','kwi','maj','cze','lip','sie','wrz','paź','lis','gru'];
+const MONTHS_FULL = ['Styczeń','Luty','Marzec','Kwiecień','Maj','Czerwiec','Lipiec','Sierpień','Wrzesień','Październik','Listopad','Grudzień'];
+const clone = o => JSON.parse(JSON.stringify(o));
+
+/* ---------- sheet context: inputs bound to state, outputs recomputed on every keystroke ---------- */
+let CUR = null; // {p, state, tab}
+function makeCtx(){
+  const outs = [];
+  const c = {
+    update(){ for (const o of outs) o(); },
+    rerender(){ renderSheet(); },
+    num(obj, key, o={}){
+      const el = h('input', {class:'cell-in num ' + (o.w||''), type:'text', inputmode:'decimal', value:fmtIn(obj[key]), 'aria-label':o.label||key, maxlength:12});
+      el.addEventListener('input', () => { obj[key] = parseNum(el.value); c.update(); });
+      return el;
+    },
+    txt(obj, key, o={}){
+      const el = h('input', {class:'cell-in ' + (o.w||'w-m'), type:'text', value:obj[key]||'', 'aria-label':o.label||key, maxlength:o.max||48});
+      el.addEventListener('input', () => { obj[key] = el.value; c.update(); });
+      return el;
+    },
+    date(obj, key){
+      const el = h('input', {class:'cell-in', type:'date', value:obj[key]||'', 'aria-label':key, min:'2020-01-01', max:'2027-12-31'});
+      el.addEventListener('input', () => { obj[key] = el.value; c.update(); });
+      return el;
+    },
+    time(obj, key){
+      const el = h('input', {class:'cell-in', type:'time', value:obj[key]||'', 'aria-label':key, step:900});
+      el.addEventListener('input', () => { obj[key] = el.value; c.update(); });
+      return el;
+    },
+    sel(obj, key, options, o={}){
+      const el = h('select', {class:'cell-in ' + (o.w||''), 'aria-label':o.label||key},
+        options.map(op => { const [v,l] = Array.isArray(op) ? op : [op,op]; return h('option', {value:v, selected: String(obj[key]) === String(v)}, l); }));
+      el.addEventListener('change', () => { obj[key] = o.num ? Number(el.value) : el.value; o.structural ? c.rerender() : c.update(); });
+      return el;
+    },
+    chk(obj, key){
+      const el = h('input', {type:'checkbox', class:'cb', checked:!!obj[key], 'aria-label':key});
+      el.addEventListener('change', () => { obj[key] = el.checked; c.update(); });
+      return el;
+    },
+    out(fn){
+      const el = h('span', {class:'out'});
+      const upd = () => { const r = fn(); if (r && typeof r === 'object'){ el.textContent = r.t; el.className = 'out ' + (r.c||''); } else { el.textContent = r; el.className = 'out'; } };
+      outs.push(upd); upd(); return el;
+    },
+    live(el, fn){ const upd = () => fn(el); outs.push(upd); upd(); return el; },
+    meter(fn){ const i = h('i'); return c.live(h('div', {class:'meter'}, i), () => { const [f,cl] = fn(); i.style.width = Math.max(0, Math.min(100, f*100)) + '%'; i.className = cl||''; }); },
+    kpi(label, fn, main){ const b = h('b'); const box = h('div', {class:'kpi' + (main?' main':'')}, h('span', null, label), b);
+      c.live(b, () => { const r = fn(); if (r && typeof r === 'object'){ b.textContent = r.t; b.className = r.c||''; } else { b.textContent = r; b.className=''; } }); return box; },
+    del(arr, item){ return h('button', {class:'xdel', title:'Usuń wiersz', 'aria-label':'Usuń wiersz', onclick:() => { arr.splice(arr.indexOf(item),1); c.rerender(); }}, '×'); },
+    add(arr, make, cap, full, label='Dodaj wiersz'){
+      if (arr.length < cap) return h('button', {class:'addrow', onclick:() => { arr.push(make()); c.rerender(); }}, '+ ' + label);
+      return h('button', {class:'limit', onclick:() => lockModal('Demo ma limit ' + cap + ' wierszy. W pełnej wersji masz miejsce na ' + full + ' pozycji.')}, lk(), 'Limit demo: ' + cap + ' wierszy · pełna wersja: ' + full);
+    }
+  };
+  return c;
+}
+
+/* spreadsheet-looking table: column letters + row numbers */
+function xl({cols, rows, lock, start=1}){
+  const L = i => String.fromCharCode(65+i);
+  const body = [];
+  body.push(h('tr', {class:'hdr'}, h('td', {class:'rn'}, start), cols.map(cl => h('td', {class:cl.r?'r':''}, cl.label))));
+  rows.forEach((r, i) => {
+    const cells = Array.isArray(r) ? r : r.cells, cls = Array.isArray(r) ? '' : (r.cls||'');
+    const rn = start + 1 + i;
+    body.push(h('tr', {class:cls}, h('td', {class:'rn'}, cls === 'tot' ? '' : rn), cells.map((cell, j) => {
+      const col = cols[j] || {};
+      let k = 't';
+      if (cell instanceof HTMLInputElement && cell.type === 'checkbox') k = 'in cbx';
+      else if (cell instanceof HTMLInputElement || cell instanceof HTMLSelectElement) k = 'in';
+      else if (cell && cell.classList && cell.classList.contains('out')) k = 'calc' + (col.left ? ' l' : '');
+      else if (cell && cell.classList && cell.classList.contains('xdel')) k = 'x';
+      return h('td', {class:k + (col.r && k==='t' ? ' r' : ''), 'data-a':L(j) + rn, colspan:cell && cell.span ? cell.span : null}, cell);
+    })));
+  });
+  if (lock) body.push(h('tr', {class:'lockrow'}, h('td', {class:'rn'}, '⋮'), h('td', {colspan:cols.length}, h('span', {style:'display:inline-flex;gap:6px;align-items:center'}, lk(), lock))));
+  return h('div', {class:'xlwrap'}, h('table', {class:'xl'},
+    h('thead', null, h('tr', null, h('th', {class:'rn'}), cols.map((_,i) => h('th', null, L(i))))),
+    h('tbody', null, body)));
+}
+const blk = (title, sub, ...kids) => h('div', {class:'blk'}, h('div', {class:'blk-t'}, h('h4', null, title), sub ? h('span', null, sub) : null), kids);
+const T = s => { const e = h('span', null, s); return e; };
+const span = (el, n) => { el.span = n; return el; };
+
+/* ---------- product catalogue ---------- */
+const BASE = 'https://www.naffy.io/mastersson/';
+const CATS = {fach:'Wyceny dla fachowców', sprzedaz:'Sprzedaż online', podatki:'Podatki i ewidencja', uslugi:'Usługi i małe firmy', dom:'Plany prywatne'};
+const P = [];
+const buyUrl = p => BASE + p.slug + '?utm_source=demo&utm_medium=strona&utm_campaign=' + p.id;
+
+/* ===== trade quote engine (glazurnik, elektryk, malarz, przeprowadzka, ogrodnik) ===== */
+function trade(cfg){
+  const qtyOf = (s, r) => {
+    if (r.link && cfg.pomiar){ const d = cfg.pomiar.derived.find(x => x[0] === r.link); return d ? r2(d[3](s.pom)) : 0; }
+    return r.q;
+  };
+  const labor = s => sum(s.rows, r => qtyOf(s,r) * (s.cennik[r.s] ? s.cennik[r.s].p : 0));
+  const mats = s => sum(s.mats, m => m.q * m.p);
+  const vatRate = s => s.vat === 'zw' ? 0 : Number(s.vat)/100;
+  const net = s => labor(s) + mats(s);
+  const sheets = [];
+  sheets.push({name:'Cennik', render(s, c){
+    return blk('Cennik usług', 'Ceny przykładowe. Zmień dowolną cenę, a kosztorys przeliczy się sam.',
+      xl({cols:[{label:'Lp.'},{label:'Usługa'},{label:'J.m.'},{label:'Cena netto', r:1}],
+          rows: s.cennik.map((it,i) => [T(i+1), T(it.n), T(it.u), c.num(it,'p',{label:'Cena ' + it.n})]),
+          lock:'Pozycje ' + (s.cennik.length+1) + '–40: Twoje własne usługi · w pełnej wersji'}));
+  }});
+  if (cfg.pomiar) sheets.push({name:'Pomiar', render(s, c){
+    return h('div', {class:'cols2'},
+      blk('Wymiary', cfg.pomiar.note,
+        xl({cols:[{label:'Parametr'},{label:'Wartość', r:1},{label:'J.m.'}],
+            rows: cfg.pomiar.fields.map(([k,l,u,_d,t]) => [T(l), t === 'yn' ? c.sel(s.pom, k, [[1,'Tak'],[0,'Nie']], {num:1}) : c.num(s.pom, k, {label:l}), T(u)])})),
+      blk('Wyliczone ilości', 'Trafiają automatycznie do kosztorysu',
+        xl({cols:[{label:'Ilość'},{label:'Wynik', r:1},{label:'J.m.'}],
+            rows: cfg.pomiar.derived.filter(d => !d[4]).map(([k,l,u,fn]) => [T(l), c.out(() => num(fn(s.pom))), T(u)])})));
+  }});
+  sheets.push({name:'Kosztorys', render(s, c){
+    const opts = s.cennik.map((it,i) => [i, it.n]);
+    const rows = s.rows.map(r => {
+      const qcell = r.link
+        ? h('span', {class:'out'}, h('button', {class:'link-tag', title:'Ilość z zakładki Pomiar. Kliknij, aby wpisać ręcznie.', onclick:() => { r.q = qtyOf(s,r); r.link = null; c.rerender(); }}, 'z pomiaru'), c.out(() => num(qtyOf(s,r))))
+        : c.num(r, 'q', {label:'Ilość'});
+      return [c.sel(r, 's', opts, {num:1, w:'w-l'}), c.out(() => s.cennik[r.s].u), qcell, c.out(() => zl(s.cennik[r.s].p)), c.out(() => zl(qtyOf(s,r) * s.cennik[r.s].p)), c.del(s.rows, r)];
+    });
+    rows.push({cls:'tot', cells:[T('Robocizna netto'), T(''), T(''), T(''), c.out(() => zl(labor(s))), T('')]});
+    const mrows = s.mats.map(m => [c.txt(m,'n',{w:'w-l'}), c.txt(m,'u',{w:'', max:8}), c.num(m,'q'), c.num(m,'p'), c.out(() => zl(m.q*m.p)), c.del(s.mats, m)]);
+    mrows.push({cls:'tot', cells:[T('Materiały netto'), T(''), T(''), T(''), c.out(() => zl(mats(s))), T('')]});
+    return [
+      blk('Robocizna', cfg.example,
+        xl({cols:[{label:'Usługa z cennika'},{label:'J.m.'},{label:'Ilość', r:1},{label:'Cena', r:1},{label:'Wartość netto', r:1},{label:''}], rows}),
+        c.add(s.rows, () => ({s:0, q:1, link:null}), 8, '40', 'Dodaj usługę')),
+      blk('Materiały', null,
+        xl({cols:[{label:'Materiał'},{label:'J.m.'},{label:'Ilość', r:1},{label:'Cena netto', r:1},{label:'Wartość netto', r:1},{label:''}], rows:mrows}),
+        c.add(s.mats, () => ({n:'Nowy materiał', u:'szt', q:1, p:0}), 4, '30', 'Dodaj materiał')),
+      blk('Podsumowanie', null,
+        h('div', {style:'display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px'}, 'Stawka VAT:', h('span', {class:'xl', style:'display:inline-block;border:1px solid var(--in-line);background:var(--in);border-radius:4px'}, c.sel(s, 'vat', [['8','8%'],['23','23%'],['zw','zw.']]))),
+        h('div', {class:'kpis'},
+          c.kpi('Robocizna netto', () => zl(labor(s))),
+          c.kpi('Materiały netto', () => zl(mats(s))),
+          c.kpi('Razem netto', () => zl(net(s))),
+          c.kpi('VAT', () => zl(net(s)*vatRate(s))),
+          c.kpi('Do zapłaty brutto', () => zl(net(s)*(1+vatRate(s))), true)))
+    ];
+  }});
+  sheets.push({name:'Oferta', render(s, c){
+    const items = h('tbody');
+    c.live(items, el => {
+      el.replaceChildren(...s.rows.map(r => h('tr', null, h('td', null, s.cennik[r.s].n), h('td', {class:'r'}, num(qtyOf(s,r)) + ' ' + s.cennik[r.s].u), h('td', {class:'r'}, zl(qtyOf(s,r)*s.cennik[r.s].p)))),
+        h('tr', null, h('td', null, 'Materiały (wg kosztorysu)'), h('td', {class:'r'}, ''), h('td', {class:'r'}, zl(mats(s)))));
+    });
+    return [
+      h('div', {class:'doc'},
+        h('div', {class:'dh'},
+          h('div', null, h('h5', null, 'OFERTA nr 14/10/2026'), h('div', {class:'muted'}, 'Data: 11.10.2026 · ważna 14 dni')),
+          h('div', {style:'text-align:right'}, h('b', {class:'blur'}, 'Twoja Firma Sp. z o.o.'), h('div', {class:'muted blur'}, 'NIP 000-000-00-00 · tel. 600 000 000'), h('div', {class:'muted'}, 'Dane firmy i logo: w pełnej wersji'))),
+        h('div', null, h('span', {class:'muted'}, 'Dla: '), 'Klient przykładowy · ', cfg.example),
+        h('table', null, h('thead', null, h('tr', null, h('th', null, 'Zakres prac'), h('th', {class:'r'}, 'Ilość'), h('th', {class:'r'}, 'Netto'))), items),
+        h('div', {class:'sum'},
+          h('span', null, 'Razem netto'), c.out(() => zl(net(s))),
+          h('span', null, 'VAT'), c.out(() => s.vat === 'zw' ? 'zw.' : zl(net(s)*vatRate(s))),
+          h('b', null, 'Do zapłaty'), h('b', null, c.out(() => zl(net(s)*(1+vatRate(s)))))),
+        h('p', {class:'muted', style:'margin-top:18px'}, 'Termin realizacji do uzgodnienia. Cena obejmuje robociznę i materiały wymienione w kosztorysie.')),
+      h('div', {class:'docbar'},
+        h('button', {class:'lockbtn', onclick:() => lockModal('Zapis oferty do PDF z Twoimi danymi i logo działa w pełnym pliku Excel lub Google Sheets.')}, lk(), 'Zapisz jako PDF'),
+        h('button', {class:'lockbtn', onclick:() => lockModal('Wydruk oferty działa w pełnej wersji arkusza.')}, lk(), 'Drukuj ofertę'),
+        h('button', {class:'lockbtn', onclick:() => lockModal('Dane Twojej firmy, NIP i logo uzupełniasz raz w pełnej wersji. Potem każda oferta ma je automatycznie.')}, lk(), 'Wpisz dane firmy'))
+    ];
+  }});
+  P.push({
+    id:cfg.id, slug:cfg.slug, name:cfg.name, price:cfg.price, cat:'fach', file:cfg.file, short:cfg.short, lead:cfg.lead,
+    mini:cfg.mini,
+    full:['Cennik na start z typowymi pozycjami, do 40 własnych usług', cfg.pomiar ? 'Kalkulator ' + cfg.pomiar.what : 'Wybór usług z listy i ilości w punktach', 'Kosztorys z materiałami i VAT 8%, 23% lub zw.', 'Oferta z Twoimi danymi do wydruku lub PDF', 'Instrukcja po polsku i ' + cfg.sample],
+    limits:['Do 8 usług i 4 materiałów w kosztorysie', 'Bez dodawania własnych pozycji cennika', 'Oferta ze znakiem wodnym, bez PDF i druku', 'Bez zapisu i kopiowania wyników'],
+    init:() => ({cennik: cfg.services.map(([n,u,p]) => ({n,u,p})), pom: cfg.pomiar ? Object.fromEntries(cfg.pomiar.fields.map(f => [f[0], f[3]])) : {},
+      rows: cfg.rows.map(([si,q]) => typeof q === 'string' ? {s:si, link:q, q:0} : {s:si, q, link:null}), mats: cfg.mats.map(([n,u,q,p]) => ({n,u,q,p})), vat:'8'}),
+    sheets
+  });
+}
+
+trade({id:'glazurnik', slug:'kosztorys-i-oferta-dla-glazurnika-od-pomiaru-do-oferty-w-10-minut-excel-7cg', name:'Kosztorys i oferta dla glazurnika', price:49, file:'Kosztorys_glazurnik.xlsx',
+  short:'Wpisujesz wymiary łazienki, wybierasz usługi i masz kosztorys z VAT oraz ofertę gotową do PDF.',
+  lead:'Wpisz wymiary łazienki w zakładce Pomiar. Metry podłogi, ścian i obwodu same trafią do kosztorysu, a oferta przeliczy się na bieżąco.',
+  example:'Łazienka 2,0 × 1,8 m', sample:'przykładowa łazienka', mini:[['Podłoga','3,60 m²'],['Ściany','16,64 m²'],['Brutto','5 471 zł']],
+  services:[['Skucie starych płytek','m²',35],['Gruntowanie podłoża','m²',8],['Hydroizolacja (folia w płynie)','m²',45],['Wyrównanie podłoża','m²',40],['Układanie płytek na podłodze','m²',120],['Układanie płytek na ścianie','m²',130],['Duży format 120×60','m²',170],['Fugowanie','m²',25],['Fuga epoksydowa','m²',60],['Szlifowanie narożników 45°','mb',90],['Montaż listew i profili','mb',30],['Silikonowanie','mb',15],['Montaż odpływu liniowego','szt',350],['Zabudowa stelaża WC','szt',600],['Wnęka lub półka w ścianie','szt',250]],
+  pomiar:{what:'metrażu: podłoga, ściany minus otwory, zapas i obwód', note:'Pola żółte do wpisania',
+    fields:[['dl','Długość pomieszczenia','m',2.0],['sz','Szerokość pomieszczenia','m',1.8],['wys','Wysokość płytek na ścianach','m',2.4],['otw','Otwory (drzwi, okno)','m²',1.6],['zap','Zapas na docinki','%',10]],
+    derived:[['floor','Podłoga','m²',p => p.dl*p.sz],['walls','Ściany po odjęciu otworów','m²',p => Math.max(0, 2*(p.dl+p.sz)*p.wys - p.otw)],['floorZ','Podłoga z zapasem','m²',p => p.dl*p.sz*(1+p.zap/100)],['wallsZ','Ściany z zapasem','m²',p => Math.max(0, 2*(p.dl+p.sz)*p.wys - p.otw)*(1+p.zap/100)],['perim','Obwód','mb',p => 2*(p.dl+p.sz)],['fw','Podłoga + ściany','m²',p => p.dl*p.sz + Math.max(0, 2*(p.dl+p.sz)*p.wys - p.otw)]]},
+  rows:[[1,'fw'],[2,'floor'],[4,'floorZ'],[5,'wallsZ'],[7,'fw'],[11,'perim'],[12,1]],
+  mats:[['Klej elastyczny C2TE 25 kg','worek',7,69],['Fuga cementowa 5 kg','szt',3,59],['Folia w płynie 4 kg','szt',2,129]]});
+
+trade({id:'elektryk', slug:'kosztorys-i-oferta-dla-elektryka-od-wyceny-do-oferty-w-10-minut-excel-g2c', name:'Kosztorys i oferta dla elektryka', price:49, file:'Kosztorys_elektryk.xlsx',
+  short:'Punkty, bruzdy, rozdzielnica: wybierasz z cennika i masz kosztorys z VAT oraz ofertę dla klienta.',
+  lead:'Zmień liczbę punktów albo cenę w cenniku. Kosztorys, VAT i oferta przeliczą się od razu.',
+  example:'Mieszkanie 54 m², nowa instalacja', sample:'przykładowa instalacja', mini:[['Punkty','26 pkt'],['Netto','8 576 zł'],['Brutto','9 262 zł']],
+  services:[['Punkt elektryczny (gniazdo, łącznik)','pkt',90],['Punkt oświetleniowy','pkt',100],['Bruzdowanie ściany','mb',25],['Przewód w bruździe','mb',12],['Puszka podtynkowa','szt',20],['Montaż osprzętu','szt',25],['Montaż rozdzielnicy do 36 mod.','szt',650],['Montaż zabezpieczenia (S, RCD)','szt',45],['Podłączenie płyty indukcyjnej','szt',150],['Montaż lampy lub oprawy','szt',60],['Pomiary z protokołem','kpl',450],['Punkt internetowy RJ45','pkt',120]],
+  pomiar:null,
+  rows:[[0,18],[1,8],[2,60],[3,140],[6,1],[7,12],[10,1]],
+  mats:[['Przewód YDYp 3×2,5 mm²','mb',150,3.9],['Puszki podtynkowe','szt',30,2.5],['Rozdzielnica 36 mod.','szt',1,280],['Gniazda i łączniki','szt',18,22]]});
+
+trade({id:'malarz', slug:'kosztorys-i-oferta-dla-malarza-ekipy-malarskiej-od-wyceny-do-oferty-w-10-minut-excel-2dt', name:'Kosztorys i oferta dla malarza', price:39, file:'Kosztorys_malarz.xlsx',
+  short:'Metry ścian i sufitu liczone z wymiarów pokoju, kosztorys z VAT i oferta w 10 minut.',
+  lead:'Zmień wymiary pokoju w zakładce Pomiar. Gładź, malowanie ścian i sufitu dostaną właściwe metry automatycznie.',
+  example:'Pokój 4,5 × 3,6 m', sample:'przykładowe pomieszczenie', mini:[['Ściany','38,6 m²'],['Sufit','16,2 m²'],['Brutto','4 256 zł']],
+  services:[['Zabezpieczenie folią i taśmą','m²',4],['Gruntowanie','m²',6],['Szpachlowanie ubytków','m²',15],['Gładź gipsowa (2 warstwy)','m²',35],['Malowanie ścian (2 warstwy)','m²',18],['Malowanie sufitu (2 warstwy)','m²',22],['Kolor ciemny lub intensywny','m²',24],['Tapetowanie','m²',40],['Malowanie drzwi','szt',150],['Malowanie kaloryfera','szt',120],['Montaż listew sufitowych','mb',30],['Akryl w narożnikach','mb',8]],
+  pomiar:{what:'metrażu ścian, sufitu i obwodu pokoju', note:'Pola żółte do wpisania',
+    fields:[['dl','Długość pokoju','m',4.5],['sz','Szerokość pokoju','m',3.6],['wys','Wysokość ścian','m',2.6],['otw','Okna i drzwi','m²',3.5]],
+    derived:[['walls','Ściany po odjęciu otworów','m²',p => Math.max(0, 2*(p.dl+p.sz)*p.wys - p.otw)],['ceil','Sufit','m²',p => p.dl*p.sz],['floor','Podłoga do zabezpieczenia','m²',p => p.dl*p.sz],['wc','Ściany + sufit','m²',p => Math.max(0, 2*(p.dl+p.sz)*p.wys - p.otw) + p.dl*p.sz],['perim','Obwód','mb',p => 2*(p.dl+p.sz)]]},
+  rows:[[0,'floor'],[1,'wc'],[3,'walls'],[4,'walls'],[5,'ceil'],[11,'perim'],[8,1]],
+  mats:[['Farba lateksowa 10 l','szt',3,189],['Gładź gipsowa 20 kg','worek',3,49],['Grunt 5 l','szt',2,45],['Folia i taśma','kpl',1,60]]});
+
+trade({id:'przeprowadzka', slug:'kosztorys-i-oferta-dla-firmy-przeprowadzkowej-od-wyceny-do-oferty-w-10-minut-excel-gid', name:'Kosztorys i oferta dla firmy przeprowadzkowej', price:39, file:'Kosztorys_przeprowadzki.xlsx',
+  short:'Kilometry, metry sześcienne, piętra i ekipa: wycena przeprowadzki z ofertą do wysłania.',
+  lead:'Ustaw odległość, objętość, piętro i windę w zakładce Pomiar. Osobogodziny i dopłata za piętra policzą się same.',
+  example:'Mieszkanie 3 pokoje, 35 km', sample:'przykładowa przeprowadzka', mini:[['Trasa','70 km'],['Ekipa','18 h'],['Brutto','4 163 zł']],
+  services:[['Transport (za km)','km',4.5],['Ryczałt dojazdowy','kpl',150],['Praca ekipy','h',70],['Pakowanie','m³',60],['Kartony z dostawą','szt',9],['Demontaż i montaż mebli','szt',80],['Wnoszenie bez windy','piętro',100],['Przewóz pianina','szt',600],['Zabezpieczenie folią i kocami','kpl',120],['Wywóz zbędnych rzeczy','m³',150]],
+  pomiar:{what:'trasy, objętości, pięter i pracy ekipy', note:'Pola żółte do wpisania',
+    fields:[['km','Odległość w jedną stronę','km',35],['m3','Objętość ładunku','m³',18],['pietro','Piętro załadunku','',3],['winda','Winda w budynku','',0,'yn'],['ekipa','Liczba osób w ekipie','os.',3],['godz','Czas pracy','h',6]],
+    derived:[['km2','Kilometry w obie strony','km',p => p.km*2],['osg','Osobogodziny','h',p => p.ekipa*p.godz],['pietra','Piętra do wniesienia bez windy','',p => p.winda ? 0 : p.pietro],['m3','Objętość do spakowania','m³',p => p.m3]]},
+  rows:[[0,'km2'],[1,1],[2,'osg'],[3,'m3'],[4,30],[5,4],[6,'pietra']],
+  mats:[['Folia stretch','rolka',4,25],['Taśma pakowa','szt',10,6]]});
+
+trade({id:'ogrodnik', slug:'kosztorys-i-oferta-dla-ogrodnika-firmy-ogrodniczej-od-wyceny-do-oferty-w-10-minut-excel-atm', name:'Kosztorys i oferta dla ogrodnika', price:39, file:'Kosztorys_ogrodnik.xlsx',
+  short:'Trawnik, żywopłot, rabaty: wycena prac na działce z kosztorysem i gotową ofertą.',
+  lead:'Wpisz metry trawnika i żywopłotu w zakładce Pomiar. Usługi w kosztorysie dostaną właściwe ilości automatycznie.',
+  example:'Działka 900 m²', sample:'przykładowa działka', mini:[['Trawnik','520 m²'],['Żywopłot','40 mb'],['Brutto','4 152 zł']],
+  services:[['Koszenie trawnika','m²',0.4],['Wertykulacja i aeracja','m²',1.2],['Trawnik z siewu','m²',12],['Trawnik z rolki','m²',28],['Cięcie żywopłotu','mb',15],['Sadzenie krzewów','szt',25],['Rabata z agrowłókniną i korą','m²',45],['Grabienie liści z wywozem','m²',0.8],['Nawożenie trawnika','m²',0.5],['Montaż obrzeża','mb',25]],
+  pomiar:{what:'powierzchni trawnika, żywopłotu i rabat', note:'Pola żółte do wpisania',
+    fields:[['dz','Powierzchnia działki','m²',900],['traw','Trawnik','m²',520],['zyw','Żywopłot','mb',40],['rab','Nowe rabaty','m²',18],['krz','Krzewy do posadzenia','szt',12]],
+    derived:[['traw','Trawnik do pielęgnacji','m²',p => p.traw],['zyw','Żywopłot do cięcia','mb',p => p.zyw],['rab','Rabaty do założenia','m²',p => p.rab],['krz','Krzewy','szt',p => p.krz],['wolne','Pozostała część działki','m²',p => Math.max(0, p.dz - p.traw - p.rab)]]},
+  rows:[[1,'traw'],[8,'traw'],[4,'zyw'],[6,'rab'],[5,'krz'],[9,22]],
+  mats:[['Nawóz jesienny 10 kg','szt',2,89],['Kora sosnowa 80 l','worek',6,22],['Agrowłóknina 1,6 × 10 m','szt',2,45],['Krzewy (tuja, ligustr)','szt',12,25]]});
+
+/* ===== DAC7 ===== */
+const PLAT = ['Vinted','OLX','Allegro Lokalnie','Inna'];
+const freeFrom = s => { const d = pd(s); return d ? new Date(d.getFullYear(), d.getMonth()+7, 1) : null; };
+const dac7Inc = r => { const f = freeFrom(r.kup), sd = pd(r.sprz); if (!f || !sd) return 0; return sd < f ? Math.max(0, r.zs - r.zk) : 0; };
+P.push({id:'dac7', slug:'rejestr-sprzedazy-vinted-i-olx-z-kontrola-progow-dac7-excel-6nf', name:'Rejestr sprzedaży Vinted i OLX z kontrolą progów DAC7', price:29, cat:'sprzedaz', file:'Rejestr_DAC7.xlsx',
+  short:'Pilnuje progu 30 transakcji i 2000 € osobno na każdej platformie i pokazuje, od kiedy sprzedaż jest wolna od PIT.',
+  lead:'Zmień cenę sprzedaży albo platformę. Licznik progów DAC7 przelicza się od razu, a w przykładzie OLX już przekroczył 2000 €.',
+  mini:[['Vinted','4 / 30'],['OLX','2 047 €'],['PIT','210 zł']],
+  full:['Rejestr na 500 sprzedaży z listą platform', 'Kontrola progów DAC7 osobno dla każdej platformy, w zł i euro, z ostrzeżeniem', 'Data, od której sprzedaż rzeczy jest wolna od PIT (pół roku od końca miesiąca zakupu)', 'Wyliczenie ewentualnego przychodu przy sprzedaży przed tym terminem', 'Pole na dowód zakupu na wypadek pytań z urzędu', 'Instrukcja po polsku i przykłady'],
+  limits:['Do 10 wierszy rejestru', 'Kurs euro na sztywno w demo', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({kurs:4.25, rows:[
+    {kup:'2025-11-10', sprz:'2026-02-14', n:'Kurtka zimowa Zara', pl:'Vinted', zk:320, zs:180, dow:'paragon'},
+    {kup:'2024-06-01', sprz:'2026-03-02', n:'Buty Nike Air', pl:'Vinted', zk:450, zs:260, dow:'zamówienie online'},
+    {kup:'2026-01-20', sprz:'2026-04-11', n:'Konsola PS4 Slim', pl:'OLX', zk:600, zs:750, dow:'faktura'},
+    {kup:'2023-05-12', sprz:'2026-05-03', n:'Torebka skórzana', pl:'Vinted', zk:900, zs:420, dow:''},
+    {kup:'2025-03-01', sprz:'2026-05-20', n:'Rower miejski', pl:'OLX', zk:1200, zs:950, dow:'paragon'},
+    {kup:'2022-01-01', sprz:'2026-06-02', n:'Książki, 10 szt.', pl:'Allegro Lokalnie', zk:200, zs:120, dow:''},
+    {kup:'2026-04-02', sprz:'2026-06-15', n:'Sukienka letnia', pl:'Vinted', zk:150, zs:210, dow:'paragon'},
+    {kup:'2023-09-10', sprz:'2026-06-28', n:'Laptop MacBook Pro', pl:'OLX', zk:9500, zs:7000, dow:'faktura'}]}),
+  sheets:[{name:'Rejestr', render(s, c){
+    const rows = s.rows.map(r => [c.date(r,'kup'), c.date(r,'sprz'), c.txt(r,'n',{w:'w-l'}), c.sel(r,'pl',PLAT), c.num(r,'zk'), c.num(r,'zs'), c.txt(r,'dow',{w:''}),
+      c.out(() => { const f = freeFrom(r.kup), sd = pd(r.sprz); if (!f) return '–'; return {t:fmtD(f), c: sd && sd >= f ? 'good' : 'warn'}; }),
+      c.out(() => { const v = dac7Inc(r); return {t:zl(v), c: v > 0 ? 'warn' : ''}; }), c.del(s.rows, r)]);
+    return [blk('Rejestr sprzedaży 2026', 'Zielona data: sprzedaż po terminie, bez PIT. Pomarańczowa: sprzedaż przed terminem.',
+      xl({cols:[{label:'Data zakupu'},{label:'Data sprzedaży'},{label:'Przedmiot'},{label:'Platforma'},{label:'Cena zakupu',r:1},{label:'Cena sprzedaży',r:1},{label:'Dowód zakupu'},{label:'Wolne od PIT od',r:1},{label:'Przychód do PIT',r:1},{label:''}], rows, lock:'Wiersze ' + (s.rows.length+2) + '–501 · dostępne w pełnej wersji'}),
+      c.add(s.rows, () => ({kup:'2026-07-01', sprz:'2026-10-01', n:'Nowy przedmiot', pl:'Vinted', zk:0, zs:0, dow:''}), 10, '500'))];
+  }}, {name:'Progi DAC7', render(s, c){
+    const agg = pl => { const rs = s.rows.filter(r => r.pl === pl && r.sprz); const n = rs.length, z = sum(rs, r => r.zs); return {n, z, e: z/s.kurs}; };
+    const rows = PLAT.map(pl => [T(pl), c.out(() => F0.format(agg(pl).n) + ' / 30'), c.out(() => zl(agg(pl).z)), c.out(() => eur(agg(pl).e)),
+      c.meter(() => { const a = agg(pl); const f = Math.max(a.n/30, a.e/2000); return [f, f >= 1 ? 'bad' : f >= .8 ? 'warn' : '']; }),
+      c.out(() => { const a = agg(pl); const f = Math.max(a.n/30, a.e/2000); return f >= 1 ? {t:'Próg przekroczony', c:'pb'} : f >= .8 ? {t:'Blisko progu', c:'pw'} : {t:'Poniżej progu', c:'pg'}; })]);
+    return [blk('Kontrola progów DAC7 w 2026', 'Kurs przyjęty w arkuszu: 1 € = ' + F2.format(s.kurs) + ' zł',
+      xl({cols:[{label:'Platforma'},{label:'Transakcje',r:1},{label:'Suma sprzedaży',r:1},{label:'Suma w euro',r:1},{label:'Wykorzystanie progu'},{label:'Status'}], rows})),
+      h('p', {class:'legend'}, 'Platforma przekazuje dane sprzedawcy do urzędu skarbowego, gdy w roku osiągnie on 30 transakcji albo 2000 € sprzedaży. Arkusz liczy to dla każdej platformy osobno.'),
+      h('div', {class:'kpis'},
+        c.kpi('Sprzedaży w rejestrze', () => F0.format(s.rows.filter(r => r.sprz).length)),
+        c.kpi('Suma sprzedaży', () => zl(sum(s.rows, r => r.zs))),
+        c.kpi('Przychód do PIT', () => { const v = sum(s.rows, dac7Inc); return {t:zl(v), c: v > 0 ? 'warn' : 'good'}; }, true))];
+  }}]
+});
+
+/* ===== Ewidencja działalności nierejestrowanej ===== */
+const LIMIT_Q = 10813.5;
+P.push({id:'nierejestrowana', slug:'ewidencja-dzialalnosci-nierejestrowanej-z-kontrola-limitu-kwartalnego-excel-rax', name:'Ewidencja działalności nierejestrowanej z kontrolą limitu', price:29, cat:'podatki', file:'Ewidencja_nierejestrowana.xlsx',
+  short:'Sumuje przychód w każdym kwartale i ostrzega, zanim przekroczysz limit 10 813,50 zł.',
+  lead:'Dopisz albo zmień kwotę w rejestrze. Zakładka Kwartały pokaże od razu, ile jeszcze możesz zarobić w danym kwartale.',
+  mini:[['I kw.','5 500 zł'],['II kw.','9 500 zł'],['III kw.','limit!']],
+  full:['Rejestr na 300 pozycji: data, opis, kwota, nr rachunku', 'Suma narastająca w każdym kwartale', 'Ostrzeżenie przy zbliżaniu się do limitu 10 813,50 zł', 'Podsumowanie kwartał po kwartale: ile jeszcze możesz wystawić', 'Instrukcja po polsku i przykładowe wpisy'],
+  limits:['Do 12 wierszy ewidencji', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({rows:[
+    {d:'2026-01-15', nr:'R/1/2026', o:'Projekt plakatu', k:1800},{d:'2026-02-20', nr:'R/2/2026', o:'Sesja zdjęciowa', k:2500},{d:'2026-03-28', nr:'R/3/2026', o:'Sprzedaż rękodzieła', k:1200},
+    {d:'2026-04-10', nr:'R/4/2026', o:'Korepetycje, kwiecień', k:2400},{d:'2026-05-12', nr:'R/5/2026', o:'Strona www dla piekarni', k:4000},{d:'2026-06-03', nr:'R/6/2026', o:'Korepetycje, maj i czerwiec', k:3100},
+    {d:'2026-07-08', nr:'R/7/2026', o:'Projekt logo', k:3500},{d:'2026-08-19', nr:'R/8/2026', o:'Sesja ślubna', k:5800},{d:'2026-09-22', nr:'R/9/2026', o:'Korepetycje, wrzesień', k:2000}]}),
+  sheets:[{name:'Ewidencja', render(s, c){
+    const qOf = r => { const d = pd(r.d); return d ? Math.floor(d.getMonth()/3) : -1; };
+    const runQ = r => sum(s.rows.filter(x => qOf(x) === qOf(r) && (x.d < r.d || (x.d === r.d && s.rows.indexOf(x) <= s.rows.indexOf(r)))), x => x.k);
+    const rows = s.rows.map(r => [c.date(r,'d'), c.txt(r,'nr',{w:''}), c.txt(r,'o',{w:'w-l'}), c.num(r,'k'),
+      c.out(() => qOf(r) >= 0 ? ['I','II','III','IV'][qOf(r)] + ' kw.' : '–'),
+      c.out(() => { const v = runQ(r); return {t:zl(v), c: v > LIMIT_Q ? 'bad' : v > .8*LIMIT_Q ? 'warn' : ''}; }), c.del(s.rows, r)]);
+    return [blk('Ewidencja przychodów 2026', 'Suma narastająca liczy się osobno w każdym kwartale',
+      xl({cols:[{label:'Data'},{label:'Nr rachunku'},{label:'Opis'},{label:'Kwota',r:1},{label:'Kwartał'},{label:'Narastająco w kwartale',r:1},{label:''}], rows, lock:'Wiersze ' + (s.rows.length+2) + '–301 · dostępne w pełnej wersji'}),
+      c.add(s.rows, () => ({d:'2026-10-05', nr:'R/' + (s.rows.length+1) + '/2026', o:'Nowy przychód', k:0}), 12, '300'))];
+  }}, {name:'Kwartały', render(s, c){
+    const qs = q => sum(s.rows.filter(r => { const d = pd(r.d); return d && Math.floor(d.getMonth()/3) === q; }), r => r.k);
+    const rows = [0,1,2,3].map(q => [T(['I','II','III','IV'][q] + ' kwartał 2026'), c.out(() => zl(qs(q))), T(zl(LIMIT_Q)),
+      c.out(() => { const v = LIMIT_Q - qs(q); return {t:zl(v), c: v < 0 ? 'bad' : ''}; }),
+      c.meter(() => { const f = qs(q)/LIMIT_Q; return [f, f > 1 ? 'bad' : f > .8 ? 'warn' : '']; }),
+      c.out(() => { const f = qs(q)/LIMIT_Q; return f > 1 ? {t:'Limit przekroczony', c:'pb'} : f > .8 ? {t:'Uwaga, blisko limitu', c:'pw'} : {t:'W limicie', c:'pg'}; })]);
+    return [blk('Limit kwartalny', 'Od 2026 limit liczy się kwartalnie: 10 813,50 zł',
+      xl({cols:[{label:'Kwartał'},{label:'Przychód',r:1},{label:'Limit',r:1},{label:'Możesz jeszcze wystawić',r:1},{label:'Wykorzystanie'},{label:'Status'}], rows})),
+      h('p', {class:'legend'}, 'Przekroczenie limitu oznacza obowiązek rejestracji działalności. Arkusz ostrzega już przy 80% limitu.')];
+  }}]
+});
+
+/* ===== Ryczałt ===== */
+const RATES = [['0.02','2%'],['0.03','3%'],['0.055','5,5%'],['0.085','8,5%'],['0.1','10%'],['0.12','12%'],['0.125','12,5%'],['0.14','14%'],['0.15','15%'],['0.17','17%']];
+P.push({id:'ryczalt', slug:'rejestr-przychodow-i-kosztow-dla-freelancera-na-ryczalcie-excel-lvt', name:'Rejestr przychodów i kosztów dla freelancera na ryczałcie', price:35, cat:'podatki', file:'Rejestr_ryczalt.xlsx',
+  short:'Przychody z wyborem stawki ryczałtu, koszty, podatek i suma narastająca miesiąc po miesiącu.',
+  lead:'Zmień stawkę ryczałtu przy fakturze albo kwotę. Podatek w podsumowaniu miesięcznym przeliczy się od razu.',
+  mini:[['Wrz','9 500 zł'],['Paź','11 000 zł'],['Ryczałt paź','1 278 zł']],
+  full:['300 pozycji przychodów i 300 pozycji kosztów', 'Stawka ryczałtu z listy przy każdej pozycji (m.in. 8,5%, 12%, 15%)', 'Automatyczny podatek i suma narastająca w roku', 'Podsumowanie miesięczne: przychód i podatek do zapłaty', 'Pole na składkę zdrowotną, instrukcja po polsku, przykładowy miesiąc'],
+  limits:['Do 8 przychodów i 6 kosztów', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({zdr:{8:830, 9:830}, przy:[
+    {d:'2026-09-05', nr:'FV 1/09/2026', o:'Agencja Pixel: landing page', k:6000, st:'0.12'},
+    {d:'2026-09-18', nr:'FV 2/09/2026', o:'Kawiarnia Ziarno: szkolenie', k:3500, st:'0.085'},
+    {d:'2026-10-02', nr:'FV 1/10/2026', o:'Agencja Pixel: utrzymanie strony', k:1200, st:'0.085'},
+    {d:'2026-10-14', nr:'FV 2/10/2026', o:'Sklep Rowerowy: sklep internetowy', k:9800, st:'0.12'}],
+    koszty:[{d:'2026-09-03', o:'Laptop, rata', k:450},{d:'2026-10-01', o:'Abonament na oprogramowanie', k:260},{d:'2026-10-10', o:'Hosting roczny', k:380}]}),
+  sheets:[{name:'Przychody', render(s, c){
+    const rows = s.przy.map(r => [c.date(r,'d'), c.txt(r,'nr',{w:''}), c.txt(r,'o',{w:'w-l'}), c.num(r,'k'), c.sel(r,'st',RATES), c.out(() => zl(r.k*Number(r.st))), c.del(s.przy, r)]);
+    return [blk('Przychody 2026', null, xl({cols:[{label:'Data'},{label:'Nr faktury'},{label:'Kontrahent i opis'},{label:'Kwota',r:1},{label:'Stawka'},{label:'Ryczałt',r:1},{label:''}], rows, lock:'Wiersze ' + (s.przy.length+2) + '–301 · dostępne w pełnej wersji'}),
+      c.add(s.przy, () => ({d:'2026-10-20', nr:'FV 3/10/2026', o:'Nowy kontrahent', k:0, st:'0.12'}), 8, '300'))];
+  }}, {name:'Koszty', render(s, c){
+    const rows = s.koszty.map(r => [c.date(r,'d'), c.txt(r,'o',{w:'w-l'}), c.num(r,'k'), c.del(s.koszty, r)]);
+    return [blk('Koszty 2026', 'Na ryczałcie koszty nie obniżają podatku. Rejestr pokazuje, ile realnie zostaje.', xl({cols:[{label:'Data'},{label:'Opis'},{label:'Kwota',r:1},{label:''}], rows, lock:'Wiersze ' + (s.koszty.length+2) + '–301 · dostępne w pełnej wersji'}),
+      c.add(s.koszty, () => ({d:'2026-10-20', o:'Nowy koszt', k:0}), 6, '300'))];
+  }}, {name:'Podsumowanie', render(s, c){
+    const mOf = d => { const x = pd(d); return x ? x.getMonth() : -1; };
+    const months = [...new Set([...s.przy, ...s.koszty].map(r => mOf(r.d)).filter(m => m >= 0))].sort((a,b) => a-b);
+    const P_ = m => sum(s.przy.filter(r => mOf(r.d) === m), r => r.k);
+    const TX = m => Math.round(sum(s.przy.filter(r => mOf(r.d) === m), r => r.k*Number(r.st)));
+    const K = m => sum(s.koszty.filter(r => mOf(r.d) === m), r => r.k);
+    const cum = m => sum(s.przy.filter(r => mOf(r.d) <= m && mOf(r.d) >= 0), r => r.k);
+    months.forEach(m => { if (s.zdr[m] == null) s.zdr[m] = 0; });
+    const rows = months.map(m => [T(MONTHS_FULL[m] + ' 2026'), c.out(() => zl(P_(m))), c.out(() => zl0(TX(m))), c.num(s.zdr, m, {label:'Składka zdrowotna'}), c.out(() => zl(K(m))), c.out(() => zl(cum(m))), c.out(() => ({t:zl(TX(m) + (s.zdr[m]||0)), c:'warn'}))]);
+    return [blk('Podsumowanie miesięczne', 'Składkę zdrowotną wpisujesz ręcznie (żółte pole)', xl({cols:[{label:'Miesiąc'},{label:'Przychód',r:1},{label:'Ryczałt',r:1},{label:'Składka zdrowotna',r:1},{label:'Koszty',r:1},{label:'Przychód narastająco',r:1},{label:'Do zapłaty',r:1}], rows})),
+      h('div', {class:'kpis'}, c.kpi('Przychód w roku', () => zl(sum(s.przy, r => r.k))), c.kpi('Ryczałt w roku', () => zl0(sum(months, TX))), c.kpi('Zostaje po podatku i kosztach', () => zl(sum(s.przy, r => r.k) - sum(months, TX) - sum(months, m => s.zdr[m]||0) - sum(s.koszty, r => r.k)), true))];
+  }}]
+});
+
+/* ===== Allegro ===== */
+P.push({id:'allegro', slug:'kalkulator-oplacalnosci-sprzedazy-na-allegro-excel-viy', name:'Kalkulator opłacalności sprzedaży na Allegro', price:25, cat:'sprzedaz', file:'Kalkulator_Allegro.xlsx',
+  short:'Ile naprawdę zostaje po prowizji, wysyłce i opłatach oraz poniżej jakiej ceny sprzedaż nie ma sensu.',
+  lead:'Zmień cenę albo prowizję przy produkcie. Zysk, marża, cena minimalna i ranking opłacalności przeliczą się od razu.',
+  mini:[['Etui','15,89 zł'],['Ładowarka','-0,32 zł'],['Marża','23,7%']],
+  full:['Lista produktów z ceną zakupu i ceną sprzedaży', 'Własna prowizja Allegro, wysyłka i opłaty dodatkowe przy każdym produkcie', 'Realny zysk na sztuce i marża procentowa', 'Cena minimalna, poniżej której sprzedaż nie ma sensu', 'Zestawienie najbardziej opłacalnych produktów', 'Instrukcja po polsku i przykładowe produkty'],
+  limits:['Do 6 produktów', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({rows:[{n:'Etui na telefon',z:6,c:29.99,p:11,w:4,o:0.8},{n:'Słuchawki Bluetooth',z:45,c:99,p:9,w:9,o:1},{n:'Lampka LED biurkowa',z:32,c:69,p:10,w:12,o:1},{n:'Kubek termiczny',z:22,c:49,p:12,w:11,o:0.5},{n:'Ładowarka 65 W',z:58,c:79,p:8,w:14,o:1}]}),
+  sheets:[{name:'Produkty', render(s, c){
+    const prof = r => r.c - r.z - r.c*r.p/100 - r.w - r.o;
+    const rank = r => 1 + s.rows.filter(x => prof(x) > prof(r)).length;
+    const rows = s.rows.map(r => [c.txt(r,'n',{w:'w-l'}), c.num(r,'z'), c.num(r,'c'), c.num(r,'p'), c.num(r,'w'), c.num(r,'o'),
+      c.out(() => zl(r.c*r.p/100)), c.out(() => { const v = prof(r); return {t:zl(v), c: v < 0 ? 'bad' : 'good'}; }), c.out(() => pct(prof(r)/r.c)),
+      c.out(() => zl((r.z + r.w + r.o)/(1 - r.p/100))), c.out(() => { const v = prof(r); return v < 0 ? {t:'Strata', c:'pb'} : {t:'#' + rank(r), c: rank(r) === 1 ? 'pg' : ''}; }), c.del(s.rows, r)]);
+    return [blk('Opłacalność ofert', 'Żółte pola wpisujesz, szare liczą się same',
+      xl({cols:[{label:'Produkt'},{label:'Zakup',r:1},{label:'Cena sprzedaży',r:1},{label:'Prowizja %',r:1},{label:'Wysyłka',r:1},{label:'Opłaty',r:1},{label:'Prowizja zł',r:1},{label:'Zysk / szt.',r:1},{label:'Marża',r:1},{label:'Cena minimalna',r:1},{label:'Ranking'},{label:''}], rows, lock:'Kolejne produkty · w pełnej wersji'}),
+      c.add(s.rows, () => ({n:'Nowy produkt', z:0, c:0, p:10, w:0, o:0}), 6, 'kilkuset')),
+      h('div', {class:'kpis'}, c.kpi('Najlepszy produkt', () => { const b = [...s.rows].sort((a,b) => prof(b)-prof(a))[0]; return b ? b.n : '–'; }), c.kpi('Produkty ze stratą', () => { const n = s.rows.filter(r => prof(r) < 0).length; return {t:String(n), c: n ? 'bad' : 'good'}; }), c.kpi('Średnia marża', () => pct(sum(s.rows, prof)/sum(s.rows, r => r.c)), true))];
+  }}]
+});
+
+/* ===== Dropshipping ===== */
+P.push({id:'dropshipping', slug:'kalkulator-oplacalnosci-dropshippingu-marza-po-wszystkich-kosztach-excel-rbc', name:'Kalkulator opłacalności dropshippingu', price:25, cat:'sprzedaz', file:'Kalkulator_dropshipping.xlsx',
+  short:'Marża po wszystkich kosztach, z reklamą na sztukę, i czerwone flagi przy produktach, które dokładają.',
+  lead:'Zmień koszt reklamy albo cenę sprzedaży. Zobaczysz od razu, który produkt zaczyna przynosić stratę.',
+  mini:[['Masażer','30,10 zł'],['Blender','-8,90 zł'],['Min.','98,89 zł']],
+  full:['Lista produktów do porównania', 'Cena u dostawcy, wysyłka, cena sprzedaży, prowizja i reklama na sztukę', 'Marża po wszystkich kosztach, nie tylko po cenie zakupu', 'Oznaczenie produktów przynoszących stratę', 'Sugerowana cena minimalna', 'Instrukcja po polsku i przykładowe produkty'],
+  limits:['Do 6 produktów', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({rows:[{n:'Projektor gwiazd',z:38,w:12,c:99,p:10,a:18},{n:'Organizer do auta',z:21,w:12,c:59,p:10,a:14},{n:'Szczotka do sierści',z:9,w:12,c:39,p:10,a:11},{n:'Mini blender',z:52,w:15,c:89,p:10,a:22},{n:'Masażer karku',z:64,w:15,c:149,p:10,a:25}]}),
+  sheets:[{name:'Produkty', render(s, c){
+    const prof = r => r.c - r.z - r.w - r.c*r.p/100 - r.a;
+    const rows = s.rows.map(r => [c.txt(r,'n',{w:'w-l'}), c.num(r,'z'), c.num(r,'w'), c.num(r,'c'), c.num(r,'p'), c.num(r,'a'),
+      c.out(() => { const v = prof(r); return {t:zl(v), c: v < 0 ? 'bad' : 'good'}; }), c.out(() => pct(prof(r)/r.c)),
+      c.out(() => zl((r.z + r.w + r.a)/(1 - r.p/100))),
+      c.out(() => { const m = prof(r)/r.c; return m < 0 ? {t:'Strata', c:'pb'} : m < .1 ? {t:'Na granicy', c:'pw'} : {t:'Opłacalny', c:'pg'}; }), c.del(s.rows, r)]);
+    return [blk('Marża po wszystkich kosztach', 'Cena minimalna pokrywa zakup, wysyłkę, reklamę i prowizję',
+      xl({cols:[{label:'Produkt'},{label:'Cena u dostawcy',r:1},{label:'Wysyłka',r:1},{label:'Cena sprzedaży',r:1},{label:'Prowizja %',r:1},{label:'Reklama / szt.',r:1},{label:'Zysk / szt.',r:1},{label:'Marża',r:1},{label:'Cena minimalna',r:1},{label:'Status'},{label:''}], rows, lock:'Kolejne produkty · w pełnej wersji'}),
+      c.add(s.rows, () => ({n:'Nowy produkt', z:0, w:0, c:0, p:10, a:0}), 6, 'kilkuset')),
+      h('div', {class:'kpis'}, c.kpi('Opłacalne', () => String(s.rows.filter(r => prof(r)/r.c >= .1).length)), c.kpi('Ze stratą', () => { const n = s.rows.filter(r => prof(r) < 0).length; return {t:String(n), c: n ? 'bad' : 'good'}; }), c.kpi('Zysk przy 1 szt. każdego', () => zl(sum(s.rows, prof)), true))];
+  }}]
+});
+
+/* ===== Rękodzieło ===== */
+P.push({id:'rekodzielo', slug:'kalkulator-ceny-rekodziela-koszt-cena-minimalna-i-cena-z-zyskiem-excel-uvn', name:'Kalkulator ceny rękodzieła', price:25, cat:'sprzedaz', file:'Kalkulator_rekodzielo.xlsx',
+  short:'Materiały plus Twoja godzina pracy: cena minimalna, cena z zyskiem, ładna cena i zysk po prowizji platformy.',
+  lead:'Zmień stawkę za godzinę albo marżę. Cena z zyskiem, ładna cena kończąca się na 9 i zysk na każdej platformie przeliczą się od razu.',
+  mini:[['Koszt','43,25 zł'],['Cena','59 zł'],['Etsy','9,26 zł']],
+  full:['Lista materiałów na produkt z automatyczną sumą', 'Stawka za godzinę i koszt Twojej pracy', 'Prowizje Vinted, Allegro, Etsy i własnego sklepu', 'Koszt sztuki, cena minimalna i cena z zyskiem', 'Ładna cena kończąca się na 9', 'Zysk po prowizji z ostrzeżeniem na czerwono, instrukcja i przykład bransoletki'],
+  limits:['Jeden produkt, do 6 materiałów', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({n:'Bransoletka z koralików', godz:0.75, stawka:35, marza:30, mat:[{n:'Koraliki szklane',q:30,p:0.4},{n:'Żyłka jubilerska',q:0.5,p:2},{n:'Zapięcie',q:1,p:1.5},{n:'Opakowanie i bilecik',q:1,p:2.5}],
+    pl:[{n:'Vinted',p:0},{n:'Allegro',p:10},{n:'Etsy',p:11},{n:'Własny sklep',p:2}]}),
+  sheets:[{name:'Kalkulacja', render(s, c){
+    const mat = () => sum(s.mat, m => m.q*m.p), lab = () => s.godz*s.stawka, cost = () => mat() + lab();
+    const withP = () => cost()*(1 + s.marza/100), price = () => nice9(withP());
+    return [h('div', {class:'cols2'},
+      blk('Materiały: ' + s.n, null, xl({cols:[{label:'Materiał'},{label:'Ilość',r:1},{label:'Cena jedn.',r:1},{label:'Koszt',r:1},{label:''}],
+        rows:[...s.mat.map(m => [c.txt(m,'n'), c.num(m,'q'), c.num(m,'p'), c.out(() => zl(m.q*m.p)), c.del(s.mat, m)]), {cls:'tot', cells:[T('Razem materiały'), T(''), T(''), c.out(() => zl(mat())), T('')]}]}),
+        c.add(s.mat, () => ({n:'Nowy materiał', q:1, p:0}), 6, '30', 'Dodaj materiał')),
+      blk('Twoja praca i zysk', null, xl({cols:[{label:'Parametr'},{label:'Wartość',r:1}], rows:[[T('Czas wykonania (h)'), c.num(s,'godz')],[T('Stawka za godzinę (zł)'), c.num(s,'stawka')],[T('Marża (%)'), c.num(s,'marza')],
+        [T('Koszt pracy'), c.out(() => zl(lab()))],[T('Koszt sztuki'), c.out(() => zl(cost()))],[T('Cena z zyskiem'), c.out(() => zl(withP()))],[T('Ładna cena'), c.out(() => ({t:zl(price()), c:'good'}))]]}))),
+      blk('Zysk na platformach', 'Przy ładnej cenie, po prowizji', xl({cols:[{label:'Platforma'},{label:'Prowizja %',r:1},{label:'Cena minimalna',r:1},{label:'Prowizja zł',r:1},{label:'Zysk na sztuce',r:1}],
+        rows:s.pl.map(p => [T(p.n), c.num(p,'p'), c.out(() => zl(cost()/(1 - p.p/100))), c.out(() => zl(price()*p.p/100)), c.out(() => { const v = price()*(1 - p.p/100) - cost(); return {t:zl(v), c: v < 0 ? 'pb' : 'good'}; })])})),
+      h('div', {class:'kpis'}, c.kpi('Koszt sztuki', () => zl(cost())), c.kpi('Cena minimalna', () => zl(cost())), c.kpi('Ładna cena dla klienta', () => zl(price()), true))];
+  }}]
+});
+
+/* ===== Salon ===== */
+P.push({id:'salon', slug:'grafik-zmian-i-prowizje-dla-salonu-fryzjerskiego-kosmetycznego-excel-rce', name:'Grafik zmian i prowizje dla salonu', price:39, cat:'uslugi', file:'Grafik_salon.xlsx',
+  short:'Godziny z grafiku i prowizje od usług liczone dla całego zespołu, z rankingiem najlepiej sprzedających się usług.',
+  lead:'Zmień godziny zmiany albo usługę w rejestrze. Godziny, prowizje i wynagrodzenia zespołu przeliczą się od razu.',
+  mini:[['Ania','16 h'],['Kasia','prow. 73,20 zł'],['Top','Koloryzacja']],
+  full:['Lista pracowników ze stawką godzinową i procentem prowizji', 'Rejestr zapisów i usług na 400 pozycji', 'Własny cennik usług', 'Godziny i prowizje każdej osoby w miesiącu', 'Podsumowanie zespołu: kto zarobił najwięcej, które usługi idą najlepiej', 'Instrukcja po polsku i przykładowy miesiąc'],
+  limits:['Do 10 zmian i 12 usług w rejestrze', 'Stały zespół trzech osób', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({prac:[{n:'Ania',st:32,pr:10},{n:'Kasia',st:30,pr:12},{n:'Ola',st:35,pr:8}],
+    cen:[{n:'Strzyżenie damskie',p:120},{n:'Strzyżenie męskie',p:60},{n:'Koloryzacja',p:280},{n:'Manicure hybrydowy',p:120},{n:'Henna brwi',p:50},{n:'Modelowanie',p:80}],
+    zm:[{d:'2026-10-01',w:'Ania',od:'09:00',do:'17:00'},{d:'2026-10-01',w:'Kasia',od:'12:00',do:'20:00'},{d:'2026-10-02',w:'Ola',od:'09:00',do:'15:00'},{d:'2026-10-02',w:'Ania',od:'10:00',do:'18:00'},{d:'2026-10-03',w:'Kasia',od:'09:00',do:'17:00'},{d:'2026-10-03',w:'Ola',od:'12:00',do:'20:00'}],
+    us:[{d:'2026-10-01',w:'Ania',k:'Klientka A.',u:0},{d:'2026-10-01',w:'Ania',k:'Klientka B.',u:2},{d:'2026-10-01',w:'Kasia',k:'Klientka C.',u:3},{d:'2026-10-02',w:'Ola',k:'Klient D.',u:1},{d:'2026-10-02',w:'Ania',k:'Klientka E.',u:2},{d:'2026-10-03',w:'Kasia',k:'Klientka F.',u:3},{d:'2026-10-03',w:'Kasia',k:'Klientka G.',u:4},{d:'2026-10-03',w:'Ola',k:'Klientka H.',u:5}]}),
+  sheets:[{name:'Grafik', render(s, c){
+    const names = s.prac.map(p => p.n);
+    const rows = s.zm.map(z => [c.date(z,'d'), c.sel(z,'w',names), c.time(z,'od'), c.time(z,'do'), c.out(() => num(hrs(z.od, z.do), 2) + ' h'), c.del(s.zm, z)]);
+    return [blk('Grafik zmian, październik 2026', null, xl({cols:[{label:'Data'},{label:'Pracownik'},{label:'Od'},{label:'Do'},{label:'Godziny',r:1},{label:''}], rows, lock:'Cały miesiąc dla całego zespołu · w pełnej wersji'}),
+      c.add(s.zm, () => ({d:'2026-10-04', w:names[0], od:'09:00', do:'17:00'}), 10, 'cały miesiąc', 'Dodaj zmianę'))];
+  }}, {name:'Usługi', render(s, c){
+    const names = s.prac.map(p => p.n), opts = s.cen.map((x,i) => [i, x.n]);
+    const rows = s.us.map(u => [c.date(u,'d'), c.sel(u,'w',names), c.txt(u,'k',{w:''}), c.sel(u,'u',opts,{num:1, w:'w-m'}), c.out(() => zl(s.cen[u.u].p)), c.del(s.us, u)]);
+    return [h('div', {class:'cols2'},
+      blk('Rejestr usług', null, xl({cols:[{label:'Data'},{label:'Pracownik'},{label:'Klient'},{label:'Usługa'},{label:'Kwota',r:1},{label:''}], rows, lock:'Wiersze ' + (s.us.length+2) + '–401 · w pełnej wersji'}),
+        c.add(s.us, () => ({d:'2026-10-04', w:names[0], k:'Nowy klient', u:0}), 12, '400', 'Dodaj usługę')),
+      h('div', {class:'blk', style:'gap:18px'},
+        blk('Cennik', null, xl({cols:[{label:'Usługa'},{label:'Cena',r:1}], rows:s.cen.map(x => [T(x.n), c.num(x,'p')])})),
+        blk('Pracownicy', null, xl({cols:[{label:'Imię'},{label:'Stawka / h',r:1},{label:'Prowizja %',r:1}], rows:s.prac.map(p => [T(p.n), c.num(p,'st'), c.num(p,'pr')])}))))];
+  }}, {name:'Podsumowanie', render(s, c){
+    const H = n => sum(s.zm.filter(z => z.w === n), z => hrs(z.od, z.do));
+    const O = n => sum(s.us.filter(u => u.w === n), u => s.cen[u.u].p);
+    const rows = s.prac.map(p => [T(p.n), c.out(() => num(H(p.n),1) + ' h'), c.out(() => F0.format(s.us.filter(u => u.w === p.n).length)), c.out(() => zl(O(p.n))), c.out(() => zl(O(p.n)*p.pr/100)), c.out(() => ({t:zl(H(p.n)*p.st + O(p.n)*p.pr/100), c:'good'}))]);
+    const srows = s.cen.map((x,i) => [T(x.n), c.out(() => F0.format(s.us.filter(u => u.u === i).length)), c.out(() => zl(s.us.filter(u => u.u === i).length*x.p))]);
+    return [blk('Zespół w październiku', null, xl({cols:[{label:'Pracownik'},{label:'Godziny',r:1},{label:'Usługi',r:1},{label:'Obrót',r:1},{label:'Prowizja',r:1},{label:'Wynagrodzenie',r:1}], rows})),
+      h('div', {class:'cols2'}, blk('Usługi', 'Liczba i obrót', xl({cols:[{label:'Usługa'},{label:'Ile razy',r:1},{label:'Obrót',r:1}], rows:srows})),
+        h('div', {class:'kpis', style:'align-content:start'}, c.kpi('Obrót salonu', () => zl(sum(s.us, u => s.cen[u.u].p))), c.kpi('Najwięcej zarobił(a)', () => { const b = [...s.prac].sort((a,b) => (H(b.n)*b.st + O(b.n)*b.pr/100) - (H(a.n)*a.st + O(a.n)*a.pr/100))[0]; return b.n; }, true), c.kpi('Najlepsza usługa', () => { let best = 0, bv = -1; s.cen.forEach((x,i) => { const v = s.us.filter(u => u.u === i).length*x.p; if (v > bv){ bv = v; best = i; } }); return s.cen[best].n; })))];
+  }}]
+});
+
+/* ===== Catering ===== */
+P.push({id:'catering', slug:'kalkulator-wyceny-cateringu-na-wesele-i-event-excel-0ej', name:'Kalkulator wyceny cateringu na wesele i event', price:29, cat:'uslugi', file:'Wycena_catering.xlsx',
+  short:'Goście, menu, kelnerzy i transport: koszt na osobę, marża i cena oferty dla klienta.',
+  lead:'Zaznacz dania w menu albo zmień liczbę gości. Koszt na osobę, marża i cena końcowa przeliczą się od razu.',
+  mini:[['Goście','80'],['Na osobę','154,41 zł'],['Oferta','12 352 zł']],
+  full:['Edytowalna baza dań z kosztem składników na osobę', 'Przeliczenie na liczbę gości', 'Obsługa kelnerska, transport i wynajem sprzętu', 'Marża i cena końcowa z Twoim narzutem', 'Podsumowanie oferty do wysłania klientowi', 'Instrukcja po polsku i przykładowe wesele na 80 osób'],
+  limits:['Baza do 14 dań', 'Podsumowanie oferty ze znakiem wodnym', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({g:80, kel:5, kh:10, ks:32, tr:450, sp:900, nar:35, d:[
+    {n:'Rosół z makaronem',k:'Zupa',c:3.5,w:true},{n:'Krem z pomidorów',k:'Zupa',c:4,w:false},{n:'Schab pieczony',k:'Danie główne',c:12,w:true},{n:'Filet z kurczaka w ziołach',k:'Danie główne',c:10,w:true},{n:'Pierogi ruskie',k:'Danie główne',c:6,w:false},
+    {n:'Ryba po grecku',k:'Zimna płyta',c:9,w:true},{n:'Sałatka grecka',k:'Zimna płyta',c:4.5,w:true},{n:'Deska wędlin',k:'Zimna płyta',c:11,w:true},{n:'Tort weselny',k:'Deser',c:14,w:true},{n:'Ciasta domowe',k:'Deser',c:6,w:true},{n:'Woda i soki',k:'Napoje',c:5,w:true},{n:'Kawa i herbata',k:'Napoje',c:2.5,w:true}]}),
+  sheets:[{name:'Menu', render(s, c){
+    const perHead = () => sum(s.d.filter(x => x.w), x => x.c);
+    const rows = s.d.map(x => [c.chk(x,'w'), c.txt(x,'n',{w:'w-l'}), c.txt(x,'k',{w:''}), c.num(x,'c'), c.out(() => x.w ? zl(x.c*s.g) : '–'), c.del(s.d, x)]);
+    rows.push({cls:'tot', cells:[T(''), T('Składniki na osobę'), T(''), c.out(() => zl(perHead())), c.out(() => zl(perHead()*s.g)), T('')]});
+    return [blk('Baza dań i menu', 'Zaznacz dania w menu. Koszt składników przeliczy się na gości.', xl({cols:[{label:'W menu'},{label:'Danie'},{label:'Kategoria'},{label:'Koszt / os.',r:1},{label:'Koszt dla gości',r:1},{label:''}], rows}),
+      c.add(s.d, () => ({n:'Nowe danie', k:'Inne', c:0, w:true}), 14, 'bez limitu', 'Dodaj danie'))];
+  }}, {name:'Wycena', render(s, c){
+    const food = () => sum(s.d.filter(x => x.w), x => x.c)*s.g, staff = () => s.kel*s.kh*s.ks, extra = () => s.tr + s.sp;
+    const cost = () => food() + staff() + extra(), price = () => cost()*(1 + s.nar/100);
+    return [h('div', {class:'cols2'},
+      blk('Parametry', null, xl({cols:[{label:'Parametr'},{label:'Wartość',r:1}], rows:[[T('Liczba gości'), c.num(s,'g')],[T('Kelnerzy (osoby)'), c.num(s,'kel')],[T('Godziny obsługi'), c.num(s,'kh')],[T('Stawka kelnera / h'), c.num(s,'ks')],[T('Transport'), c.num(s,'tr')],[T('Wynajem sprzętu'), c.num(s,'sp')],[T('Narzut %'), c.num(s,'nar')]]})),
+      blk('Kalkulacja', null, xl({cols:[{label:'Pozycja'},{label:'Kwota',r:1}], rows:[[T('Składniki'), c.out(() => zl(food()))],[T('Obsługa kelnerska'), c.out(() => zl(staff()))],[T('Transport i sprzęt'), c.out(() => zl(extra()))],{cls:'tot', cells:[T('Koszt całkowity'), c.out(() => zl(cost()))]},[T('Marża'), c.out(() => ({t:zl(price() - cost()), c:'good'}))],{cls:'tot', cells:[T('Cena dla klienta'), c.out(() => zl(price()))]},[T('Cena za osobę'), c.out(() => zl(price()/s.g))]]}))),
+      h('div', {class:'kpis'}, c.kpi('Koszt na osobę', () => zl(cost()/s.g)), c.kpi('Twoja marża', () => zl(price() - cost())), c.kpi('Cena oferty', () => zl(price()), true))];
+  }}, {name:'Oferta', render(s, c){
+    const food = () => sum(s.d.filter(x => x.w), x => x.c)*s.g, cost = () => food() + s.kel*s.kh*s.ks + s.tr + s.sp, price = () => cost()*(1 + s.nar/100);
+    const menu = h('ul', {style:'margin:6px 0 12px;padding-left:18px'});
+    c.live(menu, el => el.replaceChildren(...s.d.filter(x => x.w).map(x => h('li', null, x.n))));
+    return [h('div', {class:'doc'}, h('div', {class:'dh'}, h('div', null, h('h5', null, 'Oferta cateringowa'), h('div', {class:'muted'}, 'Wesele · 12.06.2027')), h('div', {style:'text-align:right'}, h('b', {class:'blur'}, 'Twoja Firma Catering'), h('div', {class:'muted'}, 'Dane firmy: w pełnej wersji'))),
+      h('div', null, 'Liczba gości: ', c.out(() => F0.format(s.g))), h('div', {style:'margin-top:8px;font-weight:600'}, 'Menu'), menu,
+      h('div', {class:'sum'}, h('span', null, 'Cena za osobę'), c.out(() => zl(price()/s.g)), h('b', null, 'Razem'), h('b', null, c.out(() => zl(price())))),
+      h('p', {class:'muted', style:'margin-top:16px'}, 'W cenie obsługa kelnerska, transport i sprzęt.')),
+      h('div', {class:'docbar'}, h('button', {class:'lockbtn', onclick:() => lockModal('Gotowe podsumowanie oferty do wysłania klientowi działa w pełnej wersji arkusza.')}, lk(), 'Kopiuj ofertę dla klienta'))];
+  }}]
+});
+
+/* ===== Wynajem sprzętu ===== */
+P.push({id:'wynajem', slug:'kalkulator-rezerwacji-i-cennika-wynajmu-sprzetu-excel-hb2', name:'Kalkulator rezerwacji i cennika wynajmu sprzętu', price:29, cat:'uslugi', file:'Wynajem_sprzetu.xlsx',
+  short:'Rezerwacje sprzętu z automatyczną kwotą za doby, kaucją i statystyką najczęściej wynajmowanego sprzętu.',
+  lead:'Zmień datę zwrotu albo sprzęt w rezerwacji. Liczba dób, kwota i podsumowanie sprzętu przeliczą się od razu.',
+  mini:[['Rezerwacje','6'],['Przychód','1 660 zł'],['Top','Myjka']],
+  full:['Rejestr 150 rezerwacji: sprzęt, klient, termin od–do', 'Edytowalny cennik z ceną za dobę', 'Kwota wynajmu liczona z liczby dób', 'Kaucja i informacja o jej zwrocie', 'Podsumowanie: który sprzęt idzie najczęściej', 'Instrukcja po polsku i przykładowe rezerwacje'],
+  limits:['Do 8 rezerwacji', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({cen:[{n:'Wiertarka udarowa',p:40,k:200},{n:'Myjka ciśnieniowa',p:70,k:300},{n:'Nagłośnienie 2 × 500 W',p:250,k:1000},{n:'Rusztowanie 3 m',p:60,k:500},{n:'Zagęszczarka',p:150,k:800}],
+    rez:[{s:1,k:'Jan K.',od:'2026-10-02',do:'2026-10-04',z:'Tak'},{s:2,k:'DJ Marek',od:'2026-10-03',do:'2026-10-06',z:'Tak'},{s:0,k:'Piotr W.',od:'2026-10-05',do:'2026-10-06',z:'Tak'},{s:1,k:'Anna S.',od:'2026-10-08',do:'2026-10-11',z:'Nie'},{s:4,k:'Budmex',od:'2026-10-09',do:'2026-10-12',z:'Nie'},{s:1,k:'Tomasz R.',od:'2026-10-12',do:'2026-10-13',z:'Nie'}]}),
+  sheets:[{name:'Rezerwacje', render(s, c){
+    const opts = s.cen.map((x,i) => [i, x.n]);
+    const doby = r => { const d = dayDiff(r.od, r.do); return ok(d) ? Math.max(1, d) : 0; };
+    const rows = s.rez.map(r => [c.sel(r,'s',opts,{num:1, w:'w-m'}), c.txt(r,'k',{w:''}), c.date(r,'od'), c.date(r,'do'), c.out(() => F0.format(doby(r))), c.out(() => zl(doby(r)*s.cen[r.s].p)), c.out(() => zl(s.cen[r.s].k)), c.sel(r,'z',['Tak','Nie']), c.del(s.rez, r)]);
+    return [blk('Rezerwacje', null, xl({cols:[{label:'Sprzęt'},{label:'Klient'},{label:'Od'},{label:'Do'},{label:'Doby',r:1},{label:'Kwota',r:1},{label:'Kaucja',r:1},{label:'Kaucja zwrócona'},{label:''}], rows, lock:'Wiersze ' + (s.rez.length+2) + '–151 · w pełnej wersji'}),
+      c.add(s.rez, () => ({s:0, k:'Nowy klient', od:'2026-10-14', do:'2026-10-15', z:'Nie'}), 8, '150', 'Dodaj rezerwację')),
+      h('div', {class:'kpis'}, c.kpi('Przychód z wynajmu', () => zl(sum(s.rez, r => doby(r)*s.cen[r.s].p)), true), c.kpi('Kaucje do zwrotu', () => { const v = sum(s.rez.filter(r => r.z === 'Nie'), r => s.cen[r.s].k); return {t:zl(v), c: v ? 'warn' : ''}; }), c.kpi('Rezerwacje', () => String(s.rez.length)))];
+  }}, {name:'Cennik', render(s, c){
+    return [blk('Cennik sprzętu', 'Zmień cenę za dobę, a kwoty rezerwacji przeliczą się same', xl({cols:[{label:'Sprzęt'},{label:'Cena za dobę',r:1},{label:'Kaucja',r:1}], rows:s.cen.map(x => [T(x.n), c.num(x,'p'), c.num(x,'k')]), lock:'Dowolna liczba pozycji sprzętu · w pełnej wersji'}))];
+  }}, {name:'Podsumowanie', render(s, c){
+    const doby = r => { const d = dayDiff(r.od, r.do); return ok(d) ? Math.max(1, d) : 0; };
+    const st = i => { const rs = s.rez.filter(r => r.s === i); return {n:rs.length, d:sum(rs, doby), p:sum(rs, r => doby(r)*s.cen[i].p)}; };
+    const maxN = () => Math.max(...s.cen.map((_,i) => st(i).n));
+    return [blk('Który sprzęt zarabia', null, xl({cols:[{label:'Sprzęt'},{label:'Wynajmy',r:1},{label:'Doby',r:1},{label:'Przychód',r:1},{label:''}], rows:s.cen.map((x,i) => [T(x.n), c.out(() => F0.format(st(i).n)), c.out(() => F0.format(st(i).d)), c.out(() => zl(st(i).p)), c.out(() => st(i).n && st(i).n === maxN() ? {t:'Najczęściej', c:'pg'} : '')])}))];
+  }}]
+});
+
+/* ===== Airbnb ===== */
+P.push({id:'airbnb', slug:'kalkulator-oplacalnosci-wynajmu-krotkoterminowego-airbnb-excel-1he', name:'Kalkulator opłacalności wynajmu krótkoterminowego', price:35, cat:'uslugi', file:'Kalkulator_Airbnb.xlsx',
+  short:'Obłożenie na 12 miesięcy, wszystkie koszty i uczciwe porównanie z najmem długoterminowym.',
+  lead:'Zmień cenę za noc albo liczbę nocy w danym miesiącu. Wykres, zysk roczny i próg opłacalności przeliczą się od razu.',
+  mini:[['Krótki','21 143 zł'],['Długi','30 600 zł'],['Próg','24,8 nocy']],
+  full:['Kalendarz obłożenia na 12 miesięcy', 'Twoja cena za noc', 'Koszty stałe: czynsz, media, internet', 'Koszty zmienne: sprzątanie, pralnia, prowizja platformy', 'Zysk miesięczny i roczny oraz porównanie z najmem długoterminowym', 'Próg opłacalności, instrukcja po polsku i przykład'],
+  limits:['Jedno mieszkanie', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({cena:220, pobyt:3, prow:15, spr:90, pral:35, czynsz:650, media:350, net:60, dlugi:3200, nocy:[12,14,16,18,22,25,28,29,22,17,12,18]}),
+  sheets:[{name:'Kalkulacja', render(s, c){
+    const fixed = () => s.czynsz + s.media + s.net, perStay = () => s.spr + s.pral;
+    const profit = n => n*s.cena*(1 - s.prow/100) - (s.pobyt > 0 ? n/s.pobyt : 0)*perStay() - fixed();
+    const lt = () => s.dlugi - s.czynsz;
+    const be = () => { const unit = s.cena*(1 - s.prow/100) - perStay()/Math.max(s.pobyt, 0.1); return unit > 0 ? (fixed() + lt())/unit : Infinity; };
+    const nocy = s.nocy.map((_,i) => { const o = {v:s.nocy[i]}; return o; });
+    const mrows = MONTHS.map((m,i) => { const o = nocy[i]; const inp = c.num(o,'v',{label:'Noce ' + m}); inp.addEventListener('input', () => { s.nocy[i] = o.v; c.update(); }); return [T(MONTHS_FULL[i]), inp, c.out(() => pct(s.nocy[i]/30)), c.out(() => zl(s.nocy[i]*s.cena)), c.out(() => { const v = profit(s.nocy[i]); return {t:zl(v), c: v < lt() ? 'warn' : 'good'}; })]; });
+    mrows.push({cls:'tot', cells:[T('Rok'), c.out(() => F0.format(sum(s.nocy, x => x))), c.out(() => pct(sum(s.nocy, x => x)/360)), c.out(() => zl(sum(s.nocy, x => x*s.cena))), c.out(() => zl(sum(s.nocy, profit)))]});
+    const bars = h('div', {class:'bars', role:'img', 'aria-label':'Zysk w kolejnych miesiącach'});
+    const cols = MONTHS.map(() => { const i = h('i'); bars.append(h('div', {class:'b'}, i)); return i; });
+    const ref = h('div', {class:'ref', title:'Najem długoterminowy'}); bars.append(ref);
+    c.live(bars, () => { const vals = s.nocy.map(profit); const mx = Math.max(lt(), ...vals.map(Math.abs), 1); vals.forEach((v,i) => { cols[i].style.height = (Math.abs(v)/mx*100) + '%'; cols[i].className = v < 0 ? 'neg' : ''; }); ref.style.bottom = (lt()/mx*100) + '%'; });
+    return [h('div', {class:'cols2'},
+      blk('Założenia', null, xl({cols:[{label:'Parametr'},{label:'Wartość',r:1}], rows:[[T('Cena za noc'), c.num(s,'cena')],[T('Średni pobyt (noce)'), c.num(s,'pobyt')],[T('Prowizja platformy %'), c.num(s,'prow')],[T('Sprzątanie / pobyt'), c.num(s,'spr')],[T('Pralnia / pobyt'), c.num(s,'pral')],[T('Czynsz administracyjny'), c.num(s,'czynsz')],[T('Media'), c.num(s,'media')],[T('Internet'), c.num(s,'net')],[T('Najem długoterminowy / mies.'), c.num(s,'dlugi')]]})),
+      blk('Zysk w miesiącach', 'Słupki: zysk z najmu krótkiego · linia: najem długoterminowy', bars, h('div', {class:'barl'}, MONTHS.map(m => h('span', null, m))),
+        h('div', {class:'kpis'}, c.kpi('Zysk roczny', () => zl0(sum(s.nocy, profit)), true), c.kpi('Najem długi rocznie', () => zl0(lt()*12)), c.kpi('Próg opłacalności', () => ok(be()) ? num(be(),1) + ' nocy / mies.' : 'nieosiągalny')))),
+      blk('Kalendarz obłożenia 2027', 'Wpisz liczbę wynajętych nocy w każdym miesiącu', xl({cols:[{label:'Miesiąc'},{label:'Noce',r:1},{label:'Obłożenie',r:1},{label:'Przychód',r:1},{label:'Zysk',r:1}], rows:mrows}))];
+  }}]
+});
+
+/* ===== Korepetycje ===== */
+P.push({id:'korepetycje', slug:'kalkulator-stawki-za-korepetycje-i-lekcje-online-excel-eog', name:'Kalkulator stawki za korepetycje i lekcje online', price:19, cat:'uslugi', file:'Stawka_korepetycje.xlsx',
+  short:'Stawka za godzinę z Twojego celu zarobkowego, osobno dla lekcji u siebie, u ucznia i online.',
+  lead:'Wpisz, ile chcesz zarabiać na rękę i ile godzin uczysz. Arkusz policzy stawki dla trzech form zajęć z dojazdem i przygotowaniem.',
+  mini:[['U Ciebie','95 zł'],['U ucznia','145 zł'],['Online','100 zł']],
+  full:['Stawka z oczekiwanego zarobku i liczby godzin', 'Uwzględnia dojazd, czas przygotowania i podatek', 'Porównanie: u siebie, u ucznia, online', 'Sugerowana ładna cena dla klienta', 'Instrukcja po polsku i przykład'],
+  limits:['Bez zapisu i kopiowania wyników'],
+  init:() => ({cel:4000, h:60, prep:15, tax:12, dt:30, dk:8, onl:60}),
+  sheets:[{name:'Kalkulator', render(s, c){
+    const gross = () => s.cel/(1 - s.tax/100);
+    const base = () => s.h > 0 ? gross()/s.h : 0;
+    const forms = [
+      ['Lekcja u Ciebie', () => base()*(60 + s.prep)/60],
+      ['Lekcja u ucznia', () => base()*(60 + s.prep + s.dt)/60 + s.dk],
+      ['Lekcja online', () => (s.h > 0 ? (gross() + s.onl)/s.h : 0)*(60 + s.prep)/60]];
+    return [h('div', {class:'cols2'},
+      blk('Twoje założenia', null, xl({cols:[{label:'Parametr'},{label:'Wartość',r:1}], rows:[[T('Chcę zarobić na rękę / mies.'), c.num(s,'cel')],[T('Godziny lekcji w miesiącu'), c.num(s,'h')],[T('Przygotowanie (min / lekcję)'), c.num(s,'prep')],[T('Podatek i składki %'), c.num(s,'tax')],[T('Dojazd do ucznia (min)'), c.num(s,'dt')],[T('Koszt dojazdu (zł)'), c.num(s,'dk')],[T('Platforma i sprzęt online / mies.'), c.num(s,'onl')]]})),
+      blk('Stawki', 'Ładna cena zaokrąglona w górę do 5 zł', xl({cols:[{label:'Forma zajęć'},{label:'Stawka wyliczona',r:1},{label:'Cena dla ucznia',r:1}], rows:forms.map(([n,f]) => [T(n), c.out(() => zl(f())), c.out(() => ({t:zl0(up5(f())), c:'good'}))])}),
+        h('div', {class:'kpis'}, forms.map(([n,f], i) => c.kpi(n, () => zl0(up5(f())), i === 0)))))];
+  }}]
+});
+
+/* ===== Grafik freelancer ===== */
+const LIC = [['0','Osobista (bez dopłaty)'],['30','Firmowa, niewyłączna (+30%)'],['80','Wyłączna z przeniesieniem praw (+80%)']];
+P.push({id:'grafik', slug:'kalkulator-wyceny-projektu-graficznego-dla-freelancera-excel-rzx', name:'Kalkulator wyceny projektu graficznego', price:25, cat:'uslugi', file:'Wycena_projekt_graficzny.xlsx',
+  short:'Etapy projektu z czasem, dopłata za ekspres i dodatkowe poprawki, licencja jako osobna pozycja.',
+  lead:'Zmień godziny przy etapach, zaznacz ekspres albo wybierz licencję. Wycena i podsumowanie dla klienta przeliczą się od razu.',
+  mini:[['Etapy','13 h'],['Licencja','+30%'],['Razem','1 696,50 zł']],
+  full:['Rozpiska etapów: brief, szkice, poprawki, pliki finalne', 'Automatyczna wycena według Twojej stawki', 'Dopłata za ekspres i za dodatkowe rundy poprawek', 'Licencja jako osobna pozycja', 'Gotowe podsumowanie wyceny dla klienta', 'Instrukcja po polsku i przykładowy projekt: logo i wizytówka'],
+  limits:['Do 6 etapów', 'Podsumowanie dla klienta ze znakiem wodnym', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({st:90, ex:'Nie', exp:30, rundy:1, rh:1.5, lic:'30', et:[{n:'Brief i research',h:2},{n:'Szkice i koncepcje logo',h:5},{n:'Poprawki (2 rundy w cenie)',h:3},{n:'Wizytówka',h:2},{n:'Pliki finalne i eksport',h:1}]}),
+  sheets:[{name:'Wycena', render(s, c){
+    const work = () => sum(s.et, e => e.h)*s.st, exA = () => s.ex === 'Tak' ? work()*s.exp/100 : 0, revA = () => s.rundy*s.rh*s.st;
+    const licA = () => (work() + revA())*Number(s.lic)/100, tot = () => work() + exA() + revA() + licA();
+    const rows = s.et.map(e => [c.txt(e,'n',{w:'w-l'}), c.num(e,'h'), c.out(() => zl(e.h*s.st)), c.del(s.et, e)]);
+    rows.push({cls:'tot', cells:[T('Praca razem'), c.out(() => num(sum(s.et, e => e.h),1) + ' h'), c.out(() => zl(work())), T('')]});
+    return [h('div', {class:'cols2'},
+      blk('Etapy projektu: logo i wizytówka', null, xl({cols:[{label:'Etap'},{label:'Godziny',r:1},{label:'Wartość',r:1},{label:''}], rows}), c.add(s.et, () => ({n:'Nowy etap', h:1}), 6, 'bez limitu', 'Dodaj etap')),
+      blk('Dopłaty i licencja', null, xl({cols:[{label:'Pozycja'},{label:'Wartość',r:1}], rows:[[T('Stawka za godzinę'), c.num(s,'st')],[T('Termin ekspresowy'), c.sel(s,'ex',['Nie','Tak'])],[T('Dopłata za ekspres %'), c.num(s,'exp')],[T('Dodatkowe rundy poprawek'), c.num(s,'rundy')],[T('Godziny na rundę'), c.num(s,'rh')],[T('Licencja'), c.sel(s,'lic',LIC,{w:'w-l'})]]}))),
+      blk('Wycena', null, xl({cols:[{label:'Pozycja'},{label:'Kwota',r:1}], rows:[[T('Projekt (etapy)'), c.out(() => zl(work()))],[T('Dopłata za ekspres'), c.out(() => zl(exA()))],[T('Dodatkowe poprawki'), c.out(() => zl(revA()))],[T('Licencja'), c.out(() => zl(licA()))],{cls:'tot', cells:[T('Razem dla klienta'), c.out(() => zl(tot()))]}]})),
+      h('div', {class:'doc', style:'max-width:none'}, h('div', {style:'font-weight:600;margin-bottom:6px'}, 'Podsumowanie dla klienta'),
+        c.out(() => 'Wycena projektu logo z wizytówką: ' + zl(tot()) + '. Obejmuje ' + num(sum(s.et, e => e.h),1) + ' h pracy w ' + s.et.length + ' etapach' + (s.ex === 'Tak' ? ', realizację ekspresową' : '') + (s.rundy ? ', ' + s.rundy + ' dodatkową rundę poprawek' : '') + ' oraz licencję: ' + LIC.find(l => l[0] === s.lic)[1].replace(/ \(.*\)/,'').toLowerCase() + '.')),
+      h('div', {class:'docbar'}, h('button', {class:'lockbtn', onclick:() => lockModal('Kopiowanie gotowego podsumowania dla klienta działa w pełnej wersji arkusza.')}, lk(), 'Kopiuj podsumowanie'))];
+  }}]
+});
+
+/* ===== Ślub ===== */
+P.push({id:'slub', slug:'planer-budzetu-slubnego-z-lista-gosci-excel-5g7', name:'Planer budżetu ślubnego z listą gości', price:35, cat:'dom', file:'Planer_slubny.xlsx',
+  short:'Budżet planowany i rzeczywisty, zaliczki dla dostawców i lista gości z potwierdzeniami i dietami.',
+  lead:'Wpisz kwotę z umowy albo zaliczkę przy dostawcy. Zobaczysz od razu, ile zostało do zapłaty i ile wolnych środków ma budżet.',
+  mini:[['Budżet','65 000 zł'],['Wpłacono','14 500 zł'],['Goście','7 / 10']],
+  full:['Lista gości do 250 osób z potwierdzeniem i dietą', 'Koszty w kategoriach: sala, catering, fotograf, suknia, obrączki i inne', 'Zaliczki i wpłaty dla każdego dostawcy', 'Porównanie kosztów planowanych z rzeczywistymi', 'Ile wydano i ile zostało z budżetu', 'Instrukcja po polsku i przykładowy budżet'],
+  limits:['Do 14 gości na liście', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({bud:65000, k:[{n:'Sala',d:'Dworek pod Lipami',p:12000,r:13500,w:4000},{n:'Catering',d:'Smaki Mazur',p:22000,r:23800,w:5000},{n:'Fotograf',d:'Foto Kadr',p:5000,r:4800,w:1500},{n:'Kamerzysta',d:'',p:4500,r:0,w:0},{n:'Zespół lub DJ',d:'DJ Kuba',p:5000,r:5500,w:2000},{n:'Suknia',d:'Salon Biel',p:4000,r:3600,w:1000},{n:'Garnitur',d:'',p:1500,r:0,w:0},{n:'Obrączki',d:'Złotnik Nowak',p:3000,r:3200,w:1000},{n:'Kwiaty i dekoracje',d:'',p:3500,r:0,w:0},{n:'Inne',d:'',p:2500,r:0,w:0}],
+    g:[{n:'Babcia Halina',s:'Panna młoda',p:'Tak',d:'Standard'},{n:'Kasia i Tomek',s:'Panna młoda',p:'Tak',d:'Wege'},{n:'Wujek Zbyszek',s:'Pan młody',p:'Czeka',d:'Standard'},{n:'Ola Nowak',s:'Panna młoda',p:'Tak',d:'Bezglutenowa'},{n:'Michał K.',s:'Pan młody',p:'Nie',d:'Standard'},{n:'Ciocia Ela',s:'Pan młody',p:'Tak',d:'Standard'},{n:'Franek (6 lat)',s:'Pan młody',p:'Tak',d:'Dziecięca'},{n:'Ania Wiśniewska',s:'Panna młoda',p:'Czeka',d:'Wege'},{n:'Paweł Z.',s:'Pan młody',p:'Tak',d:'Standard'},{n:'Marta Z.',s:'Pan młody',p:'Tak',d:'Wege'}]}),
+  sheets:[{name:'Budżet', render(s, c){
+    const real = x => x.r || x.p;
+    const rows = s.k.map(x => [T(x.n), c.txt(x,'d',{w:''}), c.num(x,'p'), c.num(x,'r'), c.num(x,'w'), c.out(() => x.r ? zl(x.r - x.w) : '–'), c.out(() => { if (!x.r) return {t:'brak umowy', c:''}; const v = x.r - x.p; return {t:(v > 0 ? '+' : '') + zl(v), c: v > 0 ? 'bad' : 'good'}; })]);
+    rows.push({cls:'tot', cells:[T('Razem'), T(''), c.out(() => zl(sum(s.k, x => x.p))), c.out(() => zl(sum(s.k, x => x.r))), c.out(() => zl(sum(s.k, x => x.w))), c.out(() => zl(sum(s.k, x => x.r ? x.r - x.w : 0))), c.out(() => '')]});
+    return [h('div', {style:'display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:13px'}, 'Budżet na wesele:', h('span', {style:'display:inline-block;border:1px solid var(--in-line);background:var(--in);border-radius:4px'}, c.num(s,'bud'))),
+      blk('Koszty i wpłaty', 'Pusty koszt rzeczywisty = jeszcze bez umowy, liczymy wtedy kwotę planowaną', xl({cols:[{label:'Kategoria'},{label:'Dostawca'},{label:'Plan',r:1},{label:'Z umowy',r:1},{label:'Wpłacono',r:1},{label:'Do zapłaty',r:1},{label:'Różnica vs plan',r:1}], rows})),
+      h('div', {class:'kpis'}, c.kpi('Wydane (wpłaty)', () => zl0(sum(s.k, x => x.w))), c.kpi('Zostało do zapłaty', () => zl0(sum(s.k, x => real(x) - x.w))),
+        c.kpi('Wolne środki w budżecie', () => { const v = s.bud - sum(s.k, real); return {t:zl0(v), c: v < 0 ? 'bad' : 'good'}; }, true)),
+      c.meter(() => { const f = sum(s.k, real)/s.bud; return [f, f > 1 ? 'bad' : f > .9 ? 'warn' : '']; })];
+  }}, {name:'Goście', render(s, c){
+    const rows = s.g.map(x => [c.txt(x,'n',{w:'w-m'}), c.sel(x,'s',['Panna młoda','Pan młody']), c.sel(x,'p',['Tak','Czeka','Nie']), c.sel(x,'d',['Standard','Wege','Bezglutenowa','Dziecięca']), c.del(s.g, x)]);
+    const cnt = (k,v) => s.g.filter(x => x[k] === v).length;
+    return [h('div', {class:'cols2'},
+      blk('Lista gości', null, xl({cols:[{label:'Gość'},{label:'Strona'},{label:'Potwierdzenie'},{label:'Dieta'},{label:''}], rows, lock:'Miejsca ' + (s.g.length+1) + '–250 · w pełnej wersji'}), c.add(s.g, () => ({n:'Nowy gość', s:'Panna młoda', p:'Czeka', d:'Standard'}), 14, '250', 'Dodaj gościa')),
+      blk('Zestawienie', 'Dla sali i cateringu', xl({cols:[{label:'Pozycja'},{label:'Liczba',r:1}], rows:[[T('Potwierdzeni'), c.out(() => ({t:String(cnt('p','Tak')), c:'good'}))],[T('Czekamy na odpowiedź'), c.out(() => ({t:String(cnt('p','Czeka')), c:'warn'}))],[T('Odmówili'), c.out(() => String(cnt('p','Nie')))],
+        ...['Standard','Wege','Bezglutenowa','Dziecięca'].map(d => [T('Dieta: ' + d), c.out(() => String(s.g.filter(x => x.p === 'Tak' && x.d === d).length))])]})))];
+  }}]
+});
+
+/* catalogue order */
+const ORDER = ['dac7','glazurnik','elektryk','malarz','przeprowadzka','ogrodnik','nierejestrowana','ryczalt','allegro','dropshipping','rekodzielo','salon','catering','wynajem','airbnb','korepetycje','grafik','slub'];
+P.sort((a,b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
+const byId = id => P.find(p => p.id === id);
+
+/* ---------- UI ---------- */
+const app = document.getElementById('app');
+let filter = 'all';
+try { filter = localStorage.getItem('ms-filter') || 'all'; } catch(e) {}
+
+function toast(msg){
+  const t = h('div', {class:'toast', role:'status'}, msg); document.body.append(t);
+  setTimeout(() => t.remove(), 2600);
+}
+function lockModal(msg){
+  const p = CUR ? CUR.p : null;
+  const m = h('div', {class:'modal', role:'dialog', 'aria-modal':'true', onclick:e => { if (e.target === m) m.remove(); }},
+    h('div', {class:'box'}, h('h3', null, 'Ta funkcja jest w pełnej wersji'), h('p', null, msg),
+      p ? h('p', null, 'Pełny plik: ', h('b', null, p.name), ', ' + p.price + ' zł. Działa w Excelu i Google Sheets, pobierasz go od razu po zakupie.') : null,
+      h('div', {class:'acts'}, p ? h('a', {class:'cta', href:buyUrl(p), target:'_blank', rel:'noopener'}, 'Kup na naffy za ' + p.price + ' zł') : null, h('button', {class:'ghost', onclick:() => m.remove()}, 'Wracam do demo'))));
+  document.body.append(m); m.querySelector('.ghost').focus();
+  document.addEventListener('keydown', function esc(e){ if (e.key === 'Escape'){ m.remove(); document.removeEventListener('keydown', esc); } });
+}
+
+function card(p){
+  const mini = h('div', {class:'minisheet', 'aria-hidden':'true'},
+    h('span', {class:'h'}, ''), ['A','B','C','D'].map(l => h('span', {class:'h'}, l)),
+    p.mini.map((m,i) => [h('span', {class:'h'}, i+1), h('span', {class:'y', style:'grid-column:span 2'}, m[0]), h('span', {class:'g', style:'grid-column:span 2'}, m[1])]));
+  return h('a', {class:'card', href:'#' + p.id, 'aria-label':p.name + ', demo'},
+    h('span', {class:'cat'}, CATS[p.cat]), h('h3', null, p.name), h('p', null, p.short), mini,
+    h('div', {class:'row'}, h('span', {class:'price'}, p.price + ' zł'), h('span', {class:'try'}, 'Wypróbuj demo →')));
+}
+
+function renderCatalog(){
+  CUR = null;
+  document.querySelector('.mbuy')?.remove();
+  const counts = {}; P.forEach(p => counts[p.cat] = (counts[p.cat]||0) + 1);
+  const grid = h('div', {class:'grid'});
+  const fill = () => { grid.replaceChildren(...P.filter(p => filter === 'all' || p.cat === filter).map(card)); };
+  const chips = h('div', {class:'filters', role:'group', 'aria-label':'Kategorie'},
+    [['all','Wszystkie', P.length], ...Object.entries(CATS).map(([k,v]) => [k, v, counts[k]||0])].map(([k,l,n]) =>
+      h('button', {class:'chip', 'aria-pressed':String(filter === k), onclick:e => { filter = k; try { localStorage.setItem('ms-filter', k); } catch(_) {} chips.querySelectorAll('.chip').forEach(b => b.setAttribute('aria-pressed', 'false')); e.currentTarget.setAttribute('aria-pressed','true'); fill(); }}, l, h('small', null, n))));
+  fill();
+  app.replaceChildren(h('div', {class:'wrap'},
+    h('section', {class:'intro'},
+      h('div', null, h('div', {class:'eyebrow'}, 'Szablony Excel i Google Sheets'), h('h1', null, 'Sprawdź, jak liczy, zanim kupisz'),
+        h('p', null, 'Każdy szablon z naszego sklepu możesz przetestować tutaj, w przeglądarce. Zmień liczby w żółtych polach i patrz, jak arkusz przelicza wszystko sam. Pełny plik z instrukcją pobierasz od razu po zakupie.')),
+      h('div', {class:'facts'}, h('div', null, h('b', null, String(P.length)), h('span', null, 'szablonów z demo')), h('div', null, h('b', null, 'od ' + Math.min(...P.map(p => p.price)) + ' zł'), h('span', null, 'jednorazowo, bez abonamentu')), h('div', null, h('b', null, 'PL'), h('span', null, 'instrukcja w każdym pliku')))),
+    chips, grid));
+}
+
+function renderSheet(){
+  if (!CUR) return;
+  const sheet = document.getElementById('sheet');
+  const tab = CUR.p.sheets[CUR.tab];
+  const c = makeCtx();
+  if (tab){ sheet.replaceChildren(...[tab.render(CUR.state, c)].flat()); }
+  else {
+    // locked "Instrukcja" tab
+    const steps = CUR.p.sheets.map((s,i) => h('p', null, 'Krok ' + (i+1) + '. Zakładka „' + s.name + '”: wpisz swoje dane w żółte pola. Arkusz sam przeliczy wyniki i podsumowania, a szare komórki są zablokowane przed przypadkową zmianą.'));
+    sheet.replaceChildren(h('div', {class:'instr'}, h('div', {class:'fake', 'aria-hidden':'true'}, h('h4', null, 'Instrukcja krok po kroku'), steps, h('p', null, 'Jak dopasować arkusz do siebie: zmiana cennika, własne pozycje, zapis do PDF i praca w Google Sheets na telefonie.')),
+      h('div', {class:'ov'}, h('div', null, h('p', {style:'margin:0 0 12px;font-weight:600'}, 'Instrukcja po polsku jest w pełnym pliku'), h('a', {class:'cta', href:buyUrl(CUR.p), target:'_blank', rel:'noopener'}, 'Kup na naffy za ' + CUR.p.price + ' zł')))));
+  }
+  document.querySelectorAll('.tab').forEach((b,i) => b.setAttribute('aria-selected', String(i === CUR.tab)));
+  document.querySelector('.fx .addr').textContent = 'A1';
+  document.querySelector('.fx .fv').textContent = tab ? 'Kliknij komórkę, żeby zobaczyć, co robi' : 'Instrukcja';
+}
+
+function renderDemo(p){
+  CUR = {p, state:p.init(), tab:0, edits:0, nudged:false};
+  document.title = p.name + ' · demo';
+  const wm = "<svg xmlns='http://www.w3.org/2000/svg' width='340' height='190'><text x='30' y='110' transform='rotate(-22 170 95)' font-family='Arial, sans-serif' font-size='17' font-weight='700' fill='#7f8f88' fill-opacity='0.13'>DEMO · MasterSSon Studio</text></svg>";
+  const sheet = h('div', {class:'sheet', id:'sheet'});
+  sheet.style.setProperty('--wm', 'url("data:image/svg+xml,' + encodeURIComponent(wm) + '")');
+  const tabs = h('div', {class:'tabs', role:'tablist'},
+    p.sheets.map((s,i) => h('button', {class:'tab', role:'tab', onclick:() => { CUR.tab = i; renderSheet(); }}, s.name)),
+    h('button', {class:'tab locked', role:'tab', onclick:() => { CUR.tab = p.sheets.length; renderSheet(); }}, lk(), 'Instrukcja'));
+  const fx = h('div', {class:'fx'}, h('span', {class:'addr'}, 'A1'), h('span', {class:'fi'}, 'fx'), h('span', {class:'fv'}, ''));
+  const nudgeSlot = h('div');
+  const sim = h('div', {class:'sim'},
+    h('div', {class:'simbar'}, h('span', {class:'fn'}, p.file), h('span', {class:'badge'}, 'DEMO'), h('span', {class:'note'}, 'Podgląd na przykładowych danych: bez zapisu, eksportu i kopiowania'),
+      h('button', {onclick:() => { CUR.state = p.init(); renderSheet(); toast('Przywrócono przykładowe dane'); }}, 'Przywróć przykład')),
+    fx, sheet, nudgeSlot, tabs);
+  // demo protection: no copy, cut, drag or context menu inside the simulator
+  ['copy','cut'].forEach(ev => sim.addEventListener(ev, e => { e.preventDefault(); toast('Kopiowanie jest wyłączone w demo. Pełny plik masz po zakupie.'); }));
+  sim.addEventListener('contextmenu', e => { e.preventDefault(); toast('Menu kontekstowe jest wyłączone w demo.'); });
+  sim.addEventListener('dragstart', e => e.preventDefault());
+  sim.addEventListener('click', e => {
+    const td = e.target.closest('td[data-a]'); if (!td) return;
+    sim.querySelectorAll('.sel-cell').forEach(x => x.classList.remove('sel-cell')); td.classList.add('sel-cell');
+    fx.querySelector('.addr').textContent = td.dataset.a;
+    fx.querySelector('.fv').textContent = td.classList.contains('in') ? 'Pole do wpisania: zmień wartość, a arkusz przeliczy resztę'
+      : td.classList.contains('calc') ? 'Formuła liczona automatycznie · treść formuły widać w pełnej wersji' : (td.textContent || '');
+  });
+  sim.addEventListener('change', () => {
+    CUR.edits++;
+    if (CUR.edits >= 4 && !CUR.nudged){ CUR.nudged = true;
+      nudgeSlot.replaceChildren(h('div', {class:'nudge'}, h('span', null, 'Liczy tak, jak chcesz? W pełnym pliku zrobisz to na swoich danych i zapiszesz wynik.'), h('a', {class:'cta', style:'padding:8px 14px;font-size:14px', href:buyUrl(p), target:'_blank', rel:'noopener'}, 'Kup za ' + p.price + ' zł'))); }
+  });
+
+  const others = P.filter(x => x.cat === p.cat && x.id !== p.id).slice(0, 4);
+  const buy = h('aside', {class:'buy', 'aria-label':'Zakup'},
+    h('div', null, h('div', {class:'price'}, p.price + ' zł'), h('div', {class:'ptag'}, 'Jednorazowo · plik .xlsx · Excel i Google Sheets')),
+    h('a', {class:'cta', href:buyUrl(p), target:'_blank', rel:'noopener'}, 'Kup na naffy'),
+    h('h4', null, 'W pełnym pliku'), h('ul', null, p.full.map(f => h('li', null, h('span', {class:'ic'}, '✓'), h('span', null, f)))),
+    h('h4', null, 'Ograniczenia demo'), h('ul', null, p.limits.map(f => h('li', {class:'lim'}, h('span', {class:'ic', html:LOCK}), h('span', null, f)))),
+    h('div', {class:'fine'}, 'Plik pobierasz od razu po zakupie. Płatność obsługuje naffy.'),
+    others.length ? h('div', {class:'other'}, h('h4', null, 'Podobne szablony'), others.map(o => h('button', {onclick:() => { location.hash = o.id; }}, h('span', null, o.name), h('b', null, o.price + ' zł')))) : null);
+
+  app.replaceChildren(h('div', {class:'wrap demo'},
+    h('button', {class:'back', onclick:() => { location.hash = 'katalog'; }}, '← Wszystkie szablony'),
+    h('div', {class:'dhead'}, h('div', null, h('div', {class:'eyebrow'}, CATS[p.cat]), h('h2', null, p.name), h('p', null, p.lead))),
+    h('div', {class:'dgrid'}, sim, buy)));
+  document.querySelector('.mbuy')?.remove();
+  document.body.append(h('div', {class:'mbuy'}, h('div', null, h('b', {class:'price', style:'font-size:20px'}, p.price + ' zł'), h('div', {class:'ptag', style:'font-size:12px;color:var(--muted)'}, 'plik od razu po zakupie')), h('a', {class:'cta', href:buyUrl(p), target:'_blank', rel:'noopener'}, 'Kup na naffy')));
+  renderSheet();
+  window.scrollTo(0, 0);
+}
+
+function route(){
+  const id = location.hash.slice(1);
+  const p = byId(id);
+  if (p) renderDemo(p); else { document.title = 'Szablony MasterSSon'; renderCatalog(); }
+}
+window.addEventListener('hashchange', route);
+document.addEventListener('keydown', e => { if (CUR && (e.ctrlKey || e.metaKey) && ['s','p'].includes(e.key.toLowerCase())){ e.preventDefault(); toast('Zapis i wydruk działają w pełnej wersji pliku.'); } });
+route();
+</script>
+
+</body></html>

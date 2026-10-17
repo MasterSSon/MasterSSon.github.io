@@ -1,16 +1,16 @@
 <!doctype html><html lang="pl"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>MasterSSon Studio · szablony Excel z demem</title>
-<meta name="description" content="18 polskich szablonów Excel i Google Sheets: kosztorysy dla fachowców, rejestr DAC7, ryczałt, Allegro i więcej. Przetestuj każdy w przeglądarce przed zakupem.">
+<meta name="description" content="21 polskich szablonów Excel i Google Sheets: kosztorysy dla fachowców, rejestr DAC7, ryczałt, Allegro i więcej. Przetestuj każdy w przeglądarce przed zakupem.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="MasterSSon Studio">
 <meta property="og:title" content="MasterSSon · szablony Excel, które liczą za Ciebie">
 <meta property="og:description" content="Kosztorysy dla fachowców, rejestr DAC7, ryczałt, Allegro i więcej. Wypróbuj demo każdego szablonu, zanim kupisz.">
-<meta property="og:url" content="https://mastersson.github.io/">
-<meta property="og:image" content="https://mastersson.github.io/og-mastersson.png">
+<meta property="og:url" content="__ADRES__">
+<meta property="og:image" content="__ADRES__og-mastersson.png">
 <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta property="og:locale" content="pl_PL">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://mastersson.github.io/og-mastersson.png">
+<meta name="twitter:image" content="__ADRES__og-mastersson.png">
 <link rel="icon" href="og-mastersson.png"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -912,8 +912,118 @@ P.push({id:'slub', slug:'planer-budzetu-slubnego-z-lista-gosci-excel-5g7', name:
   }}]
 });
 
+/* ===== Kredyt hipoteczny WIBOR ===== */
+P.push({id:'hipoteka', slug:'kalkulator-i-harmonogram-kredytu-hipotecznego-ze-zmiennym-wibor-z-nadplatami-excel-xna', name:'Kalkulator i harmonogram kredytu hipotecznego ze zmiennym WIBOR', price:49, cat:'dom', file:'Kalkulator_hipoteka_WIBOR.xlsx',
+  short:'Rata, odsetki i saldo miesiąc po miesiącu — na Twojej kwocie, marży, WIBOR-ze i nadpłacie.',
+  lead:'Zmień kwotę, marżę, WIBOR albo nadpłatę. Rata, odsetki i saldo w harmonogramie przeliczą się od razu.',
+  mini:[['Rata','2 804 zł'],['Odsetki, 12 mies.','25 619 zł'],['Nadpłata','20 000 zł']],
+  full:['Harmonogram do 360 miesięcy (30 lat), rata równa albo malejąca', 'Własna prognoza zmian WIBOR rok po roku', 'Do 15 nadpłat jednorazowych i regularnych, z wyborem efektu (niższa rata albo krótszy okres)', 'Porównanie scenariuszy bez i z nadpłatami: suma odsetek, liczba miesięcy, oszczędność', 'Instrukcja po polsku i przykładowy kredyt 450 000 zł na 25 lat'],
+  limits:['Pokazane pierwsze 12 miesięcy, rata równa, jedna nadpłata', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({kwota:450000, lata:25, marza:2.1, wibor:5.75, nadK:20000, nadM:13}),
+  sheets:[{name:'Harmonogram', render(s, c){
+    const n = () => Math.round(s.lata*12);
+    const r = () => (s.marza + s.wibor)/100/12;
+    const rata0 = () => s.kwota * r() / (1 - Math.pow(1+r(), -n()));
+    const schedule = () => {
+      let saldo = s.kwota; const out = [];
+      for (let m=1; m<=12; m++){
+        const odsetki = saldo*r();
+        const kapital = Math.min(saldo, rata0() - odsetki);
+        const nadp = (m === Math.round(s.nadM)) ? Math.min(s.nadK, saldo-kapital) : 0;
+        const saldoK = Math.max(0, saldo - kapital - nadp);
+        out.push({m, saldo0:saldo, odsetki, kapital, nadp, saldoK});
+        saldo = saldoK;
+      }
+      return out;
+    };
+    const idx = schedule().map(x => x.m);
+    const rows = idx.map(m => [T(m), c.out(() => zl(schedule().find(x=>x.m===m).saldo0)), c.out(() => zl(schedule().find(x=>x.m===m).odsetki)),
+      c.out(() => zl(schedule().find(x=>x.m===m).kapital)), c.out(() => zl(rata0())),
+      c.out(() => { const v = schedule().find(x=>x.m===m).nadp; return v ? zl(v) : '–'; }), c.out(() => zl(schedule().find(x=>x.m===m).saldoK))]);
+    return [h('div', {class:'cols2'},
+      blk('Dane kredytu', null, xl({cols:[{label:'Parametr'},{label:'Wartość',r:1}], rows:[
+        [T('Kwota kredytu (zł)'), c.num(s,'kwota')], [T('Okres (lata)'), c.num(s,'lata')], [T('Marża banku (%)'), c.num(s,'marza')], [T('WIBOR (%)'), c.num(s,'wibor')],
+        [T('Nadpłata jednorazowa (zł)'), c.num(s,'nadK')], [T('W miesiącu nr'), c.num(s,'nadM')]]})),
+      blk('Rata', 'Rata równa, liczona od aktualnych danych', xl({cols:[{label:'Wynik'},{label:'Wartość',r:1}], rows:[
+        [T('Rata miesięczna'), c.out(() => ({t:zl(rata0()), c:'good'}))], [T('Odsetki w pierwszym roku'), c.out(() => zl(sum(schedule(), x=>x.odsetki)))],
+        [T('Saldo po 12 miesiącach'), c.out(() => zl(schedule()[11].saldoK))]]}))),
+      blk('Harmonogram spłaty', 'Pierwsze 12 miesięcy, scenariusz z nadpłatą', xl({cols:[{label:'Mies.'},{label:'Saldo początkowe',r:1},{label:'Odsetki',r:1},{label:'Kapitał',r:1},{label:'Rata',r:1},{label:'Nadpłata',r:1},{label:'Saldo końcowe',r:1}], rows, lock:'Miesiące 13–360 · w pełnej wersji, z prognozą WIBOR i do 15 nadpłat'})),
+      h('div', {class:'kpis'}, c.kpi('Rata miesięczna', () => zl(rata0())), c.kpi('Odsetki, 12 mies.', () => zl(sum(schedule(), x=>x.odsetki))), c.kpi('Saldo po roku', () => zl(schedule()[11].saldoK), true)),
+      h('p', {class:'legend'}, 'Pełna wersja liczy do 30 lat, z własną prognozą zmian WIBOR i porównaniem scenariusza bez i z nadpłatami.')];
+  }}]
+});
+
+/* ===== Ryczałt, liniowy czy skala (2026) ===== */
+const MINWYN26 = 4806, PRZECWYN26 = 9420, LIMLIN26 = 14100;
+P.push({id:'forma-podatkowa', slug:'ryczalt-podatek-liniowy-czy-skala-co-sie-bardziej-oplaca-w-2026-roku-excel-24m', name:'Ryczałt, podatek liniowy czy skala — co się bardziej opłaca w 2026', price:35, cat:'podatki', file:'Kalkulator_forma_podatkowa_2026.xlsx',
+  short:'Trzy formy opodatkowania naraz, na nowych zasadach składki zdrowotnej 2026 — która daje więcej na rękę.',
+  lead:'Zmień przychód, koszty albo stawkę ryczałtu. Składka zdrowotna, podatek i to, co zostaje na rękę, przeliczą się dla wszystkich trzech form naraz.',
+  mini:[['Ryczałt','98 277 zł'],['Liniowy','98 123 zł'],['Skala','102 040 zł']],
+  full:['Porównanie ryczałtu, liniowego (19%) i skali (12%/32%) na Twoim przychodzie i kosztach', 'Poprawnie policzona składka zdrowotna dla każdej formy, z progami ryczałtu 60/100/300 tys. zł', 'Minimum na liniowym i skali, limit odliczenia na liniowym, odliczenie 50% na ryczałcie', 'Ściągawka ze stawkami ryczałtu dla różnych działalności', 'Wynik: ile zostaje na rękę rocznie i miesięcznie, z wykresem i wskazaniem najkorzystniejszej formy'],
+  limits:['Oficjalne kwoty 2026 ustawione na stałe (w pełnej wersji edytowalne)', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({przychod:180000, koszty:40000, stawka:'0.12', spol:12000, odlicz:true}),
+  sheets:[{name:'Porównanie', render(s, c){
+    const dochod = () => s.przychod - s.koszty;
+    const zdrR = () => { const b = s.przychod<=60000?0.6:(s.przychod<=300000?1:1.8); return b*PRZECWYN26*0.09*12; };
+    const zdrL = () => Math.max(0.049*dochod(), 0.09*MINWYN26*12);
+    const zdrS = () => Math.max(0.09*dochod(), 0.09*MINWYN26*12);
+    const podstR = () => Math.max(0, s.przychod - s.spol - (s.odlicz ? 0.5*zdrR() : 0));
+    const podatR = () => Number(s.stawka)*podstR();
+    const podstL = () => Math.max(0, dochod() - s.spol - Math.min(zdrL(), LIMLIN26));
+    const podatL = () => 0.19*podstL();
+    const podstS = () => Math.max(0, dochod() - s.spol);
+    const podatS = () => podstS()<=30000 ? 0 : podstS()<=120000 ? 0.12*(podstS()-30000) : 10800+0.32*(podstS()-120000);
+    const netR = () => s.przychod - s.koszty - s.spol - zdrR() - podatR();
+    const netL = () => s.przychod - s.koszty - s.spol - zdrL() - podatL();
+    const netS = () => s.przychod - s.koszty - s.spol - zdrS() - podatS();
+    const best = () => { const v = {Ryczałt:netR(), Liniowy:netL(), Skala:netS()}; return Object.entries(v).sort((a,b)=>b[1]-a[1])[0][0]; };
+    const rows = [
+      [T('Dochód (przychód minus koszty)'), c.out(()=>zl(s.przychod)), c.out(()=>zl(dochod())), c.out(()=>zl(dochod()))],
+      [T('Składka zdrowotna, rocznie'), c.out(()=>zl(zdrR())), c.out(()=>zl(zdrL())), c.out(()=>zl(zdrS()))],
+      [T('Podatek dochodowy, rocznie'), c.out(()=>zl(podatR())), c.out(()=>zl(podatL())), c.out(()=>zl(podatS()))],
+      [T('Zostaje na rękę rocznie'), c.out(()=>({t:zl(netR()), c: best()==='Ryczałt'?'good':''})), c.out(()=>({t:zl(netL()), c: best()==='Liniowy'?'good':''})), c.out(()=>({t:zl(netS()), c: best()==='Skala'?'good':''}))],
+    ];
+    return [h('div', {class:'cols2'},
+      blk('Dane wejściowe', null, xl({cols:[{label:'Parametr'},{label:'Wartość',r:1}], rows:[
+        [T('Roczny przychód (zł)'), c.num(s,'przychod')], [T('Roczne koszty (zł)'), c.num(s,'koszty')], [T('Stawka ryczałtu'), c.sel(s,'stawka',RATES)],
+        [T('Roczne składki społeczne, bez zdrowotnej (zł)'), c.num(s,'spol')], [T('Odliczasz 50% zdrowotnej od przychodu (ryczałt)?'), c.chk(s,'odlicz')]]})),
+      blk('Najkorzystniejsza forma', 'Przy wpisanych danych', xl({cols:[{label:'Wynik'}], rows:[[c.out(()=>({t:best(), c:'good'}))]]}))),
+      blk('Ryczałt vs liniowy vs skala', null, xl({cols:[{label:''},{label:'Ryczałt',r:1},{label:'Liniowy (19%)',r:1},{label:'Skala (12%/32%)',r:1}], rows})),
+      h('p', {class:'legend'}, 'Minimalne wynagrodzenie 2026: 4 806 zł. Przeciętne wynagrodzenie do składki zdrowotnej ryczałtu: 9 420 zł. Limit odliczenia na liniowym: 14 100 zł/rok. W pełnej wersji te kwoty edytujesz samodzielnie.')];
+  }}]
+});
+
+/* ===== Harmonogram ZUS: ulga na start ===== */
+P.push({id:'zus-start', slug:'harmonogram-zus-dla-nowej-firmy-ulga-na-start-preferencyjny-zus-pelny-zus-excel-tp2', name:'Harmonogram ZUS dla nowej firmy: ulga na start, preferencyjny ZUS, pełny ZUS', price:29, cat:'podatki', file:'Harmonogram_ZUS_ulga_na_start.xlsx',
+  short:'Dokładne daty: koniec ulgi na start, start i koniec preferencyjnego ZUS, start pełnej składki.',
+  lead:'Zmień datę rejestracji albo wyłącz ulgę na start. Daty graniczne i harmonogram składek przeliczą się od razu.',
+  mini:[['Koniec ulgi','6 mies.'],['Preferencyjny','24 mies.'],['Składka pref.','456 zł']],
+  full:['Automatyczne daty: koniec ulgi na start (6 mies.), start i koniec preferencyjnego ZUS (24 mies.), start pełnego ZUS', '48-miesięczny harmonogram z orientacyjną wysokością składki społecznej w każdym okresie', 'Licznik przychodu narastająco z własnym limitem do monitorowania i ostrzeżeniem po przekroczeniu', 'Edytowalne stawki: emerytalna, rentowa, wypadkowa, chorobowa, na wartościach 2026', 'Instrukcja po polsku'],
+  limits:['Pokazane pierwsze 12 miesięcy', 'Stawki ZUS 2026 ustawione na stałe (w pełnej wersji edytowalne)'],
+  init:() => ({data:'2026-10-01', ulga:true}),
+  sheets:[{name:'Harmonogram', render(s, c){
+    const addM = (date, n) => new Date(date.getFullYear(), date.getMonth()+n, date.getDate());
+    const start = () => pd(s.data) || new Date();
+    const koniecUlga = () => { const d = addM(start(), s.ulga?6:0); d.setDate(d.getDate()-1); return d; };
+    const startPref = () => { const d = new Date(koniecUlga()); d.setDate(d.getDate()+1); return d; };
+    const koniecPref = () => { const d = addM(startPref(), 24); d.setDate(d.getDate()-1); return d; };
+    const startPelny = () => { const d = new Date(koniecPref()); d.setDate(d.getDate()+1); return d; };
+    const statusAt = d => { if (s.ulga && d <= koniecUlga()) return 'Ulga na start'; if (d <= koniecPref()) return 'Preferencyjny ZUS'; return 'Pełny ZUS'; };
+    const skladkaAt = d => { const st = statusAt(d); if (st === 'Ulga na start') return 0; if (st === 'Preferencyjny ZUS') return 0.3*MINWYN26*0.3164; return 0.6*PRZECWYN26*0.3409; };
+    const months = Array.from({length:12}, (_,i) => addM(start(), i));
+    const rows = months.map((d,i) => [T(i+1), c.out(() => fmtD(addM(start(), i))), c.out(() => statusAt(addM(start(), i))), c.out(() => zl(skladkaAt(addM(start(), i))))]);
+    return [h('div', {class:'cols2'},
+      blk('Dane', null, xl({cols:[{label:'Parametr'},{label:'Wartość',r:1}], rows:[[T('Data rejestracji'), c.date(s,'data')], [T('Korzystasz z ulgi na start?'), c.chk(s,'ulga')]]})),
+      blk('Daty graniczne', 'Liczone wprost z przepisów', xl({cols:[{label:'Zdarzenie'},{label:'Data',r:1}], rows:[
+        [T('Koniec ulgi na start'), c.out(()=>fmtD(koniecUlga()))], [T('Start preferencyjnego ZUS'), c.out(()=>fmtD(startPref()))],
+        [T('Koniec preferencyjnego ZUS'), c.out(()=>fmtD(koniecPref()))], [T('Start pełnego ZUS'), c.out(()=>fmtD(startPelny()))]]}))),
+      blk('Harmonogram miesięczny', 'Pierwsze 12 miesięcy od rejestracji', xl({cols:[{label:'Mies.'},{label:'Data'},{label:'Status'},{label:'Składka społeczna (orient.)',r:1}], rows, lock:'Miesiące 13–48 · w pełnej wersji, z licznikiem przychodu i limitem do monitorowania'})),
+      h('p', {class:'legend'}, 'Preferencyjny ZUS liczony od 30% minimalnego wynagrodzenia (4 806 zł w 2026 r.), pełny ZUS od 60% prognozowanego przeciętnego wynagrodzenia (9 420 zł). Stawki: emerytalna 19,52%, rentowa 8%, wypadkowa 1,67%, chorobowa dobrowolna 2,45%, Fundusz Pracy 2,45% (tylko pełny ZUS).')];
+  }}]
+});
+
 /* catalogue order */
-const ORDER = ['dac7','glazurnik','elektryk','malarz','przeprowadzka','ogrodnik','nierejestrowana','ryczalt','allegro','dropshipping','rekodzielo','salon','catering','wynajem','airbnb','korepetycje','grafik','slub'];
+const ORDER = ['dac7','glazurnik','elektryk','malarz','przeprowadzka','ogrodnik','nierejestrowana','ryczalt','forma-podatkowa','zus-start','allegro','dropshipping','rekodzielo','salon','catering','wynajem','airbnb','korepetycje','grafik','slub','hipoteka'];
 P.sort((a,b) => ORDER.indexOf(a.id) - ORDER.indexOf(b.id));
 const byId = id => P.find(p => p.id === id);
 

@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<title>Wycena Fachowca</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="ikona-192.png">
+<link rel="apple-touch-icon" href="ikona-192.png">
+<meta name="description" content="Wycena i oferta dla klienta w 2 minuty, prosto z telefonu na budowie. Pomiar pomieszczeń, materiały z zapasem, PDF. Bez abonamentu.">
+<style>
+:root{--k:#0f766e;--kj:#e6f4f2;--t:#1f2937;--s:#6b7280;--r:#e5e7eb;--b:#fff;--tlo:#f3f4f6}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--t);background:var(--tlo);font-size:16px}
+header.g{position:sticky;top:0;z-index:5;background:var(--k);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:10px}
+header.g h1{font-size:1.1rem;margin:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+header.g button{background:rgba(255,255,255,.15);color:#fff;border:0;border-radius:8px;padding:6px 10px;font:inherit}
+main{max-width:720px;margin:0 auto;padding:12px 12px 90px}
+nav.d{position:fixed;bottom:0;left:0;right:0;background:var(--b);border-top:1px solid var(--r);display:flex;z-index:5;padding-bottom:env(safe-area-inset-bottom)}
+nav.d a{flex:1;text-align:center;padding:10px 0;color:var(--s);text-decoration:none;font-size:.8rem}
+nav.d a b{display:block;font-size:1.25rem}
+nav.d a.on{color:var(--k);font-weight:700}
+.k{background:var(--b);border:1px solid var(--r);border-radius:14px;padding:14px;margin-bottom:12px}
+.k h2{font-size:1rem;margin:0 0 10px}
+.zak{display:flex;gap:6px;overflow-x:auto;margin-bottom:12px;padding-bottom:2px}
+.zak a{flex:none;padding:8px 12px;border-radius:999px;background:var(--b);border:1px solid var(--r);color:var(--t);text-decoration:none;font-size:.9rem}
+.zak a.on{background:var(--k);color:#fff;border-color:var(--k)}
+label{display:block;font-size:.8rem;color:var(--s);margin:8px 0 3px}
+input,select,textarea{width:100%;padding:10px;border:1px solid var(--r);border-radius:10px;font:inherit;background:#fff;color:var(--t)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--k);border-color:transparent}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.r4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.btn{display:inline-block;padding:11px 14px;border-radius:10px;border:1px solid var(--k);background:#fff;color:var(--k);font:inherit;font-weight:600;cursor:pointer;text-decoration:none;text-align:center}
+.btn.gl{background:var(--k);color:#fff}
+.btn.szer{display:block;width:100%;margin-top:10px}
+.btn.ma{padding:6px 10px;font-size:.85rem}
+.btn.us{border-color:#dc2626;color:#dc2626}
+.pasek{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.lista .o{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 0;border-bottom:1px solid var(--r);text-decoration:none;color:inherit}
+.lista .o:last-child{border:0}
+.o small{color:var(--s);display:block}
+.kw{font-weight:700;color:var(--k);white-space:nowrap}
+.met{font-size:.85rem;color:var(--s);margin-top:6px}
+.met b{color:var(--t)}
+.poz{border:1px solid var(--r);border-radius:12px;padding:10px;margin-bottom:10px}
+.poz .nag{display:flex;gap:8px;align-items:center}
+.poz .nag input{font-weight:600}
+.wyn{display:flex;justify-content:space-between;font-size:.9rem;margin-top:6px;color:var(--s)}
+.wyn b{color:var(--t)}
+.suma div{display:flex;justify-content:space-between;padding:4px 0}
+.suma .duza{font-size:1.25rem;font-weight:800;color:var(--k);border-top:1px solid var(--r);margin-top:6px;padding-top:8px}
+.info{color:var(--s);font-size:.9rem}
+.chk{display:flex;gap:8px;align-items:center;font-size:.95rem;color:var(--t);margin:8px 0}
+.chk input{width:auto}
+.demo{background:#fef3c7;color:#92400e;border-radius:10px;padding:10px;font-size:.88rem;margin-bottom:12px}
+.toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 16px;border-radius:10px;z-index:9;font-size:.9rem}
+/* ---- dokument oferty ---- */
+.dok{background:#fff;color:#111;padding:22px;border-radius:6px;font-size:13px;line-height:1.45;position:relative;overflow:hidden}
+.dok .gora{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.dok .logo{max-height:70px;max-width:180px}
+.dok h1{font-size:20px;margin:14px 0 2px;color:var(--k)}
+.dok table{width:100%;border-collapse:collapse;margin:10px 0}
+.dok th,.dok td{border-bottom:1px solid #ddd;padding:5px 4px;text-align:left;vertical-align:top}
+.dok th{font-size:11px;color:#555;text-transform:uppercase}
+.dok td.n,.dok th.n{text-align:right;white-space:nowrap}
+.dok .sumy{margin-left:auto;width:min(100%,300px)}
+.dok .sumy div{display:flex;justify-content:space-between;padding:2px 0}
+.dok .sumy .b{font-weight:800;font-size:16px;border-top:2px solid #111;margin-top:4px;padding-top:4px}
+.dok .podp{display:flex;justify-content:space-between;gap:30px;margin-top:40px}
+.dok .podp div{flex:1;border-top:1px solid #999;padding-top:4px;font-size:11px;color:#555;text-align:center}
+.dok .zn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.dok .zn span{transform:rotate(-30deg);font-size:46px;font-weight:900;color:rgba(220,38,38,.13);white-space:nowrap}
+.dok .mala{font-size:11px;color:#555}
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff}
+  header.g,nav.d,.nie-druk,.toast{display:none!important}
+  main{padding:0;max-width:none}
+  .dok{padding:0;border-radius:0}
+}
+</style>
+</head>
+<body>
+<header class="g"><h1 id="tyt">Wycena Fachowca</h1><span id="hprz"></span></header>
+<main id="m"></main>
+<nav class="d">
+  <a href="#lista" data-n="lista"><b>📄</b>Oferty</a>
+  <a href="#nowa" data-n="nowa"><b>＋</b>Nowa</a>
+  <a href="#cennik" data-n="cennik"><b>💲</b>Cennik</a>
+  <a href="#ustawienia" data-n="ustawienia"><b>⚙</b>Ustawienia</a>
+</nav>
+<script src="rdzen.js"></script>
+<script src="cenniki.js"></script>
+<script>
+var KLUCZ = 'wycenaFachowca1';
+// SHA-256 kodów odblokowujących (sam kod jest w pliku z zakupu)
+var KODY = ['201badc6c7fcf70ac77ad3a57b8446ac0338fcc7be718001a16c5ac53c516446'];
+var DEMO_LIMIT = 3;
+var S;
+var $ = function (s) { return document.querySelector(s); };
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function id() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+function pl(v) { return typeof v === 'number' ? String(v).replace('.', ',') : v; }
+function dzis() { var d = new Date(); return d.getFullYear() + '-' + ('0' + (d.getMonth() + 1)).slice(-2) + '-' + ('0' + d.getDate()).slice(-2); }
+function dataPL(s) { if (!s) return ''; var p = s.split('-'); return p[2] + '.' + p[1] + '.' + p[0]; }
+function plusDni(s, n) { var d = new Date(s + 'T12:00:00'); d.setDate(d.getDate() + (+n || 0)); return d.toISOString().slice(0, 10); }
+function toast(t) { var e = document.createElement('div'); e.className = 'toast'; e.textContent = t; document.body.appendChild(e); setTimeout(function () { e.remove(); }, 2200); }
+
+function nowyStan() {
+  return { v: 1, start: false, odblok: false, nr: 0, firma: { nazwa: '', osoba: '', tel: '', email: '', nip: '', adres: '', konto: '', logo: '' },
+    ust: { vat: 'zw', waznosc: 14, zaliczka: 30, warunki: 'Cena obejmuje wykonanie prac wymienionych w ofercie. Prace dodatkowe wyceniane osobno po uzgodnieniu z klientem.' },
+    cennik: [], katMat: [], oferty: [] };
+}
+function wczytaj() {
+  try { S = JSON.parse(localStorage.getItem(KLUCZ)) || nowyStan(); } catch (e) { S = nowyStan(); }
+  var n = nowyStan(); Object.keys(n).forEach(function (k) { if (S[k] === undefined) S[k] = n[k]; });
+}
+function zapisz() { try { localStorage.setItem(KLUCZ, JSON.stringify(S)); } catch (e) { toast('Brak miejsca w pamięci telefonu — zmniejsz logo albo usuń stare oferty.'); } }
+
+function dodajFach(klucz) {
+  var c = WF_CENNIKI[klucz]; if (!c) return;
+  c.robocizna.forEach(function (r) {
+    if (!S.cennik.some(function (x) { return x.nazwa === r[0]; }))
+      S.cennik.push({ id: id(), nazwa: r[0], jedn: r[1], cena: r[2], baza: r[3], fach: c.nazwa });
+  });
+  c.materialy.forEach(function (m) {
+    if (!S.katMat.some(function (x) { return x.nazwa === m[0]; }))
+      S.katMat.push({ id: id(), nazwa: m[0], baza: m[1], zuzycie: m[2], opak: m[3], opis: m[4], cena: m[5], fach: c.nazwa });
+  });
+}
+
+// ---------- router ----------
+function idz(h) { if (location.hash === h) pokaz(); else location.hash = h; }
+window.addEventListener('hashchange', pokaz);
+function pokaz() {
+  var h = (location.hash || '#lista').slice(1).split('/');
+  [].forEach.call(document.querySelectorAll('nav.d a'), function (a) { a.className = a.dataset.n === h[0] ? 'on' : ''; });
+  $('#hprz').innerHTML = '';
+  if (!S.start && h[0] !== 'ustawienia') return widokStart();
+  if (h[0] === 'nowa') return nowaOferta();
+  if (h[0] === 'oferta') return widokOferta(h[1], h[2] || 'klient');
+  if (h[0] === 'podglad') return widokPodglad(h[1]);
+  if (h[0] === 'cennik') return widokCennik();
+  if (h[0] === 'ustawienia') return widokUstawienia();
+  widokLista();
+}
+function ustawTytul(t) { $('#tyt').textContent = t; document.title = t + ' — Wycena Fachowca'; window.scrollTo(0, 0); }
+function bannerDemo() {
+  return S.odblok ? '' : '<div class="demo">Wersja demonstracyjna: do ' + DEMO_LIMIT + ' ofert i znak wodny „DEMO” na wydruku. ' +
+    'Pełna wersja bez ograniczeń: <a href="kup.html">kup raz, bez abonamentu</a>, potem wpisz kod w Ustawieniach.</div>';
+}
+
+// ---------- start ----------
+function widokStart() {
+  ustawTytul('Witaj!');
+  var h = '<div class="k"><h2>Ustawmy aplikację (30 sekund)</h2><p class="info">Zaznacz, czym się zajmujesz. Wczytam przykładowy cennik i materiały — ceny zmienisz potem w zakładce „Cennik”.</p>';
+  Object.keys(WF_CENNIKI).forEach(function (k) { h += '<label class="chk"><input type="checkbox" value="' + k + '" ' + (k === 'glazurnik' ? 'checked' : '') + '> ' + esc(WF_CENNIKI[k].nazwa) + '</label>'; });
+  h += '<label>Nazwa firmy albo imię i nazwisko (na ofercie)</label><input id="sf" placeholder="np. Usługi Remontowe Jan Kowalski">' +
+    '<label>Telefon</label><input id="st" type="tel" placeholder="np. 600 100 200">' +
+    '<button class="btn gl szer" id="sok">Zaczynamy</button></div>' +
+    '<p class="info">Dane zostają tylko w tym telefonie. Bez konta, bez logowania, działa też bez internetu.</p>';
+  $('#m').innerHTML = h;
+  $('#sok').onclick = function () {
+    [].forEach.call(document.querySelectorAll('#m input[type=checkbox]:checked'), function (c) { dodajFach(c.value); });
+    S.firma.nazwa = $('#sf').value.trim(); S.firma.tel = $('#st').value.trim(); S.start = true; zapisz(); idz('#nowa');
+  };
+}
+
+// ---------- lista ofert ----------
+function widokLista() {
+  ustawTytul('Oferty');
+  var h = bannerDemo() + '<div class="k lista">';
+  if (!S.oferty.length) h += '<p class="info">Nie masz jeszcze ofert. Kliknij „＋ Nowa” na dole.</p>';
+  S.oferty.slice().reverse().forEach(function (o) {
+    var p = WF.podsumowanie(o);
+    h += '<a class="o" href="#oferta/' + o.id + '/klient"><span><b>' + esc(o.tytul || 'Oferta') + '</b><small>' + esc(o.nr) + ' · ' +
+      esc(o.klient.imie || 'bez klienta') + ' · ' + dataPL(o.data) + (o.status ? ' · ' + esc(o.status) : '') + '</small></span><span class="kw">' + WF.zl(p.brutto) + '</span></a>';
+  });
+  $('#m').innerHTML = h + '</div>';
+}
+
+function nowaOferta() {
+  if (!S.odblok && S.oferty.length >= DEMO_LIMIT) {
+    ustawTytul('Limit wersji demo');
+    $('#m').innerHTML = bannerDemo() + '<div class="k"><p>W wersji demo możesz mieć ' + DEMO_LIMIT + ' oferty. Usuń starą albo odblokuj pełną wersję w Ustawieniach.</p><a class="btn gl" href="#ustawienia">Wpisz kod</a></div>';
+    return;
+  }
+  S.nr++;
+  var rok = new Date().getFullYear();
+  var o = { id: id(), nr: 'OF/' + rok + '/' + ('00' + S.nr).slice(-3), data: dzis(), tytul: '', status: '',
+    klient: { imie: '', tel: '', adres: '' }, termin: '', pomieszczenia: [{ nazwa: 'Łazienka', dl: '', szer: '', wys: '2,6', otwory: '1,6' }],
+    pozycje: [], materialy: [], materialyKlienta: false, rabat: 0, vat: S.ust.vat, zaliczka: S.ust.zaliczka, waznosc: S.ust.waznosc, uwagi: '' };
+  S.oferty.push(o); zapisz(); idz('#oferta/' + o.id + '/klient');
+}
+function oferta(oid) { return S.oferty.filter(function (o) { return o.id === oid; })[0]; }
+
+// ---------- edycja oferty ----------
+var ZAK = [['klient', 'Klient'], ['pomiary', 'Pomiary'], ['robocizna', 'Robocizna'], ['materialy', 'Materiały'], ['suma', 'Podsumowanie']];
+function widokOferta(oid, zak) {
+  var o = oferta(oid); if (!o) return idz('#lista');
+  ustawTytul(o.nr);
+  $('#hprz').innerHTML = '<button onclick="idz(\'#podglad/' + o.id + '\')">Podgląd</button>';
+  var h = '<div class="zak">' + ZAK.map(function (z) { return '<a href="#oferta/' + o.id + '/' + z[0] + '" class="' + (z[0] === zak ? 'on' : '') + '">' + z[1] + '</a>'; }).join('') + '</div>';
+  h += ({ klient: zKlient, pomiary: zPomiary, robocizna: zRobocizna, materialy: zMaterialy, suma: zSuma }[zak] || zKlient)(o);
+  var p = WF.podsumowanie(o);
+  h += '<div class="k suma"><div class="duza"><span>Razem' + (o.vat === 'zw' ? '' : ' brutto') + '</span><span id="razem">' + WF.zl(p.brutto) + '</span></div></div>';
+  $('#m').innerHTML = h;
+  podepnij(o, zak);
+}
+function pole(et, sciezka, wart, typ, extra) {
+  return '<div><label>' + et + '</label><input data-p="' + sciezka + '" value="' + esc(wart) + '"' + (typ ? ' type="' + typ + '"' : '') + (extra || '') + '></div>';
+}
+var NUM = ' inputmode="decimal"';
+function zKlient(o) {
+  return '<div class="k"><h2>Klient i zlecenie</h2>' +
+    pole('Czego dotyczy oferta', 'tytul', o.tytul, '', ' placeholder="np. Remont łazienki"') +
+    pole('Imię i nazwisko klienta', 'klient.imie', o.klient.imie) +
+    '<div class="r2">' + pole('Telefon klienta', 'klient.tel', o.klient.tel, 'tel') + pole('Data oferty', 'data', o.data, 'date') + '</div>' +
+    pole('Adres robót', 'klient.adres', o.klient.adres) +
+    pole('Termin realizacji', 'termin', o.termin, '', ' placeholder="np. 3–5 dni roboczych od 10.11"') +
+    '<label>Status</label><select data-p="status">' + ['', 'wysłana', 'zaakceptowana', 'odrzucona', 'wykonana'].map(function (s) { return '<option ' + (o.status === s ? 'selected' : '') + ' value="' + s + '">' + (s || '— brak —') + '</option>'; }).join('') + '</select>' +
+    '</div><a class="btn gl szer" href="#oferta/' + o.id + '/pomiary">Dalej: pomiary →</a>';
+}
+function zPomiary(o) {
+  var h = '<div class="k"><h2>Pomieszczenia</h2><p class="info">Wpisz wymiary w metrach. Aplikacja policzy podłogę, ściany (minus okna i drzwi), sufit i obwód — ilości w ofercie wyliczą się same.</p></div>';
+  o.pomieszczenia.forEach(function (p, i) {
+    var m = WF.metryki(p);
+    h += '<div class="k"><div class="poz nag" style="border:0;padding:0"><input data-p="pomieszczenia.' + i + '.nazwa" value="' + esc(p.nazwa) + '"><button class="btn ma us" data-usun-pom="' + i + '">Usuń</button></div>' +
+      '<div class="r4">' + pole('Długość', 'pomieszczenia.' + i + '.dl', p.dl, '', NUM) + pole('Szerokość', 'pomieszczenia.' + i + '.szer', p.szer, '', NUM) +
+      pole('Wysokość', 'pomieszczenia.' + i + '.wys', p.wys, '', NUM) + pole('Okna/drzwi m²', 'pomieszczenia.' + i + '.otwory', p.otwory, '', NUM) + '</div>' +
+      '<div class="met" data-met="' + i + '">Podłoga <b>' + WF.il(m.podloga) + ' m²</b> · Ściany <b>' + WF.il(m.sciany) + ' m²</b> · Sufit <b>' + WF.il(m.sufit) + ' m²</b> · Obwód <b>' + WF.il(m.obwod) + ' mb</b></div></div>';
+  });
+  return h + '<button class="btn szer" id="dodPom">+ Dodaj pomieszczenie</button><a class="btn gl szer" href="#oferta/' + o.id + '/robocizna">Dalej: robocizna →</a>';
+}
+function opcjeBaza(sciezka, wart) {
+  return '<select data-p="' + sciezka + '">' + Object.keys(WF.BAZY).map(function (b) { return '<option value="' + b + '" ' + (b === wart ? 'selected' : '') + '>' + WF.BAZY[b] + '</option>'; }).join('') + '</select>';
+}
+function opcjePom(o, sciezka, wart) {
+  return '<select data-p="' + sciezka + '"><option value="all">wszystkie</option>' + o.pomieszczenia.map(function (p, i) { return '<option value="' + i + '" ' + (String(wart) === String(i) ? 'selected' : '') + '>' + esc(p.nazwa || ('Pom. ' + (i + 1))) + '</option>'; }).join('') + '</select>';
+}
+function zRobocizna(o) {
+  var p = WF.podsumowanie(o), h = '';
+  o.pozycje.forEach(function (z, i) {
+    var auto = z.baza !== 'reczna' && !z.recznie, s = 'pozycje.' + i + '.';
+    h += '<div class="poz"><div class="nag"><input data-p="' + s + 'nazwa" value="' + esc(z.nazwa) + '"><button class="btn ma us" data-usun-poz="' + i + '">✕</button></div>' +
+      '<div class="r3">' + pole('Cena za j.m.', s + 'cena', z.cena, '', NUM) + pole('J.m.', s + 'jedn', z.jedn) +
+      '<div><label>Liczone od</label>' + opcjeBaza(s + 'baza', z.baza) + '</div></div>' +
+      (z.baza !== 'reczna' ? '<div class="r2"><div><label>Pomieszczenie</label>' + opcjePom(o, s + 'pom', z.pom) + '</div>' +
+        '<label class="chk" style="margin-top:26px"><input type="checkbox" data-p="' + s + 'recznie" ' + (z.recznie ? 'checked' : '') + '> wpiszę ilość sam</label></div>' : '') +
+      (auto ? '' : pole('Ilość', s + 'ilosc', z.ilosc, '', NUM)) +
+      '<div class="wyn" data-wp="' + i + '"><span>Ilość: <b>' + WF.il(p.pozycje[i].il) + ' ' + esc(z.jedn) + '</b></span><span>Wartość: <b>' + WF.zl(p.pozycje[i].wartosc) + '</b></span></div></div>';
+  });
+  if (!o.pozycje.length) h = '<p class="info">Dodaj prace z cennika — ilości policzą się z pomiarów.</p>';
+  var opcje = S.cennik.map(function (c) { return '<option value="' + c.id + '">' + esc(c.nazwa) + ' — ' + WF.zl(c.cena) + '/' + esc(c.jedn) + '</option>'; }).join('');
+  return '<div class="k"><h2>Robocizna</h2>' + h + '<label>Dodaj z cennika</label><select id="zCen"><option value="">— wybierz —</option>' + opcje + '<option value="_">+ pozycja spoza cennika</option></select></div>' +
+    '<a class="btn gl szer" href="#oferta/' + o.id + '/materialy">Dalej: materiały →</a>';
+}
+function zMaterialy(o) {
+  var p = WF.podsumowanie(o), h = '<div class="k"><h2>Materiały</h2><label class="chk"><input type="checkbox" data-p="materialyKlienta" ' + (o.materialyKlienta ? 'checked' : '') + '> Materiały kupuje klient (w ofercie tylko lista ilości, bez cen)</label>';
+  o.materialy.forEach(function (m, i) {
+    var w = p.materialyPoz[i], s = 'materialy.' + i + '.';
+    h += '<div class="poz"><div class="nag"><input data-p="' + s + 'nazwa" value="' + esc(m.nazwa) + '"><button class="btn ma us" data-usun-mat="' + i + '">✕</button></div>' +
+      '<div class="r2"><div><label>Liczone od</label>' + opcjeBaza(s + 'baza', m.baza) + '</div>' + (m.baza !== 'reczna' ? '<div><label>Pomieszczenie</label>' + opcjePom(o, s + 'pom', m.pom) + '</div>' : pole('Ilość', s + 'ilosc', m.ilosc, '', NUM)) + '</div>' +
+      '<div class="r2">' + (m.baza !== 'reczna' ? pole('Zużycie na 1 j.', s + 'zuzycie', pl(m.zuzycie), '', NUM) : '<div></div>') + pole('Ilość w opakowaniu', s + 'opak', pl(m.opak), '', NUM) + '</div>' +
+      '<div class="r2">' + pole('Opakowanie', s + 'opis', m.opis) + pole('Cena za opakowanie', s + 'cena', pl(m.cena), '', NUM) + '</div>' +
+      '<div class="wyn" data-wm="' + i + '"><span>Potrzeba: <b>' + WF.il(w.potrzeba) + '</b> → <b>' + w.opakowania + ' × ' + esc(m.opis || 'szt.') + '</b></span><span><b>' + (o.materialyKlienta ? '—' : WF.zl(w.wartosc)) + '</b></span></div></div>';
+  });
+  var opcje = S.katMat.map(function (c) { return '<option value="' + c.id + '">' + esc(c.nazwa) + '</option>'; }).join('');
+  return h + '<label>Dodaj materiał</label><select id="zMat"><option value="">— wybierz —</option>' + opcje + '<option value="_">+ materiał spoza listy</option></select>' +
+    '<p class="info">Zużycie i zapas są orientacyjne — sprawdź na opakowaniu producenta.</p></div><a class="btn gl szer" href="#oferta/' + o.id + '/suma">Dalej: podsumowanie →</a>';
+}
+function zSuma(o) {
+  var p = WF.podsumowanie(o);
+  return '<div class="k"><h2>Warunki</h2><div class="r3">' + pole('Rabat na robociznę %', 'rabat', o.rabat, '', NUM) +
+    '<div><label>VAT</label><select data-p="vat">' + [['zw', 'zwolniony'], ['8', '8%'], ['23', '23%']].map(function (v) { return '<option value="' + v[0] + '" ' + (String(o.vat) === v[0] ? 'selected' : '') + '>' + v[1] + '</option>'; }).join('') + '</select></div>' +
+    pole('Zaliczka %', 'zaliczka', o.zaliczka, '', NUM) + '</div>' + pole('Oferta ważna (dni)', 'waznosc', o.waznosc, '', NUM) +
+    '<label>Uwagi do tej oferty</label><textarea data-p="uwagi" rows="3">' + esc(o.uwagi) + '</textarea></div>' +
+    '<div class="k suma"><h2>Podsumowanie</h2><div><span>Robocizna</span><span>' + WF.zl(p.robocizna) + '</span></div>' +
+    (p.rabat ? '<div><span>Rabat</span><span>−' + WF.zl(p.rabat) + '</span></div>' : '') +
+    '<div><span>Materiały</span><span>' + (o.materialyKlienta ? 'po stronie klienta' : WF.zl(p.materialy)) + '</span></div>' +
+    (o.vat === 'zw' ? '' : '<div><span>Netto</span><span>' + WF.zl(p.netto) + '</span></div><div><span>VAT ' + o.vat + '%</span><span>' + WF.zl(p.vat) + '</span></div>') +
+    (p.zaliczka ? '<div><span>Zaliczka</span><span>' + WF.zl(p.zaliczka) + '</span></div>' : '') + '</div>' +
+    '<a class="btn gl szer" href="#podglad/' + o.id + '">Podgląd, PDF i wysyłka →</a>' +
+    '<div class="pasek"><button class="btn" id="dup">Duplikuj</button><button class="btn us" id="usO">Usuń ofertę</button></div>';
+}
+function ustawPole(o, sciezka, v) {
+  var cz = sciezka.split('.'), x = o;
+  for (var i = 0; i < cz.length - 1; i++) x = x[cz[i]];
+  x[cz[cz.length - 1]] = v;
+}
+function podepnij(o, zak) {
+  [].forEach.call(document.querySelectorAll('[data-p]'), function (el) {
+    var zm = function () {
+      var v = el.type === 'checkbox' ? el.checked : el.value;
+      ustawPole(o, el.dataset.p, v); zapisz();
+      if (el.tagName === 'SELECT' || el.type === 'checkbox') widokOferta(o.id, zak); else odswiezLiczby(o, zak);
+    };
+    el.addEventListener(el.tagName === 'SELECT' || el.type === 'checkbox' ? 'change' : 'input', zm);
+  });
+  var b;
+  if ((b = $('#dodPom'))) b.onclick = function () { o.pomieszczenia.push({ nazwa: 'Pokój ' + (o.pomieszczenia.length + 1), dl: '', szer: '', wys: '2,6', otwory: '' }); zapisz(); widokOferta(o.id, zak); };
+  [].forEach.call(document.querySelectorAll('[data-usun-pom]'), function (x) { x.onclick = function () { if (confirm('Usunąć pomieszczenie?')) { o.pomieszczenia.splice(+x.dataset.usunPom, 1); naprawPom(o, +x.dataset.usunPom); zapisz(); widokOferta(o.id, zak); } }; });
+  [].forEach.call(document.querySelectorAll('[data-usun-poz]'), function (x) { x.onclick = function () { o.pozycje.splice(+x.dataset.usunPoz, 1); zapisz(); widokOferta(o.id, zak); }; });
+  [].forEach.call(document.querySelectorAll('[data-usun-mat]'), function (x) { x.onclick = function () { o.materialy.splice(+x.dataset.usunMat, 1); zapisz(); widokOferta(o.id, zak); }; });
+  if ((b = $('#zCen'))) b.onchange = function () {
+    var w = this.value; if (!w) return;
+    var c = S.cennik.filter(function (x) { return x.id === w; })[0];
+    o.pozycje.push(c ? { nazwa: c.nazwa, jedn: c.jedn, cena: c.cena, baza: c.baza, pom: 'all', ilosc: c.baza === 'reczna' ? 1 : '', recznie: false } : { nazwa: 'Nowa pozycja', jedn: 'szt.', cena: '', baza: 'reczna', pom: 'all', ilosc: 1, recznie: false });
+    zapisz(); widokOferta(o.id, zak);
+  };
+  if ((b = $('#zMat'))) b.onchange = function () {
+    var w = this.value; if (!w) return;
+    var c = S.katMat.filter(function (x) { return x.id === w; })[0];
+    o.materialy.push(c ? { nazwa: c.nazwa, baza: c.baza, pom: 'all', zuzycie: c.zuzycie, opak: c.opak, opis: c.opis, cena: c.cena, ilosc: c.baza === 'reczna' ? 1 : '' } : { nazwa: 'Nowy materiał', baza: 'reczna', pom: 'all', zuzycie: 1, opak: 1, opis: 'szt.', cena: '', ilosc: 1 });
+    zapisz(); widokOferta(o.id, zak);
+  };
+  if ((b = $('#dup'))) b.onclick = function () {
+    if (!S.odblok && S.oferty.length >= DEMO_LIMIT) return toast('Limit wersji demo — odblokuj pełną wersję.');
+    var k = JSON.parse(JSON.stringify(o)); S.nr++; k.id = id(); k.nr = 'OF/' + new Date().getFullYear() + '/' + ('00' + S.nr).slice(-3); k.data = dzis(); k.status = '';
+    S.oferty.push(k); zapisz(); toast('Skopiowano jako ' + k.nr); idz('#oferta/' + k.id + '/klient');
+  };
+  if ((b = $('#usO'))) b.onclick = function () { if (confirm('Usunąć ofertę ' + o.nr + '?')) { S.oferty = S.oferty.filter(function (x) { return x.id !== o.id; }); zapisz(); idz('#lista'); } };
+}
+function naprawPom(o, k) { // po usunięciu pomieszczenia k: odwołania do niego -> „wszystkie”, dalsze indeksy o 1 w dół
+  o.pozycje.concat(o.materialy).forEach(function (x) { if (x.pom === 'all' || x.pom == null || x.pom === '') return; var n = +x.pom; if (n === k) x.pom = 'all'; else if (n > k) x.pom = String(n - 1); });
+}
+function odswiezLiczby(o) {
+  var p = WF.podsumowanie(o); var r = $('#razem'); if (r) r.textContent = WF.zl(p.brutto);
+  o.pozycje.forEach(function (z, i) { var e = document.querySelector('[data-wp="' + i + '"]'); if (e) e.innerHTML = '<span>Ilość: <b>' + WF.il(p.pozycje[i].il) + ' ' + esc(z.jedn) + '</b></span><span>Wartość: <b>' + WF.zl(p.pozycje[i].wartosc) + '</b></span>'; });
+  o.materialy.forEach(function (m, i) { var e = document.querySelector('[data-wm="' + i + '"]'), w = p.materialyPoz[i]; if (e) e.innerHTML = '<span>Potrzeba: <b>' + WF.il(w.potrzeba) + '</b> → <b>' + w.opakowania + ' × ' + esc(m.opis || 'szt.') + '</b></span><span><b>' + (o.materialyKlienta ? '—' : WF.zl(w.wartosc)) + '</b></span>'; });
+  o.pomieszczenia.forEach(function (pm, i) { var e = document.querySelector('[data-met="' + i + '"]'); if (e) { var m = WF.metryki(pm); e.innerHTML = 'Podłoga <b>' + WF.il(m.podloga) + ' m²</b> · Ściany <b>' + WF.il(m.sciany) + ' m²</b> · Sufit <b>' + WF.il(m.sufit) + ' m²</b> · Obwód <b>' + WF.il(m.obwod) + ' mb</b>'; } });
+}
+
+// ---------- podgląd / druk / wysyłka ----------
+function dokument(o) {
+  var p = WF.podsumowanie(o), f = S.firma;
+  var h = '<div class="dok">' + (S.odblok ? '' : '<div class="zn"><span>DEMO · Wycena Fachowca</span></div>') +
+    '<div class="gora"><div>' + (f.logo ? '<img class="logo" src="' + f.logo + '" alt="">' : '') + '<div><b>' + esc(f.nazwa) + '</b></div>' +
+    '<div class="mala">' + [f.osoba, f.adres, f.nip ? 'NIP ' + f.nip : '', f.tel ? 'tel. ' + f.tel : '', f.email].filter(Boolean).map(esc).join('<br>') + '</div></div>' +
+    '<div class="mala" style="text-align:right">Data: ' + dataPL(o.data) + '<br>Ważna do: ' + dataPL(plusDni(o.data, o.waznosc)) + '</div></div>' +
+    '<h1>Oferta ' + esc(o.nr) + '</h1><div><b>' + esc(o.tytul) + '</b></div>' +
+    '<div class="mala" style="margin-top:6px">Dla: ' + esc(o.klient.imie) + (o.klient.tel ? ', tel. ' + esc(o.klient.tel) : '') + (o.klient.adres ? '<br>Adres robót: ' + esc(o.klient.adres) : '') + '</div>';
+  if (o.pozycje.length) {
+    h += '<table><tr><th>Lp.</th><th>Robocizna</th><th class="n">Ilość</th><th class="n">Cena</th><th class="n">Wartość</th></tr>';
+    o.pozycje.forEach(function (z, i) { h += '<tr><td>' + (i + 1) + '</td><td>' + esc(z.nazwa) + '</td><td class="n">' + WF.il(p.pozycje[i].il) + ' ' + esc(z.jedn) + '</td><td class="n">' + WF.zl(WF.liczba(z.cena)) + '</td><td class="n">' + WF.zl(p.pozycje[i].wartosc) + '</td></tr>'; });
+    h += '</table>';
+  }
+  if (o.materialy.length) {
+    h += '<table><tr><th>Lp.</th><th>' + (o.materialyKlienta ? 'Materiały do zakupu przez klienta' : 'Materiały') + '</th><th class="n">Ilość</th>' + (o.materialyKlienta ? '' : '<th class="n">Cena</th><th class="n">Wartość</th>') + '</tr>';
+    o.materialy.forEach(function (m, i) { var w = p.materialyPoz[i]; h += '<tr><td>' + (i + 1) + '</td><td>' + esc(m.nazwa) + '</td><td class="n">' + w.opakowania + ' × ' + esc(m.opis || 'szt.') + '</td>' + (o.materialyKlienta ? '' : '<td class="n">' + WF.zl(WF.liczba(m.cena)) + '</td><td class="n">' + WF.zl(w.wartosc) + '</td>') + '</tr>'; });
+    h += '</table>';
+  }
+  h += '<div class="sumy"><div><span>Robocizna</span><span>' + WF.zl(p.robocizna) + '</span></div>' + (p.rabat ? '<div><span>Rabat ' + WF.il(WF.liczba(o.rabat)) + '%</span><span>−' + WF.zl(p.rabat) + '</span></div>' : '') +
+    (o.materialy.length && !o.materialyKlienta ? '<div><span>Materiały</span><span>' + WF.zl(p.materialy) + '</span></div>' : '') +
+    (o.vat === 'zw' ? '' : '<div><span>Netto</span><span>' + WF.zl(p.netto) + '</span></div><div><span>VAT ' + esc(o.vat) + '%</span><span>' + WF.zl(p.vat) + '</span></div>') +
+    '<div class="b"><span>Razem' + (o.vat === 'zw' ? '' : ' brutto') + '</span><span>' + WF.zl(p.brutto) + '</span></div></div>' +
+    '<div class="mala" style="text-align:right">Słownie: ' + WF.slownie(p.brutto) + '</div>' +
+    (o.vat === 'zw' ? '<div class="mala">Sprzedawca zwolniony z VAT.</div>' : '') +
+    '<div style="margin-top:10px">' + (p.zaliczka ? 'Zaliczka przed rozpoczęciem prac: <b>' + WF.zl(p.zaliczka) + '</b>. ' : '') + (o.termin ? 'Termin realizacji: ' + esc(o.termin) + '. ' : '') +
+    (f.konto ? 'Konto: ' + esc(f.konto) + '.' : '') + '</div>' +
+    (S.ust.warunki ? '<p class="mala">' + esc(S.ust.warunki) + '</p>' : '') + (o.uwagi ? '<p>' + esc(o.uwagi) + '</p>' : '') +
+    '<div class="podp"><div>Wykonawca</div><div>Akceptuję ofertę (data, podpis klienta)</div></div></div>';
+  return h;
+}
+function tekstSms(o) {
+  var p = WF.podsumowanie(o);
+  return 'Dzień dobry' + (o.klient.imie ? ' ' + o.klient.imie.split(' ')[0] : '') + ', przesyłam wycenę ' + o.nr + (o.tytul ? ' — ' + o.tytul : '') + ':\n' +
+    'Robocizna: ' + WF.zl(p.robocizna - p.rabat) + '\n' + (o.materialy.length ? (o.materialyKlienta ? 'Materiały: po stronie klienta\n' : 'Materiały: ' + WF.zl(p.materialy) + '\n') : '') +
+    'Razem' + (o.vat === 'zw' ? '' : ' brutto') + ': ' + WF.zl(p.brutto) + '\n' + (o.termin ? 'Termin: ' + o.termin + '\n' : '') +
+    'Oferta ważna do ' + dataPL(plusDni(o.data, o.waznosc)) + '.\n' + (S.firma.nazwa ? S.firma.nazwa : '') + (S.firma.tel ? ', tel. ' + S.firma.tel : '');
+}
+function widokPodglad(oid) {
+  var o = oferta(oid); if (!o) return idz('#lista');
+  ustawTytul('Podgląd ' + o.nr);
+  var tel = String(o.klient.tel || '').replace(/[^\d+]/g, '');
+  $('#m').innerHTML = '<div class="nie-druk">' + bannerDemo() + '<div class="pasek" style="margin:0 0 12px"><button class="btn gl" id="pdf">Drukuj / zapisz PDF</button>' +
+    '<button class="btn" id="wyslij">Wyślij podsumowanie</button><a class="btn" href="#oferta/' + o.id + '/suma">← Edytuj</a></div>' +
+    '<p class="info">PDF: przycisk „Drukuj / zapisz PDF”, potem w oknie drukowania wybierz „Zapisz jako PDF” i wyślij plik klientowi.</p></div>' + dokument(o);
+  $('#pdf').onclick = function () { if (!o.status) { o.status = 'wysłana'; zapisz(); } window.print(); };
+  $('#wyslij').onclick = function () {
+    var t = tekstSms(o);
+    if (!o.status) { o.status = 'wysłana'; zapisz(); }
+    if (navigator.share) navigator.share({ text: t }).catch(function () {});
+    else window.open('https://wa.me/' + (tel.replace(/^\+/, '').length >= 9 ? (tel.length === 9 ? '48' + tel : tel.replace(/^\+/, '')) : '') + '?text=' + encodeURIComponent(t), '_blank');
+  };
+}
+
+// ---------- cennik ----------
+function widokCennik() {
+  ustawTytul('Cennik');
+  var h = '<div class="k"><h2>Robocizna</h2><p class="info">Twoje stawki. Zmiana tutaj działa dla nowych pozycji w ofertach.</p>';
+  S.cennik.forEach(function (c, i) {
+    h += '<div class="poz"><div class="nag"><input data-c="cennik.' + i + '.nazwa" value="' + esc(c.nazwa) + '"><button class="btn ma us" data-usc="' + i + '">✕</button></div><div class="r3">' +
+      '<div><label>Cena</label><input data-c="cennik.' + i + '.cena" value="' + esc(c.cena) + '"' + NUM + '></div><div><label>J.m.</label><input data-c="cennik.' + i + '.jedn" value="' + esc(c.jedn) + '"></div>' +
+      '<div><label>Liczone od</label><select data-c="cennik.' + i + '.baza">' + Object.keys(WF.BAZY).map(function (b) { return '<option value="' + b + '" ' + (b === c.baza ? 'selected' : '') + '>' + WF.BAZY[b] + '</option>'; }).join('') + '</select></div></div></div>';
+  });
+  h += '<button class="btn szer" id="dodC">+ Dodaj pozycję</button></div><div class="k"><h2>Materiały</h2>';
+  S.katMat.forEach(function (m, i) {
+    h += '<div class="poz"><div class="nag"><input data-c="katMat.' + i + '.nazwa" value="' + esc(m.nazwa) + '"><button class="btn ma us" data-usm="' + i + '">✕</button></div><div class="r4">' +
+      '<div><label>Zużycie/j.</label><input data-c="katMat.' + i + '.zuzycie" value="' + esc(pl(m.zuzycie)) + '"' + NUM + '></div><div><label>W opak.</label><input data-c="katMat.' + i + '.opak" value="' + esc(pl(m.opak)) + '"' + NUM + '></div>' +
+      '<div><label>Opakowanie</label><input data-c="katMat.' + i + '.opis" value="' + esc(m.opis) + '"></div><div><label>Cena</label><input data-c="katMat.' + i + '.cena" value="' + esc(m.cena) + '"' + NUM + '></div></div></div>';
+  });
+  h += '<button class="btn szer" id="dodM">+ Dodaj materiał</button></div><div class="k"><h2>Dodaj cennik fachu</h2>' +
+    Object.keys(WF_CENNIKI).map(function (k) { return '<button class="btn ma" style="margin:4px" data-fach="' + k + '">' + esc(WF_CENNIKI[k].nazwa) + '</button>'; }).join('') + '</div>';
+  $('#m').innerHTML = h;
+  [].forEach.call(document.querySelectorAll('[data-c]'), function (el) {
+    el.addEventListener('change', function () { ustawPole(S, el.dataset.c, el.value); zapisz(); });
+  });
+  [].forEach.call(document.querySelectorAll('[data-usc]'), function (x) { x.onclick = function () { S.cennik.splice(+x.dataset.usc, 1); zapisz(); widokCennik(); }; });
+  [].forEach.call(document.querySelectorAll('[data-usm]'), function (x) { x.onclick = function () { S.katMat.splice(+x.dataset.usm, 1); zapisz(); widokCennik(); }; });
+  [].forEach.call(document.querySelectorAll('[data-fach]'), function (x) { x.onclick = function () { dodajFach(x.dataset.fach); zapisz(); widokCennik(); toast('Dodano cennik: ' + WF_CENNIKI[x.dataset.fach].nazwa); }; });
+  $('#dodC').onclick = function () { S.cennik.push({ id: id(), nazwa: 'Nowa praca', jedn: 'm²', cena: 0, baza: 'podloga' }); zapisz(); widokCennik(); };
+  $('#dodM').onclick = function () { S.katMat.push({ id: id(), nazwa: 'Nowy materiał', baza: 'podloga', zuzycie: 1, opak: 1, opis: 'szt.', cena: 0 }); zapisz(); widokCennik(); };
+}
+
+// ---------- ustawienia ----------
+function sha256(t) {
+  return crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)).then(function (b) { return Array.from(new Uint8Array(b)).map(function (x) { return ('0' + x.toString(16)).slice(-2); }).join(''); });
+}
+function widokUstawienia() {
+  ustawTytul('Ustawienia');
+  var f = S.firma, u = S.ust;
+  var p = function (et, k, typ) { return '<label>' + et + '</label><input data-f="' + k + '" value="' + esc(f[k]) + '"' + (typ ? ' type="' + typ + '"' : '') + '>'; };
+  $('#m').innerHTML = '<div class="k"><h2>Pełna wersja</h2>' + (S.odblok ? '<p>✅ Odblokowana. Dziękujemy za zakup!</p>' :
+    '<p class="info">Wpisz kod z pliku, który dostałeś po zakupie.</p><input id="kod" placeholder="WF-XXXX-XXXX" autocapitalize="characters"><button class="btn gl szer" id="odb">Odblokuj</button>') + '</div>' +
+    '<div class="k"><h2>Twoja firma (na ofercie)</h2>' + p('Nazwa firmy', 'nazwa') + p('Imię i nazwisko', 'osoba') + '<div class="r2">' + p('Telefon', 'tel', 'tel') + p('E-mail', 'email', 'email') + '</div>' +
+    '<div class="r2">' + p('NIP', 'nip') + p('Numer konta', 'konto') + '</div>' + p('Adres', 'adres') +
+    '<label>Logo (opcjonalnie)</label><input type="file" id="logo" accept="image/*">' + (f.logo ? '<img src="' + f.logo + '" style="max-height:60px;margin-top:6px"><button class="btn ma us" id="bezLogo" style="margin-left:8px">usuń logo</button>' : '') + '</div>' +
+    '<div class="k"><h2>Domyślne warunki</h2><div class="r3"><div><label>VAT</label><select data-u="vat">' + [['zw', 'zwolniony'], ['8', '8%'], ['23', '23%']].map(function (v) { return '<option value="' + v[0] + '" ' + (String(u.vat) === v[0] ? 'selected' : '') + '>' + v[1] + '</option>'; }).join('') + '</select></div>' +
+    '<div><label>Ważność (dni)</label><input data-u="waznosc" value="' + esc(u.waznosc) + '"' + NUM + '></div><div><label>Zaliczka %</label><input data-u="zaliczka" value="' + esc(u.zaliczka) + '"' + NUM + '></div></div>' +
+    '<label>Stały tekst na ofercie</label><textarea data-u="warunki" rows="3">' + esc(u.warunki) + '</textarea>' +
+    '<p class="info">VAT 8% dotyczy zwykle remontów w budownictwie mieszkaniowym; sprawdź ze swoją księgową, która stawka Cię dotyczy.</p></div>' +
+    '<div class="k"><h2>Kopia zapasowa</h2><p class="info">Dane są tylko w tym telefonie. Zrób kopię raz na jakiś czas.</p><div class="pasek"><button class="btn" id="eksp">Zapisz kopię</button><label class="btn" style="margin:0">Wczytaj kopię<input type="file" id="imp" accept=".json,application/json" hidden></label></div></div>' +
+    '<p class="info" style="text-align:center">Wycena Fachowca 1.0 · MasterSSon</p>';
+  [].forEach.call(document.querySelectorAll('[data-f]'), function (el) { el.addEventListener('change', function () { f[el.dataset.f] = el.value.trim(); zapisz(); }); });
+  [].forEach.call(document.querySelectorAll('[data-u]'), function (el) { el.addEventListener('change', function () { u[el.dataset.u] = el.value; zapisz(); }); });
+  var b;
+  if ((b = $('#odb'))) b.onclick = function () {
+    var k = $('#kod').value.trim().toUpperCase().replace(/\s/g, '');
+    sha256(k).then(function (hsh) { if (KODY.indexOf(hsh) >= 0) { S.odblok = true; zapisz(); toast('Pełna wersja odblokowana!'); widokUstawienia(); } else toast('Nieprawidłowy kod. Sprawdź, czy przepisałeś go dokładnie.'); });
+  };
+  if ((b = $('#bezLogo'))) b.onclick = function () { f.logo = ''; zapisz(); widokUstawienia(); };
+  $('#logo').onchange = function (e) {
+    var plik = e.target.files[0]; if (!plik) return;
+    var img = new Image(), r = new FileReader();
+    r.onload = function () { img.onload = function () { var s = Math.min(1, 360 / Math.max(img.width, img.height)), c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s); c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); f.logo = c.toDataURL('image/png'); zapisz(); widokUstawienia(); }; img.src = r.result; };
+    r.readAsDataURL(plik);
+  };
+  $('#eksp').onclick = function () {
+    var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([JSON.stringify(S)], { type: 'application/json' }));
+    a.download = 'wycena-fachowca-kopia-' + dzis() + '.json'; a.click();
+  };
+  $('#imp').onchange = function (e) {
+    var plik = e.target.files[0]; if (!plik) return; var r = new FileReader();
+    r.onload = function () { try { var d = JSON.parse(r.result); if (!d || !d.oferty) throw 0; if (confirm('Zastąpić obecne dane kopią (' + d.oferty.length + ' ofert)?')) { var odb = S.odblok; S = d; S.odblok = S.odblok || odb; zapisz(); toast('Wczytano kopię'); idz('#lista'); } } catch (x) { toast('To nie jest plik kopii Wyceny Fachowca.'); } };
+    r.readAsText(plik);
+  };
+}
+
+wczytaj(); pokaz();
+if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(function () {});
+</script>
+</body>
+</html>

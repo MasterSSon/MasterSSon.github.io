@@ -1,6 +1,6 @@
 {
- "name": "Wycena Fachowca",
- "short_name": "Wycena",
+ "name": "Wycena TEST",
+ "short_name": "Wycena TEST",
  "start_url": "./index.html",
  "scope": "./",
  "display": "standalone",

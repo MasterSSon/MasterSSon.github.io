@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
+<meta name="robots" content="noindex, nofollow">
+<script>window.WF_TEST = true;</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
@@ -55,6 +57,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--k);border-color:
 .info{color:var(--s);font-size:.9rem}
 .leg{margin:14px 0 4px;padding:10px 12px;border-top:1px solid #ddd;color:var(--s);font-size:.85rem}.leg b{color:#c62828}
 .pokf{border-top:1px dashed #cfd8dc;margin-top:10px;padding-top:8px}
+.etykb{position:fixed;right:10px;bottom:78px;z-index:50;background:#7c3aed;color:#fff;border:0;border-radius:20px;padding:9px 14px;font-weight:600;box-shadow:0 2px 8px #0003}
+body.etyk label,body.etyk h2,body.etyk .info,body.etyk .met,body.etyk summary,body.etyk th,body.etyk .wyn span,body.etyk .chk{outline:1px dashed #7c3aed;outline-offset:2px}
 .ost{color:#c62828;font-size:.88rem;font-weight:600}
 .chk{display:flex;gap:8px;align-items:center;font-size:.95rem;color:var(--t);margin:8px 0}
 .chk input{width:auto}
@@ -103,7 +107,9 @@ details.k summary{cursor:pointer;color:var(--k)}.fach details{margin:6px 0}.fach
 <script src="rdzen.js"></script>
 <script src="cenniki.js"></script>
 <script>
-var KLUCZ = 'wycenaFachowca1';
+// Wersja testowa Adriana (wdroz.sh wstrzykuje window.WF_TEST tylko do prywatnej kopii): pełna, osobna pamięć
+var KLUCZ = window.WF_TEST ? 'wycenaFachowcaTest' : 'wycenaFachowca1';
+if (window.WF_TEST && !localStorage.getItem(KLUCZ) && localStorage.getItem('wycenaFachowca1')) localStorage.setItem(KLUCZ, localStorage.getItem('wycenaFachowca1')); // start: kopia ofert z demo
 // SHA-256 kodów odblokowujących (sam kod jest w pliku z zakupu)
 var KODY = ['201badc6c7fcf70ac77ad3a57b8446ac0338fcc7be718001a16c5ac53c516446'];
 var S;
@@ -127,6 +133,7 @@ function wzorMaterialu(nazwa) { var w = null; Object.keys(WF_CENNIKI).forEach(fu
 function wzorPracy(nazwa) { var w = null; Object.keys(WF_CENNIKI).forEach(function (k) { WF_CENNIKI[k].robocizna.forEach(function (r) { if (r[0] === nazwa && !w) w = k; }); }); return w; }
 function wczytaj() {
   try { S = JSON.parse(localStorage.getItem(KLUCZ)) || nowyStan(); } catch (e) { S = nowyStan(); }
+  if (window.WF_TEST) S.odblok = true;
   var n = nowyStan(); Object.keys(n).forEach(function (k) { if (S[k] === undefined) S[k] = n[k]; });
   if (!S.fachy.length) { // wersja 1.0 nie zapisywała fachów: odtwórz z cennika
     var stare = { 'Glazurnik': ['glazurnik'], 'Malarz': ['malarz'], 'Malarz / gładzie': ['malarz'], 'Podłogi i panele': ['podlogi'],
@@ -478,16 +485,45 @@ function opcjeBaza(sciezka, wart, atr, fachy) {
   return '<select ' + (atr || 'data-p') + '="' + sciezka + '">' + Object.keys(grupy).map(function (g) { return '<optgroup label="' + esc(g) + '">' + grupy[g].join('') + '</optgroup>'; }).join('') + '</select>';
 }
 // Legenda skrótów: każdy skrót w oknie dostaje gwiazdki (*, **, …), opis na dole okna
-var WERSJA_APP = '1.2.5'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
+var WERSJA_APP = '1.2.7'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
 var SKROTY = [['J.m.', ''], ['j.m.', 'jednostka miary — w czym liczysz pracę (m², mb, szt., kpl…)'], ['kpl', 'komplet — usługa liczona w całości, jako 1 sztuka'],
   ['mb', 'metr bieżący — długość (np. listwy, przewody, rury)'], ['szt.', 'sztuka'], ['opak.', 'opakowanie'], ['Ø', 'średnica rury w mm'],
   ['wod.', 'instalacja wodna'], ['kan.', 'kanalizacja'], ['h', 'godzina'], ['t', 'tona'], ['Lp.', 'liczba porządkowa']];
 var LEG = { mapa: {}, hash: '' }, LEG_RE = new RegExp('(^|[^\\p{L}.*])(' + SKROTY.map(function (s) { return s[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|') + ')(?![\\p{L}*])', 'gu');
+// Wersja testowa: Adrian poprawia opisy w miejscu (✏️), poprawki w localStorage, eksport dla Jarvisa w Ustawieniach
+var ETYK_KLUCZ = 'wycenaEtykiety', ETYK = {}, ETYK_TRYB = false;
+try { ETYK = JSON.parse(localStorage.getItem(ETYK_KLUCZ)) || {}; } catch (e) { ETYK = {}; }
+function bezGwiazdek(t) { return t.replace(/\*+(?=\s|$|\))/g, ''); }
+function zastosujEtykiety(m) {
+  if (!window.WF_TEST || !Object.keys(ETYK).length) return;
+  var tw = document.createTreeWalker(m, NodeFilter.SHOW_TEXT, null), n, l = [];
+  while ((n = tw.nextNode())) l.push(n);
+  l.forEach(function (n) { var t = bezGwiazdek(n.nodeValue).trim(); if (t && ETYK[t] != null && ETYK[t] !== t) n.nodeValue = n.nodeValue.replace(n.nodeValue.trim(), ETYK[t]); });
+}
+function edytujTekst(e) {
+  if (!ETYK_TRYB) return; var el = e.target; if (el.closest('#etykBtn')) return;
+  var n = null, tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), x;
+  while ((x = tw.nextNode())) if (x.nodeValue.trim()) n = n || x;
+  if (!n) return; e.preventDefault(); e.stopPropagation();
+  var teraz = bezGwiazdek(n.nodeValue).trim(), orig = teraz;
+  Object.keys(ETYK).forEach(function (k) { if (ETYK[k] === teraz) orig = k; });
+  var nowy = prompt('Twoja wersja tekstu (pusto = przywróć oryginał):\n„' + orig + '”', ETYK[orig] != null ? ETYK[orig] : orig);
+  if (nowy === null) return;
+  nowy = nowy.trim(); if (!nowy || nowy === orig) delete ETYK[orig]; else ETYK[orig] = nowy;
+  localStorage.setItem(ETYK_KLUCZ, JSON.stringify(ETYK)); n.nodeValue = n.nodeValue.replace(n.nodeValue.trim(), nowy || orig);
+  toast('Zapisano poprawkę (' + Object.keys(ETYK).length + ' razem)');
+}
+if (window.WF_TEST) document.addEventListener('DOMContentLoaded', function () {
+  var b = document.createElement('button'); b.id = 'etykBtn'; b.className = 'etykb'; b.textContent = '✏️ Edytuj teksty';
+  b.onclick = function () { ETYK_TRYB = !ETYK_TRYB; document.body.classList.toggle('etyk', ETYK_TRYB); b.textContent = ETYK_TRYB ? '✅ Koniec edycji' : '✏️ Edytuj teksty'; if (ETYK_TRYB) toast('Stuknij w opis, żeby go zmienić'); };
+  document.body.appendChild(b); document.addEventListener('click', edytujTekst, true);
+});
 function legenda() {
-  var m = $('#m'); if (!m || m.querySelector('.dok')) { var s = $('#leg'); if (s) s.remove(); return; }
+  var m = $('#m'); if (m) zastosujEtykiety(m);
+  if (!m || m.querySelector('.dok')) { var s = $('#leg'); if (s) s.remove(); return; }
   if (LEG.hash !== location.hash) { LEG.mapa = {}; LEG.hash = location.hash; }
   var opis = {}; SKROTY.forEach(function (s) { opis[s[0]] = s[1]; });
-  var tw = document.createTreeWalker(m, NodeFilter.SHOW_TEXT, { acceptNode: function (n) { return n.parentNode.closest('#leg,textarea,script,style,select') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; } }), n, lista = [];
+  var tw = document.createTreeWalker(m, NodeFilter.SHOW_TEXT, { acceptNode: function (n) { return n.parentNode.closest('#leg,textarea,script,style,select,.bezleg') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; } }), n, lista = [];
   while ((n = tw.nextNode())) lista.push(n);
   lista.forEach(function (n) {
     var t = n.nodeValue, nowy = t.replace(LEG_RE, function (c, przed, sk) {
@@ -735,7 +771,10 @@ function widokUstawienia() {
     '<label>Stały tekst na ofercie</label><textarea data-u="warunki" rows="3">' + esc(u.warunki) + '</textarea>' +
     '<p class="info">VAT 8% dotyczy zwykle remontów w budownictwie mieszkaniowym; sprawdź ze swoją księgową, która stawka Cię dotyczy.</p></div>' +
     '<div class="k"><h2>Kopia zapasowa</h2><p class="info">Dane są tylko w tym telefonie. Zrób kopię raz na jakiś czas.</p><div class="pasek"><button class="btn" id="eksp">Zapisz kopię</button><label class="btn" style="margin:0">Wczytaj kopię<input type="file" id="imp" accept=".json,application/json" hidden></label></div></div>' +
-    '<p class="info" style="text-align:center">Wycena Fachowca ' + WERSJA_APP + ' · MasterSSon</p>';
+    (window.WF_TEST ? '<div class="k"><h2>Moje poprawki tekstów (' + Object.keys(ETYK).length + ')</h2>' +
+      (Object.keys(ETYK).length ? '<div class="mala bezleg">' + Object.keys(ETYK).map(function (k) { return '<div>„' + esc(k) + '” → „' + esc(ETYK[k]) + '”</div>'; }).join('') + '</div>' : '<p class="info">Włącz ✏️ Edytuj teksty i stuknij w dowolny opis.</p>') +
+      '<div class="pasek" style="margin-top:8px"><button class="btn" id="etykKop">Kopiuj dla Jarvisa</button><button class="btn ma" id="etykCzysc">Wyczyść</button></div></div>' : '') +
+    '<p class="info" style="text-align:center">Wycena Fachowca ' + WERSJA_APP + (window.WF_TEST ? ' · <b>WERSJA TESTOWA (pełna)</b>' : '') + ' · MasterSSon</p>';
   [].forEach.call(document.querySelectorAll('[data-f]'), function (el) { el.addEventListener('change', function () { f[el.dataset.f] = el.value.trim(); zapisz(); }); });
   [].forEach.call(document.querySelectorAll('[data-u]'), function (el) { el.addEventListener('change', function () { u[el.dataset.u] = el.value; zapisz(); }); });
   var b;
@@ -743,6 +782,11 @@ function widokUstawienia() {
     var k = $('#kod').value.trim().toUpperCase().replace(/\s/g, '');
     sha256(k).then(function (hsh) { if (KODY.indexOf(hsh) >= 0) { S.odblok = true; zapisz(); toast('Pełna wersja odblokowana!'); widokUstawienia(); } else toast('Nieprawidłowy kod. Sprawdź, czy przepisałeś go dokładnie.'); });
   };
+  if ((b = $('#etykKop'))) b.onclick = function () {
+    var t = 'Poprawki tekstów Wycena Fachowca ' + WERSJA_APP + ':\n' + Object.keys(ETYK).map(function (k) { return '„' + k + '” → „' + ETYK[k] + '”'; }).join('\n');
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { toast('Skopiowane — wklej Jarvisowi'); }, function () { prompt('Skopiuj ręcznie:', t); });
+  };
+  if ((b = $('#etykCzysc'))) b.onclick = function () { if (confirm('Usunąć wszystkie poprawki tekstów?')) { ETYK = {}; localStorage.removeItem(ETYK_KLUCZ); widokUstawienia(); } };
   if ((b = $('#bezLogo'))) b.onclick = function () { f.logo = ''; zapisz(); widokUstawienia(); };
   $('#logo').onchange = function (e) {
     var plik = e.target.files[0]; if (!plik) return;

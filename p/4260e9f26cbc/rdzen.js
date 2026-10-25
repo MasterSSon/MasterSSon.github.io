@@ -91,6 +91,10 @@ var WF = (function () {
   }
   function suma(lista, f) { return lista.reduce(function (s, x) { return s + f(x); }, 0); }
   function tak(v) { return v === true || v === 'true' || v === 'on'; }
+  // Ilości prac wpisane ręcznie ("wpiszę ilość sam") — zapas, gdy brak wymiarów pomieszczeń
+  function recznePrace(oferta, bazy) {
+    return suma((oferta.pozycje || []).filter(function (p) { return p.recznie && bazy.indexOf(p.baza) >= 0; }), function (p) { return liczba(p.ilosc); });
+  }
 
   var KALK = {
     elektryk: function (o, d) {
@@ -131,7 +135,9 @@ var WF = (function () {
     malarz: function (o, d) {
       var pom = wybranePom(o, d.pom);
       var pow = suma(pom, function (p) { var m = metryki(p); return (tak(d.sciany) ? m.sciany : 0) + (tak(d.sufit) ? m.sufit : 0); });
+      if (!(pow > 0)) pow = recznePrace(o, ['sciany', 'sufit']) || recznePrace(o, ['ma_pow']);
       var gl = tak(d.gladzTak) ? pow : 0, wyd = liczba(d.wydajnosc);
+      if (!(gl > 0)) gl = recznePrace(o, ['ma_gladz_m2']);
       return { ma_pow: pow, ma_farba_l: wyd > 0 ? pow * liczba(d.warstwy) / wyd : 0, ma_gladz_m2: gl,
         ma_gladz_kg: gl * liczba(d.gladzMm) * (GLADZ[d.gladzRodzaj] || GLADZ.gotowa)[1], ma_grunt_l: pow * 0.1 * liczba(d.grunt) };
     },
@@ -206,7 +212,7 @@ var WF = (function () {
     var w = {}, ob = oferta.obmiary || {};
     Object.keys(KALK).forEach(function (f) {
       if (!ob[f]) return; var r = KALK[f](oferta, ob[f]);
-      Object.keys(r).forEach(function (k) { w[k] = zaokr(r[k], 2); });
+      Object.keys(r).forEach(function (k) { w[k] = zaokr(r[k] > 0 ? r[k] : recznePrace(oferta, [k]), 2); });
     });
     return w;
   }
@@ -237,7 +243,8 @@ var WF = (function () {
   function iloscBazowa(oferta, baza, pom) {
     if (!baza || baza === 'reczna') return null;
     if (!POKOJ[baza]) return wynikiFachow(oferta)[baza] || 0;
-    return zaokr(wybranePom(oferta, pom).reduce(function (s, p) { return s + metryki(p)[baza]; }, 0));
+    var v = zaokr(wybranePom(oferta, pom).reduce(function (s, p) { return s + metryki(p)[baza]; }, 0));
+    return v > 0 ? v : zaokr(recznePrace(oferta, [baza]));
   }
 
   function iloscPozycji(oferta, poz) {

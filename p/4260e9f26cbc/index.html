@@ -2,7 +2,6 @@
 <html lang="pl">
 <head>
 <meta charset="utf-8">
-<meta name="robots" content="noindex">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0f766e">
 <title>Wycena Fachowca</title>
@@ -54,6 +53,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--k);border-color:
 .suma div{display:flex;justify-content:space-between;padding:4px 0}
 .suma .duza{font-size:1.25rem;font-weight:800;color:var(--k);border-top:1px solid var(--r);margin-top:6px;padding-top:8px}
 .info{color:var(--s);font-size:.9rem}
+.ost{color:#c62828;font-size:.88rem;font-weight:600}
 .chk{display:flex;gap:8px;align-items:center;font-size:.95rem;color:var(--t);margin:8px 0}
 .chk input{width:auto}
 .demo{background:#fef3c7;color:#92400e;border-radius:10px;padding:10px;font-size:.88rem;margin-bottom:12px}
@@ -462,6 +462,8 @@ function opcjeBaza(sciezka, wart, atr, fachy) {
   return '<select ' + (atr || 'data-p') + '="' + sciezka + '">' + Object.keys(grupy).map(function (g) { return '<optgroup label="' + esc(g) + '">' + grupy[g].join('') + '</optgroup>'; }).join('') + '</select>';
 }
 function bazaPokoju(b) { return !!WF.POKOJ[b]; }
+function zObliczen(w, m) { return 'z obliczeń: <b>' + WF.il(w.baza) + ' ' + WF.opisBazy(m.baza).jedn + '</b>' + (w.baza > 0 ? '' : ' <span class="ost">⚠ wpisz wymiary w „Pomiary” albo ilości prac w „Robocizna”</span>'); }
+function etZuzycia(b) { return bazaPokoju(b) ? 'Zużycie na 1 ' + WF.opisBazy(b).jedn : 'Mnożnik (1 = tyle, ile z obliczeń)'; }
 function opcjePom(o, sciezka, wart) {
   return '<select data-p="' + sciezka + '"><option value="all">wszystkie</option>' + o.pomieszczenia.map(function (p, i) { return '<option value="' + i + '" ' + (String(wart) === String(i) ? 'selected' : '') + '>' + esc(p.nazwa || ('Pom. ' + (i + 1))) + '</option>'; }).join('') + '</select>';
 }
@@ -488,8 +490,8 @@ function zMaterialy(o) {
     var w = p.materialyPoz[i], s = 'materialy.' + i + '.';
     h += '<div class="poz"><div class="nag"><input data-p="' + s + 'nazwa" value="' + esc(m.nazwa) + '"><button class="btn ma us" data-usun-mat="' + i + '">✕</button></div>' +
       (m.baza === 'reczna' || bazaPokoju(m.baza) ? '<div class="r2"><div><label>Liczone od</label>' + opcjeBaza(s + 'baza', m.baza, '', fachyOferty(o)) + '</div>' + (m.baza === 'reczna' ? pole('Ilość', s + 'ilosc', m.ilosc, '', NUM) : '<div><label>Pomieszczenie</label>' + opcjePom(o, s + 'pom', m.pom) + '</div>') + '</div>' :
-        '<label>Liczone od</label>' + opcjeBaza(s + 'baza', m.baza, '', fachyOferty(o)) + '<div class="met" data-mb="' + i + '">z obliczeń: <b>' + WF.il(w.baza) + ' ' + WF.opisBazy(m.baza).jedn + '</b></div>') +
-      '<div class="r2">' + (m.baza !== 'reczna' ? pole('Zużycie na 1 ' + WF.opisBazy(m.baza).jedn, s + 'zuzycie', pl(m.zuzycie), '', NUM) : '<div></div>') + pole('Ilość w opakowaniu', s + 'opak', pl(m.opak), '', NUM) + '</div>' +
+        '<label>Liczone od</label>' + opcjeBaza(s + 'baza', m.baza, '', fachyOferty(o)) + '<div class="met" data-mb="' + i + '">' + zObliczen(w, m) + '</div>') +
+      '<div class="r2">' + (m.baza !== 'reczna' ? pole(etZuzycia(m.baza), s + 'zuzycie', pl(m.zuzycie), '', NUM) : '<div></div>') + pole('Ilość w opakowaniu', s + 'opak', pl(m.opak), '', NUM) + '</div>' +
       '<div class="r2">' + pole('Opakowanie', s + 'opis', m.opis) + pole('Cena za opakowanie', s + 'cena', pl(m.cena), '', NUM) + '</div>' +
       '<div class="wyn" data-wm="' + i + '"><span>Potrzeba: <b>' + WF.il(w.potrzeba) + '</b> → <b>' + w.opakowania + ' × ' + esc(m.opis || 'szt.') + '</b></span><span><b>' + (o.materialyKlienta ? '—' : WF.zl(w.wartosc)) + '</b></span></div></div>';
   });
@@ -510,6 +512,8 @@ function zSuma(o) {
     '<div><label>VAT</label><select data-p="vat">' + [['zw', 'zwolniony'], ['8', '8%'], ['23', '23%']].map(function (v) { return '<option value="' + v[0] + '" ' + (String(o.vat) === v[0] ? 'selected' : '') + '>' + v[1] + '</option>'; }).join('') + '</select></div>' +
     pole('Zaliczka %', 'zaliczka', o.zaliczka, '', NUM) + '</div>' + pole('Oferta ważna (dni)', 'waznosc', o.waznosc, '', NUM) +
     '<label>Uwagi do tej oferty</label><textarea data-p="uwagi" rows="3">' + esc(o.uwagi) + '</textarea></div>' +
+    (function () { var z = o.materialy.filter(function (m, i) { return !(p.materialyPoz[i].opakowania > 0); }).map(function (m) { return esc(m.nazwa); });
+      return z.length ? '<div class="k"><p class="ost">⚠ Ilość 0, więc te materiały nie trafią do oferty: ' + z.join(', ') + '. Uzupełnij „Pomiary” albo ilości w „Robocizna”.</p></div>' : ''; })() +
     '<div class="k suma"><h2>Podsumowanie</h2><div><span>Robocizna</span><span>' + WF.zl(p.robocizna) + '</span></div>' +
     (p.rabat ? '<div><span>Rabat</span><span>−' + WF.zl(p.rabat) + '</span></div>' : '') +
     '<div><span>Materiały</span><span>' + (o.materialyKlienta ? 'po stronie klienta' : WF.zl(p.materialy)) + '</span></div>' +
@@ -574,7 +578,7 @@ function odswiezLiczby(o) {
   o.materialy.forEach(function (m, i) { var e = document.querySelector('[data-wm="' + i + '"]'), w = p.materialyPoz[i]; if (e) e.innerHTML = '<span>Potrzeba: <b>' + WF.il(w.potrzeba) + '</b> → <b>' + w.opakowania + ' × ' + esc(m.opis || 'szt.') + '</b></span><span><b>' + (o.materialyKlienta ? '—' : WF.zl(w.wartosc)) + '</b></span>'; });
   var r = WF.wynikiFachow(o);
   Object.keys(KARTY).forEach(function (f) { var e = document.querySelector('[data-fw="' + f + '"]'); if (e && o.obmiary && o.obmiary[f]) e.innerHTML = KARTY[f].wynik(r, o.obmiary[f]); });
-  o.materialy.forEach(function (m, i) { var e = document.querySelector('[data-mb="' + i + '"]'); if (e) e.innerHTML = 'z obliczeń: <b>' + WF.il(p.materialyPoz[i].baza) + ' ' + WF.opisBazy(m.baza).jedn + '</b>'; });
+  o.materialy.forEach(function (m, i) { var e = document.querySelector('[data-mb="' + i + '"]'); if (e) e.innerHTML = zObliczen(p.materialyPoz[i], m); });
   o.pomieszczenia.forEach(function (pm, i) { var e = document.querySelector('[data-met="' + i + '"]'); if (e) { var m = WF.metryki(pm); e.innerHTML = 'Podłoga <b>' + WF.il(m.podloga) + ' m²</b> · Ściany <b>' + WF.il(m.sciany) + ' m²</b> · Sufit <b>' + WF.il(m.sufit) + ' m²</b> · Obwód <b>' + WF.il(m.obwod) + ' mb</b>'; } });
 }
 
@@ -592,9 +596,10 @@ function dokument(o) {
     o.pozycje.forEach(function (z, i) { h += '<tr><td>' + (i + 1) + '</td><td>' + esc(z.nazwa) + '</td><td class="n">' + WF.il(p.pozycje[i].il) + ' ' + esc(z.jedn) + '</td><td class="n">' + WF.zl(WF.liczba(z.cena)) + '</td><td class="n">' + WF.zl(p.pozycje[i].wartosc) + '</td></tr>'; });
     h += '</table>';
   }
-  if (o.materialy.length) {
+  var matD = o.materialy.map(function (m, i) { return [m, p.materialyPoz[i]]; }).filter(function (x) { return x[1].opakowania > 0; });
+  if (matD.length) {
     h += '<table><tr><th>Lp.</th><th>' + (o.materialyKlienta ? 'Materiały do zakupu przez klienta' : 'Materiały') + '</th><th class="n">Ilość</th>' + (o.materialyKlienta ? '' : '<th class="n">Cena</th><th class="n">Wartość</th>') + '</tr>';
-    o.materialy.forEach(function (m, i) { var w = p.materialyPoz[i]; h += '<tr><td>' + (i + 1) + '</td><td>' + esc(m.nazwa) + '</td><td class="n">' + w.opakowania + ' × ' + esc(m.opis || 'szt.') + '</td>' + (o.materialyKlienta ? '' : '<td class="n">' + WF.zl(WF.liczba(m.cena)) + '</td><td class="n">' + WF.zl(w.wartosc) + '</td>') + '</tr>'; });
+    matD.forEach(function (x, i) { var m = x[0], w = x[1]; h += '<tr><td>' + (i + 1) + '</td><td>' + esc(m.nazwa) + '</td><td class="n">' + w.opakowania + ' × ' + esc(m.opis || 'szt.') + '</td>' + (o.materialyKlienta ? '' : '<td class="n">' + WF.zl(WF.liczba(m.cena)) + '</td><td class="n">' + WF.zl(w.wartosc) + '</td>') + '</tr>'; });
     h += '</table>';
   }
   h += '<div class="sumy"><div><span>Robocizna</span><span>' + WF.zl(p.robocizna) + '</span></div>' + (p.rabat ? '<div><span>Rabat ' + WF.il(WF.liczba(o.rabat)) + '%</span><span>−' + WF.zl(p.rabat) + '</span></div>' : '') +
@@ -651,7 +656,7 @@ function widokCennik() {
   h += '<button class="btn szer" id="dodC">+ Dodaj pozycję</button></div><div class="k"><h2>Materiały</h2>';
   S.katMat.forEach(function (m, i) {
     h += '<div class="poz"><div class="nag"><input data-c="katMat.' + i + '.nazwa" value="' + esc(m.nazwa) + '"><button class="btn ma us" data-usm="' + i + '">✕</button></div><label>Liczone od</label>' + opcjeBaza('katMat.' + i + '.baza', m.baza, 'data-c', m.fk ? [m.fk] : S.fachy) + rynek(m, i) + '<div class="r2">' +
-      '<div><label>Zużycie na 1 ' + (m.baza === 'reczna' ? 'szt.' : WF.opisBazy(m.baza).jedn) + '</label><input data-c="katMat.' + i + '.zuzycie" value="' + esc(pl(m.zuzycie)) + '"' + NUM + '></div><div><label>Ilość w opakowaniu</label><input data-c="katMat.' + i + '.opak" value="' + esc(pl(m.opak)) + '"' + NUM + '></div></div><div class="r2">' +
+      '<div><label>' + (m.baza === 'reczna' ? 'Zużycie na 1 szt.' : etZuzycia(m.baza)) + '</label><input data-c="katMat.' + i + '.zuzycie" value="' + esc(pl(m.zuzycie)) + '"' + NUM + '></div><div><label>Ilość w opakowaniu</label><input data-c="katMat.' + i + '.opak" value="' + esc(pl(m.opak)) + '"' + NUM + '></div></div><div class="r2">' +
       '<div><label>Opakowanie</label><input data-c="katMat.' + i + '.opis" value="' + esc(m.opis) + '"></div><div><label>Cena za opakowanie</label><input data-c="katMat.' + i + '.cena" value="' + esc(m.cena) + '"' + NUM + '></div></div></div>';
   });
   h += '<button class="btn szer" id="dodM">+ Dodaj materiał</button></div><div class="k"><h2>Dodaj cennik fachu</h2>' +

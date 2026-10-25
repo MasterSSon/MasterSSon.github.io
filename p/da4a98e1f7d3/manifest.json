@@ -1,0 +1,1 @@
+{"name": "Panel produktów MasterSSon", "short_name": "Panel", "start_url": ".", "display": "standalone", "background_color": "#14213d", "theme_color": "#14213d", "icons": [{"src": "ikona.png", "sizes": "512x512", "type": "image/png"}]}

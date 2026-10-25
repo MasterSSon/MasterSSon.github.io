@@ -1,0 +1,136 @@
+{
+"data": "2026-10-25",
+"zrodlo": "OBI.pl, mediana cen z wyszukiwarki sklepu",
+"ceny": {
+"klej_plytki": {
+"jedn": "kg",
+"cena": 1.88,
+"n": 10
+},
+"fuga": {
+"jedn": "kg",
+"cena": 19.99,
+"n": 22
+},
+"grunt": {
+"jedn": "l",
+"cena": 4.92,
+"n": 4
+},
+"farba_biala": {
+"jedn": "l",
+"cena": 17.3,
+"n": 12
+},
+"gladz": {
+"jedn": "kg",
+"cena": 2.7,
+"n": 8
+},
+"masa_samopoz": {
+"jedn": "kg",
+"cena": 2.18,
+"n": 10
+},
+"ydy15": {
+"jedn": "m",
+"cena": 3.84,
+"n": 5
+},
+"ydy25": {
+"jedn": "m",
+"cena": 6.1,
+"n": 5
+},
+"b16": {
+"jedn": "szt",
+"cena": 14.89,
+"n": 6
+},
+"gips_szpachlowy": {
+"jedn": "kg",
+"cena": 2.27,
+"n": 8
+},
+"rura_pex16": {
+"jedn": "m",
+"cena": 2.25,
+"n": 7
+},
+"kolano_pvc50": {
+"jedn": "szt",
+"cena": 8.19,
+"n": 11
+},
+"plyta_gk": {
+"jedn": "m2",
+"cena": 21.46,
+"n": 11
+},
+"profil_cw50": {
+"jedn": "m",
+"cena": 6.48,
+"n": 4
+},
+"profil_cd60": {
+"jedn": "m",
+"cena": 4.69,
+"n": 6
+},
+"masa_spoinowa": {
+"jedn": "kg",
+"cena": 6.99,
+"n": 4
+},
+"tynk_gipsowy": {
+"jedn": "kg",
+"cena": 1.25,
+"n": 4
+},
+"zaprawa_murarska": {
+"jedn": "kg",
+"cena": 1.16,
+"n": 10
+},
+"klej_styropian": {
+"jedn": "kg",
+"cena": 1.14,
+"n": 4
+},
+"kolki": {
+"jedn": "szt",
+"cena": 0.64,
+"n": 7
+},
+"siatka": {
+"jedn": "m",
+"cena": 6.2,
+"n": 5
+},
+"tynk_silikonowy": {
+"jedn": "kg",
+"cena": 7.8,
+"n": 4
+},
+"lakier_parkiet": {
+"jedn": "l",
+"cena": 83.6,
+"n": 18
+},
+"rura_podlogowka": {
+"jedn": "m",
+"cena": 2.2,
+"n": 5
+},
+"pianka": {
+"jedn": "szt",
+"cena": 31.99,
+"n": 23
+},
+"cement": {
+"jedn": "kg",
+"cena": 0.65,
+"n": 3
+}
+}
+}

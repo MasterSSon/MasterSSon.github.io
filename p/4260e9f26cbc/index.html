@@ -465,6 +465,7 @@ function opcjeBaza(sciezka, wart, atr, fachy) {
   return '<select ' + (atr || 'data-p') + '="' + sciezka + '">' + Object.keys(grupy).map(function (g) { return '<optgroup label="' + esc(g) + '">' + grupy[g].join('') + '</optgroup>'; }).join('') + '</select>';
 }
 // Legenda skrótów: każdy skrót w oknie dostaje gwiazdki (*, **, …), opis na dole okna
+var WERSJA_APP = '1.2.4'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
 var SKROTY = [['J.m.', ''], ['j.m.', 'jednostka miary — w czym liczysz pracę (m², mb, szt., kpl…)'], ['kpl', 'komplet — usługa liczona w całości, jako 1 sztuka'],
   ['mb', 'metr bieżący — długość (np. listwy, przewody, rury)'], ['szt.', 'sztuka'], ['opak.', 'opakowanie'], ['Ø', 'średnica rury w mm'],
   ['wod.', 'instalacja wodna'], ['kan.', 'kanalizacja'], ['h', 'godzina'], ['t', 'tona'], ['Lp.', 'liczba porządkowa']];
@@ -720,7 +721,7 @@ function widokUstawienia() {
     '<label>Stały tekst na ofercie</label><textarea data-u="warunki" rows="3">' + esc(u.warunki) + '</textarea>' +
     '<p class="info">VAT 8% dotyczy zwykle remontów w budownictwie mieszkaniowym; sprawdź ze swoją księgową, która stawka Cię dotyczy.</p></div>' +
     '<div class="k"><h2>Kopia zapasowa</h2><p class="info">Dane są tylko w tym telefonie. Zrób kopię raz na jakiś czas.</p><div class="pasek"><button class="btn" id="eksp">Zapisz kopię</button><label class="btn" style="margin:0">Wczytaj kopię<input type="file" id="imp" accept=".json,application/json" hidden></label></div></div>' +
-    '<p class="info" style="text-align:center">Wycena Fachowca 1.2 · MasterSSon</p>';
+    '<p class="info" style="text-align:center">Wycena Fachowca ' + WERSJA_APP + ' · MasterSSon</p>';
   [].forEach.call(document.querySelectorAll('[data-f]'), function (el) { el.addEventListener('change', function () { f[el.dataset.f] = el.value.trim(); zapisz(); }); });
   [].forEach.call(document.querySelectorAll('[data-u]'), function (el) { el.addEventListener('change', function () { u[el.dataset.u] = el.value; zapisz(); }); });
   var b;
@@ -747,7 +748,11 @@ function widokUstawienia() {
 }
 
 wczytaj(); pokaz(); pobierzCeny();
-if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(function () {});
+if ('serviceWorker' in navigator && location.protocol === 'https:') {
+  var swByl = !!navigator.serviceWorker.controller; // nowa wersja przejęła stronę → przeładuj raz, żeby od razu działała
+  navigator.serviceWorker.addEventListener('controllerchange', function () { if (swByl && !window.__przeladowano) { window.__przeladowano = true; location.reload(); } });
+  navigator.serviceWorker.register('sw.js').then(function (r) { r.update(); }).catch(function () {});
+}
 </script>
 </body>
 </html>

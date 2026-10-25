@@ -135,9 +135,9 @@ var WF = (function () {
     malarz: function (o, d) {
       var pom = wybranePom(o, d.pom);
       var pow = suma(pom, function (p) { var m = metryki(p); return (tak(d.sciany) ? m.sciany : 0) + (tak(d.sufit) ? m.sufit : 0); });
-      if (!(pow > 0)) pow = recznePrace(o, ['sciany', 'sufit']) || recznePrace(o, ['ma_pow']);
+      if (!(pow > 0) && !d.bezRecznych) pow = recznePrace(o, ['sciany', 'sufit']) || recznePrace(o, ['ma_pow']);
       var gl = tak(d.gladzTak) ? pow : 0, wyd = liczba(d.wydajnosc);
-      if (!(gl > 0)) gl = recznePrace(o, ['ma_gladz_m2']);
+      if (!(gl > 0) && !d.bezRecznych) gl = recznePrace(o, ['ma_gladz_m2']);
       return { ma_pow: pow, ma_farba_l: wyd > 0 ? pow * liczba(d.warstwy) / wyd : 0, ma_gladz_m2: gl,
         ma_gladz_kg: gl * liczba(d.gladzMm) * (GLADZ[d.gladzRodzaj] || GLADZ.gotowa)[1], ma_grunt_l: pow * 0.1 * liczba(d.grunt) };
     },
@@ -207,11 +207,37 @@ var WF = (function () {
     return Math.round(c.cena * liczba(ile) * 100) / 100;
   }
 
+  // Fachy liczone z pomieszczeń: przy 2+ pomieszczeniach każde ma własne ustawienia (warstwy, wydajność, płytki…)
+  var POKOJOWE = ['glazurnik', 'malarz', 'podlogi', 'tynkarz', 'posadzkarz', 'parkieciarz'];
+  function ustawieniaPokoju(d, i) {
+    var u = {}, p = d.pokoje && d.pokoje[i];
+    Object.keys(d).forEach(function (k) { if (k !== 'pokoje' && k !== 'pom') u[k] = d[k]; });
+    if (p) Object.keys(p).forEach(function (k) { u[k] = p[k]; });
+    if (!p || p.wl == null) u.wl = d.pom === 'all' || d.pom == null || d.pom === '' || String(d.pom) === String(i);
+    if (!p) { // stara oferta: liczby „na całość” (drzwi, narożniki) zostają przy pierwszym pomieszczeniu
+      var pierwszy = d.pom === 'all' || d.pom == null || d.pom === '' ? 0 : +d.pom;
+      ['drzwi', 'narozniki'].forEach(function (k) { if (i !== pierwszy && d[k] !== '' && d[k] != null) u[k] = '0'; });
+    }
+    u.pom = String(i); return u;
+  }
+  function policzFach(o, f, d) {
+    var pom = o.pomieszczenia || [];
+    if (POKOJOWE.indexOf(f) < 0 || pom.length < 2) return KALK[f](o, d);
+    var w = {};
+    pom.forEach(function (p, i) {
+      var u = ustawieniaPokoju(d, i); if (!tak(u.wl)) return; u.bezRecznych = true;
+      var r = KALK[f](o, u); Object.keys(r).forEach(function (k) { w[k] = (w[k] || 0) + r[k]; });
+    });
+    if (Object.keys(w).some(function (k) { return w[k] > 0; })) return w;
+    var z = {}; Object.keys(d).forEach(function (k) { z[k] = d[k]; }); z.pom = 'brak'; // brak wymiarów → ilości z ręcznie wpisanych prac
+    return KALK[f](o, z);
+  }
+
   // Wszystkie ilości z kalkulatorów fachów w tej ofercie: { klucz: liczba }
   function wynikiFachow(oferta) {
     var w = {}, ob = oferta.obmiary || {};
     Object.keys(KALK).forEach(function (f) {
-      if (!ob[f]) return; var r = KALK[f](oferta, ob[f]);
+      if (!ob[f]) return; var r = policzFach(oferta, f, ob[f]);
       Object.keys(r).forEach(function (k) { w[k] = zaokr(r[k] > 0 ? r[k] : recznePrace(oferta, [k]), 2); });
     });
     return w;
@@ -305,7 +331,7 @@ var WF = (function () {
   return { liczba: liczba, zaokr: zaokr, metryki: metryki, iloscBazowa: iloscBazowa, iloscPozycji: iloscPozycji,
     policzMaterial: policzMaterial, podsumowanie: podsumowanie, zl: zl, il: il, slownie: slownie, BAZY: BAZY, stawkaVat: stawkaVat,
     POKOJ: POKOJ, BAZY_FACH: BAZY_FACH, SR_WODA: SR_WODA, SR_KAN: SR_KAN, UKLADY: UKLADY, KLEJ: KLEJ, GLADZ: GLADZ,
-    domyslneObmiary: domyslneObmiary, wynikiFachow: wynikiFachow, opisBazy: opisBazy, listaBaz: listaBaz,
+    domyslneObmiary: domyslneObmiary, wynikiFachow: wynikiFachow, POKOJOWE: POKOJOWE, ustawieniaPokoju: ustawieniaPokoju, opisBazy: opisBazy, listaBaz: listaBaz,
     MURY: MURY, TYNKI: TYNKI, cenaRynkowa: cenaRynkowa, KALK: KALK };
 })();
 if (typeof module !== 'undefined') module.exports = WF;

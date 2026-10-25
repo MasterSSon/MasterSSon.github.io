@@ -54,6 +54,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--k);border-color:
 .suma .duza{font-size:1.25rem;font-weight:800;color:var(--k);border-top:1px solid var(--r);margin-top:6px;padding-top:8px}
 .info{color:var(--s);font-size:.9rem}
 .leg{margin:14px 0 4px;padding:10px 12px;border-top:1px solid #ddd;color:var(--s);font-size:.85rem}.leg b{color:#c62828}
+.pokf{border-top:1px dashed #cfd8dc;margin-top:10px;padding-top:8px}
 .ost{color:#c62828;font-size:.88rem;font-weight:600}
 .chk{display:flex;gap:8px;align-items:center;font-size:.95rem;color:var(--t);margin:8px 0}
 .chk input{width:auto}
@@ -86,8 +87,8 @@ details.k summary{cursor:pointer;color:var(--k)}.fach details{margin:6px 0}.fach
   body{background:#fff}
   header.g,nav.d,.nie-druk,.toast{display:none!important}
   main{padding:0;max-width:none}
-  .dok{padding:0;border-radius:0}
 <script data-goatcounter="https://mastersson.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  .dok{padding:0;border-radius:0}
 }
 </style>
 </head>
@@ -286,6 +287,10 @@ function obmiaryOferty(o) { // dokłada brakujące kalkulatory fachów; true = c
   var fachy = o.fach ? [o.fach] : S.fachy.slice();
   (o.pozycje || []).concat(o.materialy || []).forEach(function (x) { var f = WF.opisBazy(x.baza).fach; if (f && fachy.indexOf(f) < 0) fachy.push(f); });
   fachy.forEach(function (f) { if (!o.obmiary[f] && WF.domyslneObmiary(f)) { o.obmiary[f] = WF.domyslneObmiary(f); zm = true; } });
+  if ((o.pomieszczenia || []).length > 1) WF.POKOJOWE.forEach(function (f) { // każde pomieszczenie dostaje własne ustawienia fachu
+    var d = o.obmiary[f]; if (!d) return; d.pokoje = d.pokoje || [];
+    o.pomieszczenia.forEach(function (p, i) { if (!d.pokoje[i]) { var u = WF.ustawieniaPokoju(d, i); delete u.pom; d.pokoje[i] = u; zm = true; } });
+  });
   return zm;
 }
 function pole(et, sciezka, wart, typ, extra) {
@@ -314,7 +319,7 @@ function zPomiary(o) {
       '<div class="met" data-met="' + i + '">Podłoga <b>' + WF.il(m.podloga) + ' m²</b> · Ściany <b>' + WF.il(m.sciany) + ' m²</b> · Sufit <b>' + WF.il(m.sufit) + ' m²</b> · Obwód <b>' + WF.il(m.obwod) + ' mb</b></div></div>';
   });
   if (zPokojami(o)) h += '<button class="btn szer" id="dodPom">+ Dodaj pomieszczenie</button>';
-  fachyOferty(o).forEach(function (f) { if (KARTY[f] && o.obmiary[f]) h += '<div class="k fach"><h2>' + KARTY[f].tyt + '</h2>' + KARTY[f].pola(o, o.obmiary[f], 'obmiary.' + f + '.') + '<div class="met wf" data-fw="' + f + '">' + KARTY[f].wynik(WF.wynikiFachow(o), o.obmiary[f]) + '</div></div>'; });
+  fachyOferty(o).forEach(function (f) { if (KARTY[f] && o.obmiary[f]) h += '<div class="k fach"><h2>' + KARTY[f].tyt + '</h2>' + polaFachu(o, f) + '<div class="met wf" data-fw="' + f + '">' + KARTY[f].wynik(WF.wynikiFachow(o), o.obmiary[f]) + '</div></div>'; });
   var reszta = Object.keys(KARTY).filter(function (f) { return !o.obmiary[f]; });
   if (reszta.length) h += '<details class="k"><summary>Robisz przy tym coś jeszcze? Dodaj obliczenia innego fachu</summary>' +
     reszta.map(function (f) { return '<button class="btn ma" style="margin:3px" data-dfach="' + f + '">+ ' + WF_CENNIKI[f].ikona + ' ' + esc(WF_CENNIKI[f].nazwa) + '</button>'; }).join('') + '</details>';
@@ -326,7 +331,15 @@ function wybor(sciezka, wart, opcje) {
 }
 function zaznacz(sciezka, wart, tekst) { return '<label class="chk"><input type="checkbox" data-p="' + sciezka + '" ' + (wart === true || wart === 'true' ? 'checked' : '') + '> ' + tekst + '</label>'; }
 function w(v, j) { return '<b>' + WF.il(v || 0) + ' ' + j + '</b>'; }
-function pomKarta(o, s, d) { return '<label>Pomieszczenie</label>' + opcjePom(o, s + 'pom', d.pom); }
+function pomKarta(o, s, d) { return ''; } // wybór pomieszczenia zastąpiony osobnymi ustawieniami dla każdego pomieszczenia
+function polaFachu(o, f) {
+  var d = o.obmiary[f], s = 'obmiary.' + f + '.';
+  if (WF.POKOJOWE.indexOf(f) < 0 || o.pomieszczenia.length < 2) return KARTY[f].pola(o, d, s);
+  return '<p class="info" style="margin-top:0">Ustaw osobno dla każdego pomieszczenia. Odznacz te, w których tego nie robisz.</p>' + o.pomieszczenia.map(function (p, i) {
+    var u = WF.ustawieniaPokoju(d, i), sp = s + 'pokoje.' + i + '.';
+    return '<div class="pokf">' + zaznacz(sp + 'wl', u.wl, '<b>' + esc(p.nazwa || ('Pomieszczenie ' + (i + 1))) + '</b>') + (u.wl === true || u.wl === 'true' ? KARTY[f].pola(o, u, sp) : '') + '</div>';
+  }).join('');
+}
 var UKL = Object.keys(WF.UKLADY).map(function (k) { return [k, WF.UKLADY[k][0] + ' (zapas ' + Math.round(WF.UKLADY[k][1] * 100) + '%)']; });
 var KARTY = {
   elektryk: { tyt: '⚡ Elektryk — instalacja',
@@ -466,7 +479,7 @@ function opcjeBaza(sciezka, wart, atr, fachy) {
   return '<select ' + (atr || 'data-p') + '="' + sciezka + '">' + Object.keys(grupy).map(function (g) { return '<optgroup label="' + esc(g) + '">' + grupy[g].join('') + '</optgroup>'; }).join('') + '</select>';
 }
 // Legenda skrótów: każdy skrót w oknie dostaje gwiazdki (*, **, …), opis na dole okna
-var WERSJA_APP = '1.2.4'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
+var WERSJA_APP = '1.2.5'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
 var SKROTY = [['J.m.', ''], ['j.m.', 'jednostka miary — w czym liczysz pracę (m², mb, szt., kpl…)'], ['kpl', 'komplet — usługa liczona w całości, jako 1 sztuka'],
   ['mb', 'metr bieżący — długość (np. listwy, przewody, rury)'], ['szt.', 'sztuka'], ['opak.', 'opakowanie'], ['Ø', 'średnica rury w mm'],
   ['wod.', 'instalacja wodna'], ['kan.', 'kanalizacja'], ['h', 'godzina'], ['t', 'tona'], ['Lp.', 'liczba porządkowa']];
@@ -601,7 +614,8 @@ function podepnij(o, zak) {
   if ((b = $('#usO'))) b.onclick = function () { if (confirm('Usunąć ofertę ' + o.nr + '?')) { S.oferty = S.oferty.filter(function (x) { return x.id !== o.id; }); zapisz(); idz('#lista'); } };
 }
 function naprawPom(o, k) { // po usunięciu pomieszczenia k: odwołania do niego -> „wszystkie”, dalsze indeksy o 1 w dół
-  o.pozycje.concat(o.materialy).forEach(function (x) { if (x.pom === 'all' || x.pom == null || x.pom === '') return; var n = +x.pom; if (n === k) x.pom = 'all'; else if (n > k) x.pom = String(n - 1); });
+  o.pozycje.concat(o.materialy).concat(Object.keys(o.obmiary || {}).map(function (f) { return o.obmiary[f]; })).forEach(function (x) { if (x.pom === 'all' || x.pom == null || x.pom === '') return; var n = +x.pom; if (n === k) x.pom = 'all'; else if (n > k) x.pom = String(n - 1); });
+  Object.keys(o.obmiary || {}).forEach(function (f) { var d = o.obmiary[f]; if (d.pokoje) d.pokoje.splice(k, 1); });
 }
 function odswiezLiczby(o) {
   var p = WF.podsumowanie(o); var r = $('#razem'); if (r) r.textContent = WF.zl(p.brutto);

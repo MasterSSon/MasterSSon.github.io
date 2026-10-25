@@ -134,6 +134,16 @@ function wzorPracy(nazwa) { var w = null; Object.keys(WF_CENNIKI).forEach(functi
 function wczytaj() {
   try { S = JSON.parse(localStorage.getItem(KLUCZ)) || nowyStan(); } catch (e) { S = nowyStan(); }
   if (window.WF_TEST) S.odblok = true;
+  // pozycje cennika rozbite na osobne (1.2.8: membrana / kontrłaty / łaty) — stara znika, jeśli nie zmieniałeś jej ceny
+  [['Membrana, łaty i kontrłaty', 25, 'dekarz']].forEach(function (u) {
+    var przed = (S.cennik || []).length;
+    S.cennik = (S.cennik || []).filter(function (x) { return !(x.nazwa === u[0] && String(x.cena) === String(u[1])); });
+    if (S.cennik.length < przed && S.fachy) setTimeout(function () { dodajFach(u[2]); zapisz(); }, 0);
+  });
+  // 1.2.8: prace „na powierzchnię” liczone z obliczeń fachu zamiast wpisywania ręcznie
+  [['Hydroizolacja (folia w płynie)', 'gl_pod_m2'], ['Skucie starych płytek', 'gl_razem_m2'], ['Demontaż starej podłogi', 'po_m2'], ['Demontaż starego pokrycia', 'de_m2']].forEach(function (u) {
+    (S.cennik || []).forEach(function (x) { if (x.nazwa === u[0] && x.baza === 'reczna') x.baza = u[1]; });
+  });
   var n = nowyStan(); Object.keys(n).forEach(function (k) { if (S[k] === undefined) S[k] = n[k]; });
   if (!S.fachy.length) { // wersja 1.0 nie zapisywała fachów: odtwórz z cennika
     var stare = { 'Glazurnik': ['glazurnik'], 'Malarz': ['malarz'], 'Malarz / gładzie': ['malarz'], 'Podłogi i panele': ['podlogi'],
@@ -262,7 +272,7 @@ function utworzOferte(k, przyklad) {
     var reczne = 0;
     var pomin = pr.pomin || [];
     S.cennik.filter(function (x) { return x.fk === k && pomin.indexOf(x.nazwa) < 0; }).forEach(function (x) {
-      if (x.baza === 'reczna' && reczne++ > 0) return;
+      if (x.baza === 'reczna' && (['szt.', 'kpl'].indexOf(x.jedn) < 0 || reczne++ > 0)) return; // przykład: bez „1 m²” z sufitu
       o.pozycje.push({ nazwa: x.nazwa, jedn: x.jedn, cena: x.cena, baza: x.baza, pom: 'all', ilosc: x.baza === 'reczna' ? 1 : '', recznie: false });
     });
     S.katMat.filter(function (x) { return x.fk === k && pomin.indexOf(x.nazwa) < 0; }).forEach(function (x) {
@@ -485,7 +495,7 @@ function opcjeBaza(sciezka, wart, atr, fachy) {
   return '<select ' + (atr || 'data-p') + '="' + sciezka + '">' + Object.keys(grupy).map(function (g) { return '<optgroup label="' + esc(g) + '">' + grupy[g].join('') + '</optgroup>'; }).join('') + '</select>';
 }
 // Legenda skrótów: każdy skrót w oknie dostaje gwiazdki (*, **, …), opis na dole okna
-var WERSJA_APP = '1.2.7'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
+var WERSJA_APP = '1.2.8'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
 var SKROTY = [['J.m.', ''], ['j.m.', 'jednostka miary — w czym liczysz pracę (m², mb, szt., kpl…)'], ['kpl', 'komplet — usługa liczona w całości, jako 1 sztuka'],
   ['mb', 'metr bieżący — długość (np. listwy, przewody, rury)'], ['szt.', 'sztuka'], ['opak.', 'opakowanie'], ['Ø', 'średnica rury w mm'],
   ['wod.', 'instalacja wodna'], ['kan.', 'kanalizacja'], ['h', 'godzina'], ['t', 'tona'], ['Lp.', 'liczba porządkowa']];
@@ -612,6 +622,8 @@ function podepnij(o, zak) {
       var v = el.type === 'checkbox' ? el.checked : el.value;
       ustawPole(o, el.dataset.p, v);
       if (el.dataset.p === 'obmiary.murarz.typ' && WF.MURY[v]) { o.obmiary.murarz.szt = pl(WF.MURY[v][1]); o.obmiary.murarz.zaprawa = pl(WF.MURY[v][2]); }
+      var mj = /^pozycje\.(\d+)\.baza$/.exec(el.dataset.p); // J.m. zawsze zgodna z tym, od czego liczysz
+      if (mj && v !== 'reczna') o.pozycje[+mj[1]].jedn = WF.opisBazy(v).jedn;
       var mr = /^obmiary\.hydraulik\.odcinki\.(\d+)\.rodzaj$/.exec(el.dataset.p);
       if (mr) { var x = o.obmiary.hydraulik.odcinki[+mr[1]]; x.sr = v === 'k' ? '50' : '16'; }
       zapisz();
@@ -743,7 +755,7 @@ function widokCennik() {
     Object.keys(WF_CENNIKI).map(function (k) { return '<button class="btn ma" style="margin:4px" data-fach="' + k + '">' + esc(WF_CENNIKI[k].nazwa) + '</button>'; }).join('') + '</div>';
   $('#m').innerHTML = h;
   [].forEach.call(document.querySelectorAll('[data-c]'), function (el) {
-    el.addEventListener('change', function () { ustawPole(S, el.dataset.c, el.value); if (/^katMat\.\d+\.cena$/.test(el.dataset.c)) S.katMat[+el.dataset.c.split('.')[1]].auto = false; zapisz(); if (el.tagName === 'SELECT' || /\.cena$/.test(el.dataset.c)) widokCennik(); });
+    el.addEventListener('change', function () { ustawPole(S, el.dataset.c, el.value); if (/^katMat\.\d+\.cena$/.test(el.dataset.c)) S.katMat[+el.dataset.c.split('.')[1]].auto = false; var mc = /^cennik\.(\d+)\.baza$/.exec(el.dataset.c); if (mc && el.value !== 'reczna') S.cennik[+mc[1]].jedn = WF.opisBazy(el.value).jedn; zapisz(); if (el.tagName === 'SELECT' || /\.cena$/.test(el.dataset.c)) widokCennik(); });
   });
   [].forEach.call(document.querySelectorAll('[data-usc]'), function (x) { x.onclick = function () { S.cennik.splice(+x.dataset.usc, 1); zapisz(); widokCennik(); }; });
   [].forEach.call(document.querySelectorAll('[data-rynek]'), function (x) { x.onclick = function () { var m = S.katMat[+x.dataset.rynek]; m.auto = true; zastosujCeny(); zapisz(); widokCennik(); toast('Przywrócono cenę rynkową'); }; });

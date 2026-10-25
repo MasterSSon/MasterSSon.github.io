@@ -10,11 +10,11 @@ var WF_CENNIKI = {
       ['Układanie płytek — podłoga', 'm²', 100, 'gl_pod_m2'],
       ['Układanie płytek — ściany', 'm²', 110, 'gl_sc_m2'],
       ['Gruntowanie podłoża', 'm²', 5, 'gl_razem_m2'],
-      ['Hydroizolacja (folia w płynie)', 'm²', 40, 'reczna'],
+      ['Hydroizolacja (folia w płynie)', 'm²', 40, 'gl_pod_m2'],
       ['Cokoliki z płytek', 'mb', 35, 'obwod'],
       ['Szlifowanie narożników 45°', 'mb', 70, 'reczna'],
       ['Montaż odpływu liniowego', 'szt.', 350, 'reczna'],
-      ['Skucie starych płytek', 'm²', 35, 'reczna'],
+      ['Skucie starych płytek', 'm²', 35, 'gl_razem_m2'],
       ['Wywóz gruzu', 'kpl', 300, 'reczna']
     ],
     materialy: [
@@ -51,7 +51,7 @@ var WF_CENNIKI = {
       ['Listwy przypodłogowe', 'mb', 20, 'po_listwy_mb'],
       ['Montaż listew progowych', 'szt.', 30, 'po_progi'],
       ['Wylewka samopoziomująca', 'm²', 30, 'po_m2'],
-      ['Demontaż starej podłogi', 'm²', 12, 'reczna']
+      ['Demontaż starej podłogi', 'm²', 12, 'po_m2']
     ],
     materialy: [
       ['Panele', 'po_panele_m2z', 1, 2.2, 'paczka 2,2 m²', 110],
@@ -222,9 +222,11 @@ var WF_CENNIKI = {
     przyklad: { tytul: 'Wymiana pokrycia dachu', obmiary: { pow: '140', kalenica: '11', typ: 'blacha' } },
     robocizna: [
       ['Krycie dachu', 'm²', 70, 'de_m2'],
-      ['Membrana, łaty i kontrłaty', 'm²', 25, 'de_m2'],
+      ['Montaż membrany dachowej', 'm²', 10, 'de_m2'],
+      ['Montaż kontrłat', 'mb', 5, 'de_kontrlaty_mb'],
+      ['Montaż łat', 'mb', 4, 'de_laty_mb'],
       ['Obróbka kalenicy', 'mb', 60, 'de_gasiory_mb'],
-      ['Demontaż starego pokrycia', 'm²', 20, 'reczna']
+      ['Demontaż starego pokrycia', 'm²', 20, 'de_m2']
     ],
     materialy: [
       ['Blachodachówka', 'de_pokrycie_m2', 1, 1, 'm²', 45],

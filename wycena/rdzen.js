@@ -15,7 +15,7 @@ var WF = (function () {
       sciany: zaokr(Math.max(0, obwod * wy - ot)) };
   }
 
-  var BAZY = { podloga: 'podłoga', sciany: 'ściany', sufit: 'sufit', obwod: 'obwód', reczna: 'ręcznie' };
+  var BAZY = { podloga: 'podłoga', sciany: 'ściany', sufit: 'sufit', obwod: 'obwód', reczna: 'wpisuję sam' };
   var POKOJ = { podloga: 'm²', sciany: 'm²', sufit: 'm²', obwod: 'mb' };
 
   // ---------- kalkulatory fachowe: każdy fach liczy własne ilości (bazy) ----------
@@ -220,7 +220,7 @@ var WF = (function () {
   // Nazwa i jednostka dowolnej bazy (pomieszczenie, fach, średnica rury)
   function opisBazy(k) {
     if (POKOJ[k]) return { nazwa: BAZY[k], jedn: POKOJ[k], fach: '' };
-    if (k === 'reczna' || !k) return { nazwa: 'ręcznie', jedn: 'j.', fach: '' };
+    if (k === 'reczna' || !k) return { nazwa: 'wpisuję sam', jedn: 'j.', fach: '' };
     for (var f in BAZY_FACH) if (BAZY_FACH[f][k]) return { nazwa: BAZY_FACH[f][k][0], jedn: BAZY_FACH[f][k][1], fach: f };
     var m = /^hy_(rura|kolana|troj)_(w|k)(\d+)$/.exec(k);
     if (m) return { nazwa: { rura: 'rura', kolana: 'kolana', troj: 'trójniki' }[m[1]] + (m[2] === 'w' ? ' wod.' : ' kan.') + ' Ø' + m[3],

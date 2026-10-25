@@ -53,6 +53,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--k);border-color:
 .suma div{display:flex;justify-content:space-between;padding:4px 0}
 .suma .duza{font-size:1.25rem;font-weight:800;color:var(--k);border-top:1px solid var(--r);margin-top:6px;padding-top:8px}
 .info{color:var(--s);font-size:.9rem}
+.leg{margin:14px 0 4px;padding:10px 12px;border-top:1px solid #ddd;color:var(--s);font-size:.85rem}.leg b{color:#c62828}
 .ost{color:#c62828;font-size:.88rem;font-weight:600}
 .chk{display:flex;gap:8px;align-items:center;font-size:.95rem;color:var(--t);margin:8px 0}
 .chk input{width:auto}
@@ -463,11 +464,36 @@ function opcjeBaza(sciezka, wart, atr, fachy) {
   lista.forEach(function (b) { var d = WF.opisBazy(b), g = d.fach ? WF_CENNIKI[d.fach].nazwa : WF.POKOJ[b] ? 'Pomieszczenie' : 'Inne'; (grupy[g] = grupy[g] || []).push('<option value="' + b + '" ' + (b === wart ? 'selected' : '') + '>' + esc(d.nazwa) + (b === 'reczna' ? '' : ' (' + d.jedn + ')') + '</option>'); });
   return '<select ' + (atr || 'data-p') + '="' + sciezka + '">' + Object.keys(grupy).map(function (g) { return '<optgroup label="' + esc(g) + '">' + grupy[g].join('') + '</optgroup>'; }).join('') + '</select>';
 }
+// Legenda skrótów: każdy skrót w oknie dostaje gwiazdki (*, **, …), opis na dole okna
+var SKROTY = [['J.m.', ''], ['j.m.', 'jednostka miary — w czym liczysz pracę (m², mb, szt., kpl…)'], ['kpl', 'komplet — usługa liczona w całości, jako 1 sztuka'],
+  ['mb', 'metr bieżący — długość (np. listwy, przewody, rury)'], ['szt.', 'sztuka'], ['opak.', 'opakowanie'], ['Ø', 'średnica rury w mm'],
+  ['wod.', 'instalacja wodna'], ['kan.', 'kanalizacja'], ['h', 'godzina'], ['t', 'tona'], ['Lp.', 'liczba porządkowa']];
+var LEG = { mapa: {}, hash: '' }, LEG_RE = new RegExp('(^|[^\\p{L}.*])(' + SKROTY.map(function (s) { return s[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|') + ')(?![\\p{L}*])', 'gu');
+function legenda() {
+  var m = $('#m'); if (!m || m.querySelector('.dok')) { var s = $('#leg'); if (s) s.remove(); return; }
+  if (LEG.hash !== location.hash) { LEG.mapa = {}; LEG.hash = location.hash; }
+  var opis = {}; SKROTY.forEach(function (s) { opis[s[0]] = s[1]; });
+  var tw = document.createTreeWalker(m, NodeFilter.SHOW_TEXT, { acceptNode: function (n) { return n.parentNode.closest('#leg,textarea,script,style,select') ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT; } }), n, lista = [];
+  while ((n = tw.nextNode())) lista.push(n);
+  lista.forEach(function (n) {
+    var t = n.nodeValue, nowy = t.replace(LEG_RE, function (c, przed, sk) {
+      var kl = sk === 'J.m.' ? 'j.m.' : sk;
+      if (!LEG.mapa[kl]) LEG.mapa[kl] = Object.keys(LEG.mapa).length + 1; return przed + sk + new Array(LEG.mapa[kl] + 1).join('*'); });
+    if (nowy !== t) n.nodeValue = nowy;
+  });
+  var l = $('#leg'), k = Object.keys(LEG.mapa);
+  if (!k.length) { if (l) l.remove(); return; }
+  if (!l) { l = document.createElement('div'); l.id = 'leg'; l.className = 'leg'; }
+  if (l.parentNode !== m || m.lastChild !== l) m.appendChild(l);
+  l.innerHTML = '<div><b>Legenda skrótów</b></div>' + k.sort(function (a, b) { return LEG.mapa[a] - LEG.mapa[b]; }).map(function (s) { return '<div><b>' + new Array(LEG.mapa[s] + 1).join('*') + '</b> ' + esc(s) + ' — ' + esc(opis[s]) + '</div>'; }).join('');
+}
+var LEG_OBS = new MutationObserver(function () { LEG_OBS.disconnect(); try { legenda(); } finally { LEG_OBS.observe($('#m'), { childList: true, subtree: true, characterData: true }); } });
+document.addEventListener('DOMContentLoaded', function () { legenda(); LEG_OBS.observe($('#m'), { childList: true, subtree: true, characterData: true }); });
 function bazaPokoju(b) { return !!WF.POKOJ[b]; }
 function zObliczen(w, m) { return 'z obliczeń: <b>' + WF.il(w.baza) + ' ' + WF.opisBazy(m.baza).jedn + '</b>' + (w.baza > 0 ? '' : ' <span class="ost">⚠ uzupełnij „Pomiary” albo zaznacz niżej „wpiszę ilość sam”</span>'); }
 function etZuzycia(b) { return bazaPokoju(b) ? 'Zużycie na 1 ' + WF.opisBazy(b).jedn : 'Mnożnik (1 = tyle, ile z obliczeń)'; }
 function opcjePom(o, sciezka, wart) {
-  return '<select data-p="' + sciezka + '"><option value="all">wszystkie</option>' + o.pomieszczenia.map(function (p, i) { return '<option value="' + i + '" ' + (String(wart) === String(i) ? 'selected' : '') + '>' + esc(p.nazwa || ('Pom. ' + (i + 1))) + '</option>'; }).join('') + '</select>';
+  return '<select data-p="' + sciezka + '"><option value="all">wszystkie pomieszczenia</option>' + o.pomieszczenia.map(function (p, i) { return '<option value="' + i + '" ' + (String(wart) === String(i) ? 'selected' : '') + '>' + esc(p.nazwa || ('Pomieszczenie ' + (i + 1))) + '</option>'; }).join('') + '</select>';
 }
 function zRobocizna(o) {
   var p = WF.podsumowanie(o), h = '';
@@ -476,7 +502,7 @@ function zRobocizna(o) {
     h += '<div class="poz"><div class="nag"><input data-p="' + s + 'nazwa" value="' + esc(z.nazwa) + '"><button class="btn ma us" data-usun-poz="' + i + '">✕</button></div>' +
       '<div class="r3">' + pole('Cena za j.m.', s + 'cena', z.cena, '', NUM) + pole('J.m.', s + 'jedn', z.jedn) +
       '<div><label>Liczone od</label>' + opcjeBaza(s + 'baza', z.baza, '', fachyOferty(o)) + '</div></div>' +
-      (z.baza !== 'reczna' ? '<div class="r2">' + (bazaPokoju(z.baza) ? '<div><label>Pomieszczenie</label>' + opcjePom(o, s + 'pom', z.pom) + '</div>' : '<div></div>') +
+      (z.baza !== 'reczna' ? '<div class="r2">' + (bazaPokoju(z.baza) && !z.recznie && o.pomieszczenia.length > 1 ? '<div><label>Które pomieszczenie</label>' + opcjePom(o, s + 'pom', z.pom) + '</div>' : '<div></div>') +
         '<label class="chk" style="margin-top:26px"><input type="checkbox" data-p="' + s + 'recznie" ' + (z.recznie ? 'checked' : '') + '> wpiszę ilość sam</label></div>' : '') +
       (auto ? '' : pole('Ilość', s + 'ilosc', z.ilosc, '', NUM)) +
       '<div class="wyn" data-wp="' + i + '"><span>Ilość: <b>' + WF.il(p.pozycje[i].il) + ' ' + esc(z.jedn) + '</b></span><span>Wartość: <b>' + WF.zl(p.pozycje[i].wartosc) + '</b></span></div></div>';
@@ -491,7 +517,7 @@ function zMaterialy(o) {
   o.materialy.forEach(function (m, i) {
     var w = p.materialyPoz[i], s = 'materialy.' + i + '.';
     h += '<div class="poz"><div class="nag"><input data-p="' + s + 'nazwa" value="' + esc(m.nazwa) + '"><button class="btn ma us" data-usun-mat="' + i + '">✕</button></div>' +
-      (m.baza === 'reczna' || bazaPokoju(m.baza) ? '<div class="r2"><div><label>Liczone od</label>' + opcjeBaza(s + 'baza', m.baza, '', fachyOferty(o)) + '</div>' + (m.baza === 'reczna' ? pole('Ilość', s + 'ilosc', m.ilosc, '', NUM) : '<div><label>Pomieszczenie</label>' + opcjePom(o, s + 'pom', m.pom) + '</div>') + '</div>' :
+      (m.baza === 'reczna' || bazaPokoju(m.baza) ? '<div class="r2"><div><label>Liczone od</label>' + opcjeBaza(s + 'baza', m.baza, '', fachyOferty(o)) + '</div>' + (m.baza === 'reczna' ? pole('Ilość', s + 'ilosc', m.ilosc, '', NUM) : !m.recznie && o.pomieszczenia.length > 1 ? '<div><label>Które pomieszczenie</label>' + opcjePom(o, s + 'pom', m.pom) + '</div>' : '<div></div>') + '</div>' :
         '<label>Liczone od</label>' + opcjeBaza(s + 'baza', m.baza, '', fachyOferty(o)) + (m.recznie ? '' : '<div class="met" data-mb="' + i + '">' + zObliczen(w, m) + '</div>')) +
       (m.baza !== 'reczna' ? '<label class="chk"><input type="checkbox" data-p="' + s + 'recznie" ' + (m.recznie ? 'checked' : '') + '> wpiszę ilość sam</label>' : '') +
       '<div class="r2">' + (m.baza === 'reczna' ? '<div></div>' : m.recznie ? pole('Ilość (' + WF.opisBazy(m.baza).jedn + ')', s + 'ilosc', m.ilosc, '', NUM) : pole(etZuzycia(m.baza), s + 'zuzycie', pl(m.zuzycie), '', NUM)) + pole('Ilość w opakowaniu', s + 'opak', pl(m.opak), '', NUM) + '</div>' +

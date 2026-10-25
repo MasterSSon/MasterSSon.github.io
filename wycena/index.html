@@ -32,6 +32,7 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--k);border-color:
 .r2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .r3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
 .r4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.r2>div,.r3>div,.r4>div{display:flex;flex-direction:column;justify-content:flex-end}
 .btn{display:inline-block;padding:11px 14px;border-radius:10px;border:1px solid var(--k);background:#fff;color:var(--k);font:inherit;font-weight:600;cursor:pointer;text-decoration:none;text-align:center}
 .btn.gl{background:var(--k);color:#fff}
 .btn.szer{display:block;width:100%;margin-top:10px}
@@ -73,6 +74,11 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--k);border-color:
 .dok .zn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
 .dok .zn span{transform:rotate(-30deg);font-size:46px;font-weight:900;color:rgba(220,38,38,.13);white-space:nowrap}
 .dok .mala{font-size:11px;color:#555}
+.fachy{display:grid;grid-template-columns:1fr;gap:6px;margin:8px 0}.fk{display:flex;gap:10px;align-items:center;border:1px solid var(--r);border-radius:12px;padding:10px;margin:0;color:var(--t);font-size:.95rem}
+.fk input{width:auto}.fk small,.kfn small{display:block;color:var(--s);font-size:.8rem}.ik{font-size:1.5rem;width:34px;text-align:center}
+.kf{border:1px solid var(--r);border-radius:12px;padding:10px;margin:8px 0}.kfn{display:flex;gap:10px;align-items:center}.prz{font-style:normal;font-size:.7rem;background:#fef3c7;color:#92400e;border-radius:6px;padding:1px 6px}
+details.k summary{cursor:pointer;color:var(--k)}.fach details{margin:6px 0}.fach summary{color:var(--k);font-size:.9rem;cursor:pointer}
+@media screen and (max-width:480px){.dok{padding:12px;font-size:11.5px}.dok td.n,.dok th.n{white-space:normal}.dok th,.dok td{padding:4px 2px}}
 @media print{
   @page{size:A4;margin:12mm}
   body{background:#fff}
@@ -98,7 +104,6 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--k);border-color:
 var KLUCZ = 'wycenaFachowca1';
 // SHA-256 kodów odblokowujących (sam kod jest w pliku z zakupu)
 var KODY = ['201badc6c7fcf70ac77ad3a57b8446ac0338fcc7be718001a16c5ac53c516446'];
-var DEMO_LIMIT = 3;
 var S;
 var $ = function (s) { return document.querySelector(s); };
 function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
@@ -112,24 +117,55 @@ function toast(t) { var e = document.createElement('div'); e.className = 'toast'
 function nowyStan() {
   return { v: 1, start: false, odblok: false, nr: 0, firma: { nazwa: '', osoba: '', tel: '', email: '', nip: '', adres: '', konto: '', logo: '' },
     ust: { vat: 'zw', waznosc: 14, zaliczka: 30, warunki: 'Cena obejmuje wykonanie prac wymienionych w ofercie. Prace dodatkowe wyceniane osobno po uzgodnieniu z klientem.' },
-    cennik: [], katMat: [], oferty: [] };
+    fachy: [], cennik: [], katMat: [], oferty: [], ceny: null, cenyDzien: '' };
 }
+var NAZWA_FACHU = {}; Object.keys(WF_CENNIKI).forEach(function (k) { NAZWA_FACHU[WF_CENNIKI[k].nazwa] = k; });
+NAZWA_FACHU['Malarz'] = 'malarz'; NAZWA_FACHU['Prace ogólne'] = 'ogolne';
+function wzorMaterialu(nazwa) { var w = null; Object.keys(WF_CENNIKI).forEach(function (k) { WF_CENNIKI[k].materialy.forEach(function (m) { if (m[0] === nazwa && !w) w = { fk: k, m: m }; }); }); return w; }
+function wzorPracy(nazwa) { var w = null; Object.keys(WF_CENNIKI).forEach(function (k) { WF_CENNIKI[k].robocizna.forEach(function (r) { if (r[0] === nazwa && !w) w = k; }); }); return w; }
 function wczytaj() {
   try { S = JSON.parse(localStorage.getItem(KLUCZ)) || nowyStan(); } catch (e) { S = nowyStan(); }
   var n = nowyStan(); Object.keys(n).forEach(function (k) { if (S[k] === undefined) S[k] = n[k]; });
+  if (!S.fachy.length) { // wersja 1.0 nie zapisywała fachów: odtwórz z cennika
+    var stare = { 'Glazurnik': ['glazurnik'], 'Malarz': ['malarz'], 'Malarz / gładzie': ['malarz'], 'Podłogi i panele': ['podlogi'],
+      'Hydraulik / elektryk / ogólne': ['elektryk', 'hydraulik', 'ogolne'], 'Elektryk': ['elektryk'], 'Hydraulik': ['hydraulik'], 'Prace ogólne': ['ogolne'] };
+    S.cennik.concat(S.katMat).forEach(function (c) { (stare[c.fach] || []).forEach(function (k) { if (S.fachy.indexOf(k) < 0) S.fachy.push(k); }); });
+  }
+  if ((S.v || 1) < 2) { // 1.2: przypisz fach do pozycji cennika, kod ceny rynkowej do materiałów
+    S.cennik.forEach(function (c) { if (!c.fk) c.fk = wzorPracy(c.nazwa) || NAZWA_FACHU[c.fach] || ''; });
+    S.katMat.forEach(function (m) { var w = wzorMaterialu(m.nazwa); if (!m.fk) m.fk = w ? w.fk : (NAZWA_FACHU[m.fach] || '');
+      if (w && w.m[6] && !m.kod) { m.kod = w.m[6]; m.ile = w.m[7]; m.auto = WF.liczba(m.cena) === w.m[5]; } });
+    S.v = 2;
+  }
 }
+// ---------- ceny rynkowe materiałów (raz dziennie, gdy jest internet) ----------
+function zastosujCeny() {
+  S.katMat.forEach(function (m) { if (m.kod && m.auto !== false) { var c = WF.cenaRynkowa(S.ceny, m.kod, m.ile); if (c != null) m.cena = c; } });
+}
+function pobierzCeny() {
+  if (!window.fetch || (navigator.onLine === false) || S.cenyDzien === dzis()) return;
+  fetch('ceny.json?d=' + dzis(), { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+    if (!d || !d.ceny) return; S.ceny = d; S.cenyDzien = dzis(); zastosujCeny(); zapisz();
+    if ((location.hash || '').indexOf('#cennik') === 0) widokCennik();
+  }).catch(function () {});
+}
+function demoUzyte(k) { return !S.odblok && S.oferty.some(function (o) { return o.fach === k && !o.przyklad; }); }
+function fachyOferty(o) { var l = o.fach ? [o.fach] : []; Object.keys(o.obmiary || {}).forEach(function (k) { if (l.indexOf(k) < 0) l.push(k); }); return l; }
+function zPokojami(o) { return !o.fach || fachyOferty(o).some(function (k) { return WF_CENNIKI[k] && WF_CENNIKI[k].pokoje; }); }
 function zapisz() { try { localStorage.setItem(KLUCZ, JSON.stringify(S)); } catch (e) { toast('Brak miejsca w pamięci telefonu — zmniejsz logo albo usuń stare oferty.'); } }
 
 function dodajFach(klucz) {
   var c = WF_CENNIKI[klucz]; if (!c) return;
+  if (S.fachy.indexOf(klucz) < 0) S.fachy.push(klucz);
   c.robocizna.forEach(function (r) {
-    if (!S.cennik.some(function (x) { return x.nazwa === r[0]; }))
-      S.cennik.push({ id: id(), nazwa: r[0], jedn: r[1], cena: r[2], baza: r[3], fach: c.nazwa });
+    if (!S.cennik.some(function (x) { return x.nazwa === r[0] && x.fk === klucz; }))
+      S.cennik.push({ id: id(), nazwa: r[0], jedn: r[1], cena: r[2], baza: r[3], fach: c.nazwa, fk: klucz });
   });
   c.materialy.forEach(function (m) {
-    if (!S.katMat.some(function (x) { return x.nazwa === m[0]; }))
-      S.katMat.push({ id: id(), nazwa: m[0], baza: m[1], zuzycie: m[2], opak: m[3], opis: m[4], cena: m[5], fach: c.nazwa });
+    if (!S.katMat.some(function (x) { return x.nazwa === m[0] && x.fk === klucz; }))
+      S.katMat.push({ id: id(), nazwa: m[0], baza: m[1], zuzycie: m[2], opak: m[3], opis: m[4], cena: m[5], fach: c.nazwa, fk: klucz, kod: m[6] || '', ile: m[7] || 0, auto: !!m[6] });
   });
+  if (S.ceny) zastosujCeny();
 }
 
 // ---------- router ----------
@@ -140,7 +176,7 @@ function pokaz() {
   [].forEach.call(document.querySelectorAll('nav.d a'), function (a) { a.className = a.dataset.n === h[0] ? 'on' : ''; });
   $('#hprz').innerHTML = '';
   if (!S.start && h[0] !== 'ustawienia') return widokStart();
-  if (h[0] === 'nowa') return nowaOferta();
+  if (h[0] === 'nowa') return widokNowa();
   if (h[0] === 'oferta') return widokOferta(h[1], h[2] || 'klient');
   if (h[0] === 'podglad') return widokPodglad(h[1]);
   if (h[0] === 'cennik') return widokCennik();
@@ -149,22 +185,24 @@ function pokaz() {
 }
 function ustawTytul(t) { $('#tyt').textContent = t; document.title = t + ' — Wycena Fachowca'; window.scrollTo(0, 0); }
 function bannerDemo() {
-  return S.odblok ? '' : '<div class="demo">Wersja demonstracyjna: do ' + DEMO_LIMIT + ' ofert i znak wodny „DEMO” na wydruku. ' +
-    'Pełna wersja bez ograniczeń: <a href="kup.html">kup raz, bez abonamentu</a>, potem wpisz kod w Ustawieniach.</div>';
+  return S.odblok ? '' : '<div class="demo">Wersja demo: <b>jedna pełna oferta dla każdego fachu</b> i dowolnie wiele przykładów. ' +
+    'Pełna wersja bez limitu: <a href="kup.html">kup raz, bez abonamentu</a>, potem wpisz kod w Ustawieniach.</div>';
 }
 
 // ---------- start ----------
 function widokStart() {
   ustawTytul('Witaj!');
-  var h = '<div class="k"><h2>Ustawmy aplikację (30 sekund)</h2><p class="info">Zaznacz, czym się zajmujesz. Wczytam przykładowy cennik i materiały — ceny zmienisz potem w zakładce „Cennik”.</p>';
-  Object.keys(WF_CENNIKI).forEach(function (k) { h += '<label class="chk"><input type="checkbox" value="' + k + '" ' + (k === 'glazurnik' ? 'checked' : '') + '> ' + esc(WF_CENNIKI[k].nazwa) + '</label>'; });
+  var h = '<div class="k"><h2>Ustawmy aplikację (30 sekund)</h2><p class="info">Zaznacz, czym się zajmujesz (możesz kilka). Wczytam cennik prac i materiałów dla Twoich fachów — ceny zmienisz potem w zakładce „Cennik”.</p><div class="fachy">';
+  Object.keys(WF_CENNIKI).forEach(function (k) { var c = WF_CENNIKI[k]; h += '<label class="fk"><input type="checkbox" value="' + k + '"><span class="ik">' + c.ikona + '</span><span><b>' + esc(c.nazwa) + '</b><small>' + esc(c.opis) + '</small></span></label>'; });
+  h += '</div>';
   h += '<label>Nazwa firmy albo imię i nazwisko (na ofercie)</label><input id="sf" placeholder="np. Usługi Remontowe Jan Kowalski">' +
     '<label>Telefon</label><input id="st" type="tel" placeholder="np. 600 100 200">' +
     '<button class="btn gl szer" id="sok">Zaczynamy</button></div>' +
     '<p class="info">Dane zostają tylko w tym telefonie. Bez konta, bez logowania, działa też bez internetu.</p>';
   $('#m').innerHTML = h;
   $('#sok').onclick = function () {
-    [].forEach.call(document.querySelectorAll('#m input[type=checkbox]:checked'), function (c) { dodajFach(c.value); });
+    var z = document.querySelectorAll('#m input[type=checkbox]:checked'); if (!z.length) return toast('Zaznacz przynajmniej jeden fach.');
+    [].forEach.call(z, function (c) { dodajFach(c.value); });
     S.firma.nazwa = $('#sf').value.trim(); S.firma.tel = $('#st').value.trim(); S.start = true; zapisz(); idz('#nowa');
   };
 }
@@ -176,24 +214,54 @@ function widokLista() {
   if (!S.oferty.length) h += '<p class="info">Nie masz jeszcze ofert. Kliknij „＋ Nowa” na dole.</p>';
   S.oferty.slice().reverse().forEach(function (o) {
     var p = WF.podsumowanie(o);
-    h += '<a class="o" href="#oferta/' + o.id + '/klient"><span><b>' + esc(o.tytul || 'Oferta') + '</b><small>' + esc(o.nr) + ' · ' +
+    var f = o.fach && WF_CENNIKI[o.fach];
+    h += '<a class="o" href="#oferta/' + o.id + '/klient"><span><b>' + (f ? f.ikona + ' ' : '') + esc(o.tytul || 'Oferta') + (o.przyklad ? ' <i class="prz">PRZYKŁAD</i>' : '') + '</b><small>' + esc(o.nr) + ' · ' +
       esc(o.klient.imie || 'bez klienta') + ' · ' + dataPL(o.data) + (o.status ? ' · ' + esc(o.status) : '') + '</small></span><span class="kw">' + WF.zl(p.brutto) + '</span></a>';
   });
   $('#m').innerHTML = h + '</div>';
 }
 
-function nowaOferta() {
-  if (!S.odblok && S.oferty.length >= DEMO_LIMIT) {
-    ustawTytul('Limit wersji demo');
-    $('#m').innerHTML = bannerDemo() + '<div class="k"><p>W wersji demo możesz mieć ' + DEMO_LIMIT + ' oferty. Usuń starą albo odblokuj pełną wersję w Ustawieniach.</p><a class="btn gl" href="#ustawienia">Wpisz kod</a></div>';
-    return;
+function kafelFachu(k) {
+  var c = WF_CENNIKI[k], uz = demoUzyte(k);
+  return '<div class="kf"><div class="kfn"><span class="ik">' + c.ikona + '</span><span><b>' + esc(c.nazwa) + '</b><small>' + esc(c.opis) + '</small></span></div><div class="pasek" style="margin-top:8px">' +
+    (uz ? '<a class="btn ma" href="kup.html">Demo wykorzystane — pełna wersja</a>' : '<button class="btn gl ma" data-nowa="' + k + '">+ Nowa oferta</button>') +
+    '<button class="btn ma" data-przyk="' + k + '">Zobacz przykład</button></div></div>';
+}
+function widokNowa() {
+  ustawTytul('Nowa oferta');
+  var moje = S.fachy.filter(function (k) { return WF_CENNIKI[k]; }), inne = Object.keys(WF_CENNIKI).filter(function (k) { return moje.indexOf(k) < 0; });
+  $('#m').innerHTML = bannerDemo() + '<div class="k"><h2>Dla jakiego fachu robisz ofertę?</h2><p class="info">Każdy fach ma swoje pomiary, prace i materiały. „Zobacz przykład” pokaże gotową ofertę w 2 sekundy.</p>' +
+    moje.map(kafelFachu).join('') + '</div>' + (inne.length ? '<details class="k"><summary><b>Inne fachy (' + inne.length + ')</b></summary>' + inne.map(kafelFachu).join('') + '</details>' : '');
+  [].forEach.call(document.querySelectorAll('[data-nowa]'), function (x) { x.onclick = function () { utworzOferte(x.dataset.nowa, false); }; });
+  [].forEach.call(document.querySelectorAll('[data-przyk]'), function (x) { x.onclick = function () { utworzOferte(x.dataset.przyk, true); }; });
+}
+function nowaOferta() { idz('#nowa'); }
+function utworzOferte(k, przyklad) {
+  var c = WF_CENNIKI[k]; if (!c) return;
+  if (!przyklad && demoUzyte(k)) return toast('W wersji demo jest jedna oferta na fach. Odblokuj pełną wersję.');
+  dodajFach(k);
+  var rok = new Date().getFullYear(), ob = {}; ob[k] = WF.domyslneObmiary(k);
+  if (!przyklad) S.nr++;
+  var o = { id: id(), nr: przyklad ? 'PRZYKŁAD' : 'OF/' + rok + '/' + ('00' + S.nr).slice(-3), data: dzis(), tytul: '', status: '', fach: k, przyklad: !!przyklad,
+    klient: { imie: '', tel: '', adres: '' }, termin: '', pomieszczenia: c.pokoje ? [{ nazwa: 'Pokój 1', dl: '', szer: '', wys: '2,6', otwory: '' }] : [],
+    obmiary: ob, pozycje: [], materialy: [], materialyKlienta: false, rabat: 0, vat: S.ust.vat, zaliczka: S.ust.zaliczka, waznosc: S.ust.waznosc, uwagi: '' };
+  if (przyklad) {
+    var pr = c.przyklad; o.tytul = pr.tytul; o.termin = '5 dni roboczych od uzgodnienia terminu';
+    o.klient = { imie: 'Anna Przykładowa', tel: '600 100 200', adres: 'ul. Przykładowa 1, Wrocław' };
+    if (pr.pom) o.pomieszczenia = pr.pom.map(function (x) { return { nazwa: x[0], dl: x[1], szer: x[2], wys: x[3], otwory: x[4] }; });
+    Object.keys(pr.obmiary || {}).forEach(function (x) { o.obmiary[k][x] = JSON.parse(JSON.stringify(pr.obmiary[x])); });
+    var reczne = 0;
+    var pomin = pr.pomin || [];
+    S.cennik.filter(function (x) { return x.fk === k && pomin.indexOf(x.nazwa) < 0; }).forEach(function (x) {
+      if (x.baza === 'reczna' && reczne++ > 0) return;
+      o.pozycje.push({ nazwa: x.nazwa, jedn: x.jedn, cena: x.cena, baza: x.baza, pom: 'all', ilosc: x.baza === 'reczna' ? 1 : '', recznie: false });
+    });
+    S.katMat.filter(function (x) { return x.fk === k && pomin.indexOf(x.nazwa) < 0; }).forEach(function (x) {
+      o.materialy.push({ nazwa: x.nazwa, baza: x.baza, pom: 'all', zuzycie: x.zuzycie, opak: x.opak, opis: x.opis, cena: x.cena, ilosc: x.baza === 'reczna' ? 1 : '' });
+    });
+    var p = WF.podsumowanie(o); o.pozycje = o.pozycje.filter(function (z, i) { return p.pozycje[i].il > 0; }); o.materialy = o.materialy.filter(function (m, i) { return p.materialyPoz[i].potrzeba > 0; });
   }
-  S.nr++;
-  var rok = new Date().getFullYear();
-  var o = { id: id(), nr: 'OF/' + rok + '/' + ('00' + S.nr).slice(-3), data: dzis(), tytul: '', status: '',
-    klient: { imie: '', tel: '', adres: '' }, termin: '', pomieszczenia: [{ nazwa: 'Łazienka', dl: '', szer: '', wys: '2,6', otwory: '1,6' }],
-    pozycje: [], materialy: [], materialyKlienta: false, rabat: 0, vat: S.ust.vat, zaliczka: S.ust.zaliczka, waznosc: S.ust.waznosc, uwagi: '' };
-  S.oferty.push(o); zapisz(); idz('#oferta/' + o.id + '/klient');
+  S.oferty.push(o); zapisz(); idz(przyklad ? '#podglad/' + o.id : '#oferta/' + o.id + '/klient');
 }
 function oferta(oid) { return S.oferty.filter(function (o) { return o.id === oid; })[0]; }
 
@@ -201,6 +269,7 @@ function oferta(oid) { return S.oferty.filter(function (o) { return o.id === oid
 var ZAK = [['klient', 'Klient'], ['pomiary', 'Pomiary'], ['robocizna', 'Robocizna'], ['materialy', 'Materiały'], ['suma', 'Podsumowanie']];
 function widokOferta(oid, zak) {
   var o = oferta(oid); if (!o) return idz('#lista');
+  if (obmiaryOferty(o)) zapisz();
   ustawTytul(o.nr);
   $('#hprz').innerHTML = '<button onclick="idz(\'#podglad/' + o.id + '\')">Podgląd</button>';
   var h = '<div class="zak">' + ZAK.map(function (z) { return '<a href="#oferta/' + o.id + '/' + z[0] + '" class="' + (z[0] === zak ? 'on' : '') + '">' + z[1] + '</a>'; }).join('') + '</div>';
@@ -209,6 +278,11 @@ function widokOferta(oid, zak) {
   h += '<div class="k suma"><div class="duza"><span>Razem' + (o.vat === 'zw' ? '' : ' brutto') + '</span><span id="razem">' + WF.zl(p.brutto) + '</span></div></div>';
   $('#m').innerHTML = h;
   podepnij(o, zak);
+}
+function obmiaryOferty(o) { // dokłada brakujące kalkulatory fachów; true = coś dodano
+  var zm = false; o.obmiary = o.obmiary || {};
+  (o.fach ? [o.fach] : S.fachy).forEach(function (f) { if (!o.obmiary[f] && WF.domyslneObmiary(f)) { o.obmiary[f] = WF.domyslneObmiary(f); zm = true; } });
+  return zm;
 }
 function pole(et, sciezka, wart, typ, extra) {
   return '<div><label>' + et + '</label><input data-p="' + sciezka + '" value="' + esc(wart) + '"' + (typ ? ' type="' + typ + '"' : '') + (extra || '') + '></div>';
@@ -225,19 +299,169 @@ function zKlient(o) {
     '</div><a class="btn gl szer" href="#oferta/' + o.id + '/pomiary">Dalej: pomiary →</a>';
 }
 function zPomiary(o) {
-  var h = '<div class="k"><h2>Pomieszczenia</h2><p class="info">Wpisz wymiary w metrach. Aplikacja policzy podłogę, ściany (minus okna i drzwi), sufit i obwód — ilości w ofercie wyliczą się same.</p></div>';
-  o.pomieszczenia.forEach(function (p, i) {
+  var h = '';
+  if (zPokojami(o)) h += '<div class="k"><h2>Pomieszczenia</h2><p class="info">Wpisz wymiary w metrach. Aplikacja policzy podłogę, ściany (minus okna i drzwi), sufit i obwód — ilości w ofercie wyliczą się same.</p></div>';
+  else h += '<div class="k"><p class="info" style="margin:0">Wpisz dane robót w karcie poniżej — ilości prac i materiałów policzą się same i trafią do oferty.</p></div>';
+  if (zPokojami(o)) o.pomieszczenia.forEach(function (p, i) {
     var m = WF.metryki(p);
     h += '<div class="k"><div class="poz nag" style="border:0;padding:0"><input data-p="pomieszczenia.' + i + '.nazwa" value="' + esc(p.nazwa) + '"><button class="btn ma us" data-usun-pom="' + i + '">Usuń</button></div>' +
       '<div class="r4">' + pole('Długość', 'pomieszczenia.' + i + '.dl', p.dl, '', NUM) + pole('Szerokość', 'pomieszczenia.' + i + '.szer', p.szer, '', NUM) +
       pole('Wysokość', 'pomieszczenia.' + i + '.wys', p.wys, '', NUM) + pole('Okna/drzwi m²', 'pomieszczenia.' + i + '.otwory', p.otwory, '', NUM) + '</div>' +
       '<div class="met" data-met="' + i + '">Podłoga <b>' + WF.il(m.podloga) + ' m²</b> · Ściany <b>' + WF.il(m.sciany) + ' m²</b> · Sufit <b>' + WF.il(m.sufit) + ' m²</b> · Obwód <b>' + WF.il(m.obwod) + ' mb</b></div></div>';
   });
-  return h + '<button class="btn szer" id="dodPom">+ Dodaj pomieszczenie</button><a class="btn gl szer" href="#oferta/' + o.id + '/robocizna">Dalej: robocizna →</a>';
+  if (zPokojami(o)) h += '<button class="btn szer" id="dodPom">+ Dodaj pomieszczenie</button>';
+  fachyOferty(o).forEach(function (f) { if (KARTY[f] && o.obmiary[f]) h += '<div class="k fach"><h2>' + KARTY[f].tyt + '</h2>' + KARTY[f].pola(o, o.obmiary[f], 'obmiary.' + f + '.') + '<div class="met wf" data-fw="' + f + '">' + KARTY[f].wynik(WF.wynikiFachow(o), o.obmiary[f]) + '</div></div>'; });
+  var reszta = Object.keys(KARTY).filter(function (f) { return !o.obmiary[f]; });
+  if (reszta.length) h += '<details class="k"><summary>Robisz przy tym coś jeszcze? Dodaj obliczenia innego fachu</summary>' +
+    reszta.map(function (f) { return '<button class="btn ma" style="margin:3px" data-dfach="' + f + '">+ ' + WF_CENNIKI[f].ikona + ' ' + esc(WF_CENNIKI[f].nazwa) + '</button>'; }).join('') + '</details>';
+  return h + '<a class="btn gl szer" href="#oferta/' + o.id + '/robocizna">Dalej: robocizna →</a>';
 }
-function opcjeBaza(sciezka, wart) {
-  return '<select data-p="' + sciezka + '">' + Object.keys(WF.BAZY).map(function (b) { return '<option value="' + b + '" ' + (b === wart ? 'selected' : '') + '>' + WF.BAZY[b] + '</option>'; }).join('') + '</select>';
+// ---------- kalkulatory fachów (karty w zakładce Pomiary) ----------
+function wybor(sciezka, wart, opcje) {
+  return '<select data-p="' + sciezka + '">' + opcje.map(function (x) { return '<option value="' + x[0] + '" ' + (String(wart) === String(x[0]) ? 'selected' : '') + '>' + esc(x[1]) + '</option>'; }).join('') + '</select>';
 }
+function zaznacz(sciezka, wart, tekst) { return '<label class="chk"><input type="checkbox" data-p="' + sciezka + '" ' + (wart === true || wart === 'true' ? 'checked' : '') + '> ' + tekst + '</label>'; }
+function w(v, j) { return '<b>' + WF.il(v || 0) + ' ' + j + '</b>'; }
+function pomKarta(o, s, d) { return '<label>Pomieszczenie</label>' + opcjePom(o, s + 'pom', d.pom); }
+var UKL = Object.keys(WF.UKLADY).map(function (k) { return [k, WF.UKLADY[k][0] + ' (zapas ' + Math.round(WF.UKLADY[k][1] * 100) + '%)']; });
+var KARTY = {
+  elektryk: { tyt: '⚡ Elektryk — instalacja',
+    pola: function (o, d, s) {
+      return '<div class="r3">' + pole('Gniazda (szt.)', s + 'gniazda', d.gniazda, '', NUM) + pole('Włączniki (szt.)', s + 'wlaczniki', d.wlaczniki, '', NUM) + pole('Punkty świetlne (szt.)', s + 'lampy', d.lampy, '', NUM) + '</div>' +
+        '<div class="r3">' + pole('Śr. przewód na punkt (m)', s + 'odl', d.odl, '', NUM) + pole('Zapas przewodu %', s + 'zapas', d.zapas, '', NUM) + pole('Obwody (szt.)', s + 'obwody', d.obwody, '', NUM) + '</div>' +
+        '<p class="info">Średni przewód na punkt: od puszki albo rozdzielnicy do punktu, razem z zejściem po ścianie.</p>';
+    },
+    wynik: function (r) { return 'Przewód 3×1,5: ' + w(r.el_kabel15, 'mb') + ' · 3×2,5: ' + w(r.el_kabel25, 'mb') + ' · Bruzdy: ' + w(r.el_bruzdy, 'mb') + ' · Puszki: ' + w(r.el_puszki, 'szt.') + ' · Punkty: ' + w(r.el_punkty, 'szt.'); } },
+  hydraulik: { tyt: '🔧 Hydraulik — rury i kształtki',
+    pola: function (o, d, s) {
+      var h = '';
+      (d.odcinki || []).forEach(function (x, i) {
+        var t = s + 'odcinki.' + i + '.', sr = (x.rodzaj === 'k' ? WF.SR_KAN : WF.SR_WODA).map(function (v) { return [v, 'Ø' + v]; });
+        h += '<div class="poz"><div class="nag"><input data-p="' + t + 'nazwa" value="' + esc(x.nazwa) + '"><button class="btn ma us" data-us-odc="' + i + '">✕</button></div>' +
+          '<div class="r2"><div><label>Rodzaj</label>' + wybor(t + 'rodzaj', x.rodzaj, [['w', 'woda'], ['k', 'kanalizacja']]) + '</div><div><label>Średnica</label>' + wybor(t + 'sr', x.sr, sr) + '</div></div>' +
+          '<div class="r3">' + pole('Długość (m)', t + 'dl', x.dl, '', NUM) + pole('Zakręty (kolana)', t + 'zakrety', x.zakrety, '', NUM) + pole('Odgałęzienia (trójniki)', t + 'odgal', x.odgal, '', NUM) + '</div></div>';
+      });
+      return h + '<button class="btn ma" id="dodOdc">+ Dodaj odcinek rury</button><div class="r2">' + pole('Podejścia / punkty (szt.)', s + 'podejscia', d.podejscia, '', NUM) + pole('Zapas rur %', s + 'zapas', d.zapas, '', NUM) + '</div>';
+    },
+    wynik: function (r) {
+      var l = [];
+      [['w', WF.SR_WODA, 'wod.'], ['k', WF.SR_KAN, 'kan.']].forEach(function (g) { g[1].forEach(function (sr) {
+        var k = g[0] + sr; if (r['hy_rura_' + k] || r['hy_kolana_' + k] || r['hy_troj_' + k])
+          l.push('Ø' + sr + ' ' + g[2] + ': ' + w(r['hy_rura_' + k], 'mb') + ', kolana ' + w(r['hy_kolana_' + k], 'szt.') + ', trójniki ' + w(r['hy_troj_' + k], 'szt.'));
+      }); });
+      return (l.length ? l.join('<br>') : 'Wpisz długości odcinków.') + '<br>Podejścia: ' + w(r.hy_podejscia, 'szt.');
+    } },
+  glazurnik: { tyt: '🧱 Glazurnik — płytki, klej, fuga',
+    pola: function (o, d, s) {
+      function pow(p, tyt, ekstra) {
+        return zaznacz(s + p + 'Tak', d[p + 'Tak'], tyt) + (d[p + 'Tak'] === true || d[p + 'Tak'] === 'true' ? '<div class="r3">' + pole('Płytka: dł. (cm)', s + p + 'A', d[p + 'A'], '', NUM) + pole('szer. (cm)', s + p + 'B', d[p + 'B'], '', NUM) +
+          pole('Grubość (mm)', s + p + 'Grub', d[p + 'Grub'], '', NUM) + '</div><label>Układ</label>' + wybor(s + p + 'Uklad', d[p + 'Uklad'], UKL) + (ekstra || '') : '');
+      }
+      return pomKarta(o, s, d) + pow('pod', 'Płytki na podłodze') +
+        pow('sc', 'Płytki na ścianach', pole('Wysokość glazury (m) — puste = do sufitu', s + 'scWys', d.scWys, '', NUM)) +
+        '<div class="r2">' + pole('Szerokość fugi (mm)', s + 'fuga', d.fuga, '', NUM) + '<div><label>Paca zębata</label>' + wybor(s + 'zebatka', d.zebatka, Object.keys(WF.KLEJ).map(function (k) { return [k, k + ' mm (' + WF.il(WF.KLEJ[k]) + ' kg/m²)']; })) + '</div></div>';
+    },
+    wynik: function (r) {
+      return 'Podłoga: ' + w(r.gl_pod_m2, 'm²') + ' → ' + w(r.gl_pod_szt, 'płytek') + ' · Ściany: ' + w(r.gl_sc_m2, 'm²') + ' → ' + w(r.gl_sc_szt, 'płytek') +
+        '<br>Klej: ' + w(r.gl_klej_kg, 'kg') + ' · Fuga: ' + w(r.gl_fuga_kg, 'kg');
+    } },
+  malarz: { tyt: '🖌 Malarz — farba, gładź, grunt',
+    pola: function (o, d, s) {
+      return pomKarta(o, s, d) + '<div class="r2">' + zaznacz(s + 'sciany', d.sciany, 'Ściany') + zaznacz(s + 'sufit', d.sufit, 'Sufit') + '</div>' +
+        '<div class="r3">' + pole('Warstwy farby', s + 'warstwy', d.warstwy, '', NUM) + pole('Wydajność (m²/l)', s + 'wydajnosc', d.wydajnosc, '', NUM) + pole('Gruntowanie (warstwy)', s + 'grunt', d.grunt, '', NUM) + '</div>' +
+        zaznacz(s + 'gladzTak', d.gladzTak, 'Gładź') + (d.gladzTak === true || d.gladzTak === 'true' ? '<div class="r2">' + pole('Grubość gładzi (mm)', s + 'gladzMm', d.gladzMm, '', NUM) +
+          '<div><label>Rodzaj gładzi</label>' + wybor(s + 'gladzRodzaj', d.gladzRodzaj, Object.keys(WF.GLADZ).map(function (k) { return [k, WF.GLADZ[k][0]]; })) + '</div></div>' : '') +
+        '<p class="info">Wydajność farby jest na wiadrze (zwykle 8–12 m² z litra na jedną warstwę).</p>';
+    },
+    wynik: function (r) { return 'Powierzchnia: ' + w(r.ma_pow, 'm²') + ' · Farba: ' + w(r.ma_farba_l, 'l') + ' · Gładź: ' + w(r.ma_gladz_kg, 'kg') + ' · Grunt: ' + w(r.ma_grunt_l, 'l'); } },
+  podlogi: { tyt: '📐 Podłogi — panele i listwy',
+    pola: function (o, d, s) {
+      return pomKarta(o, s, d) + '<div class="r3">' + pole('Drzwi (szt.)', s + 'drzwi', d.drzwi, '', NUM) + pole('Zapas paneli %', s + 'zapas', d.zapas, '', NUM) +
+        pole('Narożniki (szt.)', s + 'narozniki', d.narozniki, '', NUM + ' placeholder="4 na pokój"') + '</div><p class="info">Listwy: obwód minus 0,9 m na każde drzwi, plus 10% zapasu.</p>';
+    },
+    wynik: function (r) { return 'Podłoga: ' + w(r.po_m2, 'm²') + ' · Panele z zapasem: ' + w(r.po_panele_m2z, 'm²') + ' · Listwy: ' + w(r.po_listwy_mb, 'mb') + ' · Narożniki: ' + w(r.po_narozniki, 'szt.') + ' · Progi: ' + w(r.po_progi, 'szt.'); } }
+};
+KARTY.suchazabudowa = { tyt: '🧩 Sucha zabudowa — płyty GK i profile',
+  pola: function (o, d, s) {
+    var suf = d.typ === 'sufit';
+    return '<label>Co budujesz?</label>' + wybor(s + 'typ', d.typ, [['sciana', 'ścianka działowa (płyty z obu stron)'], ['okladzina', 'zabudowa ściany (płyty z jednej strony)'], ['sufit', 'sufit podwieszany']]) +
+      (suf ? '<div class="r2">' + pole('Powierzchnia sufitu (m²)', s + 'pow', d.pow, '', NUM) + pole('Obwód sufitu (mb)', s + 'obwod', d.obwod, '', NUM + ' placeholder="policzę sam"') + '</div>'
+        : '<div class="r2">' + pole('Długość ściany (m)', s + 'dl', d.dl, '', NUM) + pole('Wysokość (m)', s + 'wys', d.wys, '', NUM) + '</div>') +
+      '<div class="r2">' + pole('Warstwy płyt (1 lub 2)', s + 'warstwy', d.warstwy, '', NUM) + (d.typ === 'sciana' ? zaznacz(s + 'welna', d.welna, 'Wełna w środku') : '<div></div>') + '</div>' +
+      '<p class="info">Płyty 1,2×2,6 m z zapasem 10%, profile co 60 cm, wkręty ok. 25 szt. na m² płyty.</p>';
+  },
+  wynik: function (r) {
+    return 'Płyty: ' + w(r.sz_plyty_szt, 'szt.') + ' (' + WF.il(r.sz_plyty_m2) + ' m²) · ' + (r.sz_cw_mb ? 'CW: ' + w(r.sz_cw_mb, 'mb') + ' · UW: ' + w(r.sz_uw_mb, 'mb') : 'CD: ' + w(r.sz_cd_mb, 'mb') + ' · UD: ' + w(r.sz_ud_mb, 'mb')) +
+      (r.sz_wieszaki ? ' · Wieszaki: ' + w(r.sz_wieszaki, 'szt.') : '') + ' · Wkręty: ' + w(r.sz_wkrety, 'szt.') + ' · Masa: ' + w(r.sz_masa_kg, 'kg') + (r.sz_welna_m2 ? ' · Wełna: ' + w(r.sz_welna_m2, 'm²') : '');
+  } };
+KARTY.tynkarz = { tyt: '🏗 Tynkarz — tynk, grunt, narożniki',
+  pola: function (o, d, s) {
+    return pomKarta(o, s, d) + '<div class="r2">' + zaznacz(s + 'sciany', d.sciany, 'Ściany') + zaznacz(s + 'sufit', d.sufit, 'Sufit') + '</div>' +
+      '<div class="r3">' + pole('Grubość tynku (mm)', s + 'grub', d.grub, '', NUM) + '<div><label>Rodzaj tynku</label>' + wybor(s + 'rodzaj', d.rodzaj, Object.keys(WF.TYNKI).map(function (k) { return [k, WF.TYNKI[k][0]]; })) + '</div>' +
+      pole('Narożniki (mb)', s + 'narozniki', d.narozniki, '', NUM) + '</div><p class="info">Zużycie: gipsowy ok. 1 kg, cementowo-wapienny ok. 1,6 kg na m² na każdy 1 mm grubości.</p>';
+  },
+  wynik: function (r) { return 'Powierzchnia: ' + w(r.ty_pow, 'm²') + ' · Tynk: ' + w(r.ty_kg, 'kg') + ' · Grunt: ' + w(r.ty_grunt_l, 'l') + ' · Narożniki: ' + w(r.ty_narozniki_mb, 'mb'); } };
+KARTY.murarz = { tyt: '🧱 Murarz — bloczki i zaprawa',
+  pola: function (o, d, s) {
+    return '<div class="r3">' + pole('Długość ściany (m)', s + 'dl', d.dl, '', NUM) + pole('Wysokość (m)', s + 'wys', d.wys, '', NUM) + pole('Otwory (m²)', s + 'otwory', d.otwory, '', NUM) + '</div>' +
+      '<label>Z czego murujesz?</label>' + wybor(s + 'typ', d.typ, Object.keys(WF.MURY).map(function (k) { return [k, WF.MURY[k][0]]; })) +
+      '<div class="r2">' + pole('Sztuk na 1 m² ściany', s + 'szt', d.szt, '', NUM) + pole('Zaprawa (kg na 1 m²)', s + 'zaprawa', d.zaprawa, '', NUM) + '</div>' +
+      '<p class="info">Wartości orientacyjne dla wybranego materiału. Sprawdź u producenta i popraw, jeśli trzeba. Zapas bloczków 5%.</p>';
+  },
+  wynik: function (r) { return 'Mur: ' + w(r.mu_pow, 'm²') + ' · Bloczki/pustaki: ' + w(r.mu_szt, 'szt.') + ' · Zaprawa: ' + w(r.mu_zaprawa_kg, 'kg'); } };
+KARTY.ocieplenia = { tyt: '🏠 Ocieplenie — styropian, klej, kołki, siatka, tynk',
+  pola: function (o, d, s) {
+    return '<div class="r3">' + pole('Ściany do ocieplenia (m²)', s + 'pow', d.pow, '', NUM) + pole('Okna i drzwi (m²)', s + 'otwory', d.otwory, '', NUM) + pole('Grubość styropianu (cm)', s + 'grub', d.grub, '', NUM) + '</div>' +
+      '<details><summary>Zużycie materiałów (orientacyjne, możesz zmienić)</summary><div class="r2">' + pole('Klej do styropianu (kg/m²)', s + 'klej', d.klej, '', NUM) + pole('Kołki (szt./m²)', s + 'kolki', d.kolki, '', NUM) + '</div>' +
+      '<div class="r2">' + pole('Klej do siatki (kg/m²)', s + 'siatka', d.siatka, '', NUM) + pole('Tynk (kg/m²)', s + 'tynk', d.tynk, '', NUM) + '</div></details>' +
+      '<p class="info">Paczka styropianu to 0,3 m³ (przy 15 cm: 2 m²). Siatka z zakładami +15%.</p>';
+  },
+  wynik: function (r) { return 'Docieplenie: ' + w(r.oc_pow, 'm²') + ' · Styropian: ' + w(r.oc_styro_paczki, 'paczek') + ' · Klej: ' + w(r.oc_klej_styro_kg + r.oc_klej_siatka_kg, 'kg') + ' · Kołki: ' + w(r.oc_kolki, 'szt.') + ' · Siatka: ' + w(r.oc_siatka_m2, 'm²') + ' · Tynk: ' + w(r.oc_tynk_kg, 'kg'); } };
+KARTY.posadzkarz = { tyt: '🪣 Posadzkarz — wylewka',
+  pola: function (o, d, s) {
+    return pomKarta(o, s, d) + '<div class="r2">' + pole('Grubość wylewki (cm)', s + 'grub', d.grub, '', NUM) + pole('Zużycie (kg na m² na 1 cm)', s + 'zuzycie', d.zuzycie, '', NUM) + '</div>' +
+      '<p class="info">Jastrych cementowy zwykle ok. 20 kg na m² na każdy 1 cm grubości. Taśma brzegowa po obwodzie.</p>';
+  },
+  wynik: function (r) { return 'Wylewka: ' + w(r.wy_m2, 'm²') + ' · Jastrych: ' + w(r.wy_kg, 'kg') + ' · Taśma: ' + w(r.wy_tasma_mb, 'mb') + ' · Folia: ' + w(r.wy_folia_m2, 'm²'); } };
+KARTY.parkieciarz = { tyt: '🪵 Parkieciarz — cyklinowanie i lakier',
+  pola: function (o, d, s) { return pomKarta(o, s, d) + '<div class="r2">' + pole('Warstwy lakieru', s + 'warstwy', d.warstwy, '', NUM) + pole('Wydajność lakieru (m²/l)', s + 'wydajnosc', d.wydajnosc, '', NUM) + '</div>'; },
+  wynik: function (r) { return 'Podłoga: ' + w(r.pk_m2, 'm²') + ' · Lakier: ' + w(r.pk_lakier_l, 'l') + ' · Podkład: ' + w(r.pk_podklad_l, 'l'); } };
+KARTY.co = { tyt: '🔥 Instalator CO — grzejniki i podłogówka',
+  pola: function (o, d, s) {
+    var pd = d.podlTak === true || d.podlTak === 'true';
+    return '<div class="r2">' + pole('Grzejniki (szt.)', s + 'grzejniki', d.grzejniki, '', NUM) + pole('Rura na 1 grzejnik (m, zasilanie + powrót)', s + 'rura', d.rura, '', NUM) + '</div>' +
+      zaznacz(s + 'podlTak', d.podlTak, 'Ogrzewanie podłogowe') + (pd ? pomKarta(o, s, d) + pole('Rozstaw rur (cm)', s + 'rozstaw', d.rozstaw, '', NUM) : '') +
+      '<p class="info">Podłogówka: przy rozstawie 15 cm ok. 6,7 mb rury na m² (+10%), jedna pętla do ok. 90 m.</p>';
+  },
+  wynik: function (r) { return 'Grzejniki: ' + w(r.co_grzejniki, 'szt.') + ' · Rura do grzejników: ' + w(r.co_rura_grz_mb, 'mb') + (r.co_podl_m2 ? ' · Podłogówka: ' + w(r.co_podl_m2, 'm²') + ', rura ' + w(r.co_podl_rura_mb, 'mb') + ', pętle ' + w(r.co_petle, 'szt.') : ''); } };
+KARTY.dekarz = { tyt: '🏚 Dekarz — pokrycie, membrana, łaty',
+  pola: function (o, d, s) {
+    return '<div class="r2">' + pole('Powierzchnia dachu (m²)', s + 'pow', d.pow, '', NUM) + pole('Długość kalenicy (mb)', s + 'kalenica', d.kalenica, '', NUM) + '</div>' +
+      '<label>Pokrycie</label>' + wybor(s + 'typ', d.typ, [['blacha', 'blachodachówka'], ['dachowka', 'dachówka ceramiczna lub betonowa'], ['papa', 'papa']]) +
+      (d.typ === 'dachowka' ? pole('Dachówek na 1 m²', s + 'dachowki', d.dachowki, '', NUM) : '') + '<p class="info">Łaty ok. 3 mb na m², kontrłaty ok. 1,1 mb na m², membrana i pokrycie z zapasem 10%.</p>';
+  },
+  wynik: function (r) { return 'Dach: ' + w(r.de_m2, 'm²') + (r.de_dachowki_szt ? ' · Dachówki: ' + w(r.de_dachowki_szt, 'szt.') : ' · Pokrycie: ' + w(r.de_pokrycie_m2, 'm²')) + ' · Membrana: ' + w(r.de_membrana_m2, 'm²') + ' · Łaty: ' + w(r.de_laty_mb, 'mb') + ' · Kontrłaty: ' + w(r.de_kontrlaty_mb, 'mb'); } };
+KARTY.brukarz = { tyt: '🛣 Brukarz — kostka i podbudowa',
+  pola: function (o, d, s) {
+    return '<div class="r3">' + pole('Powierzchnia (m²)', s + 'pow', d.pow, '', NUM) + pole('Podbudowa (cm)', s + 'podbudowa', d.podbudowa, '', NUM) + pole('Podsypka (cm)', s + 'podsypka', d.podsypka, '', NUM) + '</div>' +
+      '<div class="r2">' + pole('Krawężniki (mb)', s + 'kraweznik', d.kraweznik, '', NUM) + pole('Obrzeża (mb)', s + 'obrzeze', d.obrzeze, '', NUM) + '</div><p class="info">Kostka z zapasem 5%. Kruszywo ok. 1,8 t/m³ po zagęszczeniu, podsypka ok. 1,6 t/m³.</p>';
+  },
+  wynik: function (r) { return 'Kostka: ' + w(r.br_kostka_m2, 'm²') + ' · Korytowanie: ' + w(r.br_korytowanie_m3, 'm³') + ' · Podbudowa: ' + w(r.br_podbudowa_t, 't') + ' · Podsypka: ' + w(r.br_podsypka_t, 't'); } };
+KARTY.stolarka = { tyt: '🚪 Okna i drzwi — montaż',
+  pola: function (o, d, s) { return '<div class="r2">' + pole('Okna (szt.)', s + 'okna', d.okna, '', NUM) + pole('Parapety (mb)', s + 'parapety', d.parapety, '', NUM) + '</div><div class="r2">' + pole('Drzwi wewnętrzne (szt.)', s + 'drzwiWew', d.drzwiWew, '', NUM) + pole('Drzwi zewnętrzne (szt.)', s + 'drzwiZew', d.drzwiZew, '', NUM) + '</div>'; },
+  wynik: function (r) { return 'Okna: ' + w(r.st_okna, 'szt.') + ' · Drzwi: ' + w(r.st_drzwi_wew + r.st_drzwi_zew, 'szt.') + ' · Pianka: ' + w(r.st_pianka_szt, 'puszek') + ' · Taśma: ' + w(r.st_tasma_mb, 'mb'); } };
+KARTY.ogolne = { tyt: '🛠 Złota rączka — czas i dojazd',
+  pola: function (o, d, s) { return '<div class="r3">' + pole('Godziny pracy', s + 'godziny', d.godziny, '', NUM) + pole('Dojazd (km)', s + 'km', d.km, '', NUM) + pole('Drobne naprawy (szt.)', s + 'punkty', d.punkty, '', NUM) + '</div>'; },
+  wynik: function (r) { return 'Godziny: ' + w(r.zr_h, 'h') + ' · Dojazd: ' + w(r.zr_km, 'km') + ' · Naprawy: ' + w(r.zr_punkty, 'szt.'); } };
+KARTY.elektryk.tyt = '⚡ Elektryk — punkty i przewody';
+function opcjeBaza(sciezka, wart, atr, fachy) {
+  var f = WF.opisBazy(wart).fach, grupy = {}; fachy = (fachy || S.fachy).slice(); if (f && fachy.indexOf(f) < 0) fachy.push(f);
+  var pokoje = fachy.some(function (k) { return !WF_CENNIKI[k] || WF_CENNIKI[k].pokoje; }) || WF.POKOJ[wart];
+  var lista = WF.listaBaz(fachy).filter(function (b) { return pokoje || !WF.POKOJ[b]; }); if (wart && lista.indexOf(wart) < 0) lista.push(wart);
+  lista.forEach(function (b) { var d = WF.opisBazy(b), g = d.fach ? WF_CENNIKI[d.fach].nazwa : WF.POKOJ[b] ? 'Pomieszczenie' : 'Inne'; (grupy[g] = grupy[g] || []).push('<option value="' + b + '" ' + (b === wart ? 'selected' : '') + '>' + esc(d.nazwa) + (b === 'reczna' ? '' : ' (' + d.jedn + ')') + '</option>'); });
+  return '<select ' + (atr || 'data-p') + '="' + sciezka + '">' + Object.keys(grupy).map(function (g) { return '<optgroup label="' + esc(g) + '">' + grupy[g].join('') + '</optgroup>'; }).join('') + '</select>';
+}
+function bazaPokoju(b) { return !!WF.POKOJ[b]; }
 function opcjePom(o, sciezka, wart) {
   return '<select data-p="' + sciezka + '"><option value="all">wszystkie</option>' + o.pomieszczenia.map(function (p, i) { return '<option value="' + i + '" ' + (String(wart) === String(i) ? 'selected' : '') + '>' + esc(p.nazwa || ('Pom. ' + (i + 1))) + '</option>'; }).join('') + '</select>';
 }
@@ -247,14 +471,14 @@ function zRobocizna(o) {
     var auto = z.baza !== 'reczna' && !z.recznie, s = 'pozycje.' + i + '.';
     h += '<div class="poz"><div class="nag"><input data-p="' + s + 'nazwa" value="' + esc(z.nazwa) + '"><button class="btn ma us" data-usun-poz="' + i + '">✕</button></div>' +
       '<div class="r3">' + pole('Cena za j.m.', s + 'cena', z.cena, '', NUM) + pole('J.m.', s + 'jedn', z.jedn) +
-      '<div><label>Liczone od</label>' + opcjeBaza(s + 'baza', z.baza) + '</div></div>' +
-      (z.baza !== 'reczna' ? '<div class="r2"><div><label>Pomieszczenie</label>' + opcjePom(o, s + 'pom', z.pom) + '</div>' +
+      '<div><label>Liczone od</label>' + opcjeBaza(s + 'baza', z.baza, '', fachyOferty(o)) + '</div></div>' +
+      (z.baza !== 'reczna' ? '<div class="r2">' + (bazaPokoju(z.baza) ? '<div><label>Pomieszczenie</label>' + opcjePom(o, s + 'pom', z.pom) + '</div>' : '<div></div>') +
         '<label class="chk" style="margin-top:26px"><input type="checkbox" data-p="' + s + 'recznie" ' + (z.recznie ? 'checked' : '') + '> wpiszę ilość sam</label></div>' : '') +
       (auto ? '' : pole('Ilość', s + 'ilosc', z.ilosc, '', NUM)) +
       '<div class="wyn" data-wp="' + i + '"><span>Ilość: <b>' + WF.il(p.pozycje[i].il) + ' ' + esc(z.jedn) + '</b></span><span>Wartość: <b>' + WF.zl(p.pozycje[i].wartosc) + '</b></span></div></div>';
   });
   if (!o.pozycje.length) h = '<p class="info">Dodaj prace z cennika — ilości policzą się z pomiarów.</p>';
-  var opcje = S.cennik.map(function (c) { return '<option value="' + c.id + '">' + esc(c.nazwa) + ' — ' + WF.zl(c.cena) + '/' + esc(c.jedn) + '</option>'; }).join('');
+  var opcje = grupujWybor(o, S.cennik, function (c) { return esc(c.nazwa) + ' — ' + WF.zl(c.cena) + '/' + esc(c.jedn); });
   return '<div class="k"><h2>Robocizna</h2>' + h + '<label>Dodaj z cennika</label><select id="zCen"><option value="">— wybierz —</option>' + opcje + '<option value="_">+ pozycja spoza cennika</option></select></div>' +
     '<a class="btn gl szer" href="#oferta/' + o.id + '/materialy">Dalej: materiały →</a>';
 }
@@ -263,14 +487,22 @@ function zMaterialy(o) {
   o.materialy.forEach(function (m, i) {
     var w = p.materialyPoz[i], s = 'materialy.' + i + '.';
     h += '<div class="poz"><div class="nag"><input data-p="' + s + 'nazwa" value="' + esc(m.nazwa) + '"><button class="btn ma us" data-usun-mat="' + i + '">✕</button></div>' +
-      '<div class="r2"><div><label>Liczone od</label>' + opcjeBaza(s + 'baza', m.baza) + '</div>' + (m.baza !== 'reczna' ? '<div><label>Pomieszczenie</label>' + opcjePom(o, s + 'pom', m.pom) + '</div>' : pole('Ilość', s + 'ilosc', m.ilosc, '', NUM)) + '</div>' +
-      '<div class="r2">' + (m.baza !== 'reczna' ? pole('Zużycie na 1 j.', s + 'zuzycie', pl(m.zuzycie), '', NUM) : '<div></div>') + pole('Ilość w opakowaniu', s + 'opak', pl(m.opak), '', NUM) + '</div>' +
+      (m.baza === 'reczna' || bazaPokoju(m.baza) ? '<div class="r2"><div><label>Liczone od</label>' + opcjeBaza(s + 'baza', m.baza, '', fachyOferty(o)) + '</div>' + (m.baza === 'reczna' ? pole('Ilość', s + 'ilosc', m.ilosc, '', NUM) : '<div><label>Pomieszczenie</label>' + opcjePom(o, s + 'pom', m.pom) + '</div>') + '</div>' :
+        '<label>Liczone od</label>' + opcjeBaza(s + 'baza', m.baza, '', fachyOferty(o)) + '<div class="met" data-mb="' + i + '">z obliczeń: <b>' + WF.il(w.baza) + ' ' + WF.opisBazy(m.baza).jedn + '</b></div>') +
+      '<div class="r2">' + (m.baza !== 'reczna' ? pole('Zużycie na 1 ' + WF.opisBazy(m.baza).jedn, s + 'zuzycie', pl(m.zuzycie), '', NUM) : '<div></div>') + pole('Ilość w opakowaniu', s + 'opak', pl(m.opak), '', NUM) + '</div>' +
       '<div class="r2">' + pole('Opakowanie', s + 'opis', m.opis) + pole('Cena za opakowanie', s + 'cena', pl(m.cena), '', NUM) + '</div>' +
       '<div class="wyn" data-wm="' + i + '"><span>Potrzeba: <b>' + WF.il(w.potrzeba) + '</b> → <b>' + w.opakowania + ' × ' + esc(m.opis || 'szt.') + '</b></span><span><b>' + (o.materialyKlienta ? '—' : WF.zl(w.wartosc)) + '</b></span></div></div>';
   });
-  var opcje = S.katMat.map(function (c) { return '<option value="' + c.id + '">' + esc(c.nazwa) + '</option>'; }).join('');
+  var opcje = grupujWybor(o, S.katMat, function (c) { return esc(c.nazwa) + ' — ' + WF.zl(c.cena) + '/' + esc(c.opis || 'szt.'); });
   return h + '<label>Dodaj materiał</label><select id="zMat"><option value="">— wybierz —</option>' + opcje + '<option value="_">+ materiał spoza listy</option></select>' +
-    '<p class="info">Zużycie i zapas są orientacyjne — sprawdź na opakowaniu producenta.</p></div><a class="btn gl szer" href="#oferta/' + o.id + '/suma">Dalej: podsumowanie →</a>';
+    '<p class="info">Zużycie i zapas są orientacyjne — sprawdź na opakowaniu producenta. Materiały liczone z obliczeń fachu (np. płytki, przewody) mają zużycie 1, bo zapas jest już w obliczeniach.</p></div><a class="btn gl szer" href="#oferta/' + o.id + '/suma">Dalej: podsumowanie →</a>';
+}
+function grupujWybor(o, lista, tekst) {
+  var fo = fachyOferty(o), h = '';
+  fo.forEach(function (k) { var el = lista.filter(function (c) { return c.fk === k; }); if (el.length) h += '<optgroup label="' + esc(WF_CENNIKI[k] ? WF_CENNIKI[k].ikona + ' ' + WF_CENNIKI[k].nazwa : k) + '">' + el.map(function (c) { return '<option value="' + c.id + '">' + tekst(c) + '</option>'; }).join('') + '</optgroup>'; });
+  var reszta = lista.filter(function (c) { return fo.indexOf(c.fk) < 0; });
+  if (reszta.length) h += '<optgroup label="Inne">' + reszta.map(function (c) { return '<option value="' + c.id + '">' + tekst(c) + '</option>'; }).join('') + '</optgroup>';
+  return h;
 }
 function zSuma(o) {
   var p = WF.podsumowanie(o);
@@ -295,13 +527,20 @@ function podepnij(o, zak) {
   [].forEach.call(document.querySelectorAll('[data-p]'), function (el) {
     var zm = function () {
       var v = el.type === 'checkbox' ? el.checked : el.value;
-      ustawPole(o, el.dataset.p, v); zapisz();
+      ustawPole(o, el.dataset.p, v);
+      if (el.dataset.p === 'obmiary.murarz.typ' && WF.MURY[v]) { o.obmiary.murarz.szt = pl(WF.MURY[v][1]); o.obmiary.murarz.zaprawa = pl(WF.MURY[v][2]); }
+      var mr = /^obmiary\.hydraulik\.odcinki\.(\d+)\.rodzaj$/.exec(el.dataset.p);
+      if (mr) { var x = o.obmiary.hydraulik.odcinki[+mr[1]]; x.sr = v === 'k' ? '50' : '16'; }
+      zapisz();
       if (el.tagName === 'SELECT' || el.type === 'checkbox') widokOferta(o.id, zak); else odswiezLiczby(o, zak);
     };
     el.addEventListener(el.tagName === 'SELECT' || el.type === 'checkbox' ? 'change' : 'input', zm);
   });
   var b;
   if ((b = $('#dodPom'))) b.onclick = function () { o.pomieszczenia.push({ nazwa: 'Pokój ' + (o.pomieszczenia.length + 1), dl: '', szer: '', wys: '2,6', otwory: '' }); zapisz(); widokOferta(o.id, zak); };
+  if ((b = $('#dodOdc'))) b.onclick = function () { o.obmiary.hydraulik.odcinki.push({ nazwa: 'Odcinek ' + (o.obmiary.hydraulik.odcinki.length + 1), rodzaj: 'w', sr: '16', dl: '', zakrety: '', odgal: '' }); zapisz(); widokOferta(o.id, zak); };
+  [].forEach.call(document.querySelectorAll('[data-us-odc]'), function (x) { x.onclick = function () { o.obmiary.hydraulik.odcinki.splice(+x.dataset.usOdc, 1); zapisz(); widokOferta(o.id, zak); }; });
+  [].forEach.call(document.querySelectorAll('[data-dfach]'), function (x) { x.onclick = function () { var f = x.dataset.dfach; dodajFach(f); o.obmiary[f] = o.obmiary[f] || WF.domyslneObmiary(f); zapisz(); widokOferta(o.id, zak); toast('Dodano: ' + WF_CENNIKI[f].nazwa); }; });
   [].forEach.call(document.querySelectorAll('[data-usun-pom]'), function (x) { x.onclick = function () { if (confirm('Usunąć pomieszczenie?')) { o.pomieszczenia.splice(+x.dataset.usunPom, 1); naprawPom(o, +x.dataset.usunPom); zapisz(); widokOferta(o.id, zak); } }; });
   [].forEach.call(document.querySelectorAll('[data-usun-poz]'), function (x) { x.onclick = function () { o.pozycje.splice(+x.dataset.usunPoz, 1); zapisz(); widokOferta(o.id, zak); }; });
   [].forEach.call(document.querySelectorAll('[data-usun-mat]'), function (x) { x.onclick = function () { o.materialy.splice(+x.dataset.usunMat, 1); zapisz(); widokOferta(o.id, zak); }; });
@@ -318,8 +557,10 @@ function podepnij(o, zak) {
     zapisz(); widokOferta(o.id, zak);
   };
   if ((b = $('#dup'))) b.onclick = function () {
-    if (!S.odblok && S.oferty.length >= DEMO_LIMIT) return toast('Limit wersji demo — odblokuj pełną wersję.');
-    var k = JSON.parse(JSON.stringify(o)); S.nr++; k.id = id(); k.nr = 'OF/' + new Date().getFullYear() + '/' + ('00' + S.nr).slice(-3); k.data = dzis(); k.status = '';
+    if (!S.odblok && !o.przyklad) return toast('W wersji demo jest jedna oferta na fach. Odblokuj pełną wersję.');
+    if (!S.odblok && o.przyklad && demoUzyte(o.fach)) return toast('Ofertę dla tego fachu już masz. Odblokuj pełną wersję.');
+    var k = JSON.parse(JSON.stringify(o)); S.nr++; k.id = id(); k.nr = 'OF/' + new Date().getFullYear() + '/' + ('00' + S.nr).slice(-3); k.data = dzis(); k.status = ''; k.przyklad = false;
+    if (o.przyklad) { k.klient = { imie: '', tel: '', adres: '' }; }
     S.oferty.push(k); zapisz(); toast('Skopiowano jako ' + k.nr); idz('#oferta/' + k.id + '/klient');
   };
   if ((b = $('#usO'))) b.onclick = function () { if (confirm('Usunąć ofertę ' + o.nr + '?')) { S.oferty = S.oferty.filter(function (x) { return x.id !== o.id; }); zapisz(); idz('#lista'); } };
@@ -331,13 +572,16 @@ function odswiezLiczby(o) {
   var p = WF.podsumowanie(o); var r = $('#razem'); if (r) r.textContent = WF.zl(p.brutto);
   o.pozycje.forEach(function (z, i) { var e = document.querySelector('[data-wp="' + i + '"]'); if (e) e.innerHTML = '<span>Ilość: <b>' + WF.il(p.pozycje[i].il) + ' ' + esc(z.jedn) + '</b></span><span>Wartość: <b>' + WF.zl(p.pozycje[i].wartosc) + '</b></span>'; });
   o.materialy.forEach(function (m, i) { var e = document.querySelector('[data-wm="' + i + '"]'), w = p.materialyPoz[i]; if (e) e.innerHTML = '<span>Potrzeba: <b>' + WF.il(w.potrzeba) + '</b> → <b>' + w.opakowania + ' × ' + esc(m.opis || 'szt.') + '</b></span><span><b>' + (o.materialyKlienta ? '—' : WF.zl(w.wartosc)) + '</b></span>'; });
+  var r = WF.wynikiFachow(o);
+  Object.keys(KARTY).forEach(function (f) { var e = document.querySelector('[data-fw="' + f + '"]'); if (e && o.obmiary && o.obmiary[f]) e.innerHTML = KARTY[f].wynik(r, o.obmiary[f]); });
+  o.materialy.forEach(function (m, i) { var e = document.querySelector('[data-mb="' + i + '"]'); if (e) e.innerHTML = 'z obliczeń: <b>' + WF.il(p.materialyPoz[i].baza) + ' ' + WF.opisBazy(m.baza).jedn + '</b>'; });
   o.pomieszczenia.forEach(function (pm, i) { var e = document.querySelector('[data-met="' + i + '"]'); if (e) { var m = WF.metryki(pm); e.innerHTML = 'Podłoga <b>' + WF.il(m.podloga) + ' m²</b> · Ściany <b>' + WF.il(m.sciany) + ' m²</b> · Sufit <b>' + WF.il(m.sufit) + ' m²</b> · Obwód <b>' + WF.il(m.obwod) + ' mb</b>'; } });
 }
 
 // ---------- podgląd / druk / wysyłka ----------
 function dokument(o) {
   var p = WF.podsumowanie(o), f = S.firma;
-  var h = '<div class="dok">' + (S.odblok ? '' : '<div class="zn"><span>DEMO · Wycena Fachowca</span></div>') +
+  var h = '<div class="dok">' + (o.przyklad ? '<div class="zn"><span>PRZYKŁAD · Wycena Fachowca</span></div>' : '') +
     '<div class="gora"><div>' + (f.logo ? '<img class="logo" src="' + f.logo + '" alt="">' : '') + '<div><b>' + esc(f.nazwa) + '</b></div>' +
     '<div class="mala">' + [f.osoba, f.adres, f.nip ? 'NIP ' + f.nip : '', f.tel ? 'tel. ' + f.tel : '', f.email].filter(Boolean).map(esc).join('<br>') + '</div></div>' +
     '<div class="mala" style="text-align:right">Data: ' + dataPL(o.data) + '<br>Ważna do: ' + dataPL(plusDni(o.data, o.waznosc)) + '</div></div>' +
@@ -362,7 +606,8 @@ function dokument(o) {
     '<div style="margin-top:10px">' + (p.zaliczka ? 'Zaliczka przed rozpoczęciem prac: <b>' + WF.zl(p.zaliczka) + '</b>. ' : '') + (o.termin ? 'Termin realizacji: ' + esc(o.termin) + '. ' : '') +
     (f.konto ? 'Konto: ' + esc(f.konto) + '.' : '') + '</div>' +
     (S.ust.warunki ? '<p class="mala">' + esc(S.ust.warunki) + '</p>' : '') + (o.uwagi ? '<p>' + esc(o.uwagi) + '</p>' : '') +
-    '<div class="podp"><div>Wykonawca</div><div>Akceptuję ofertę (data, podpis klienta)</div></div></div>';
+    '<div class="podp"><div>Wykonawca</div><div>Akceptuję ofertę (data, podpis klienta)</div></div>' +
+    (S.odblok ? '' : '<p class="mala" style="text-align:center;margin-top:18px">Oferta przygotowana w aplikacji Wycena Fachowca · mastersson.github.io/wycena</p>') + '</div>';
   return h;
 }
 function tekstSms(o) {
@@ -377,7 +622,8 @@ function widokPodglad(oid) {
   ustawTytul('Podgląd ' + o.nr);
   var tel = String(o.klient.tel || '').replace(/[^\d+]/g, '');
   $('#m').innerHTML = '<div class="nie-druk">' + bannerDemo() + '<div class="pasek" style="margin:0 0 12px"><button class="btn gl" id="pdf">Drukuj / zapisz PDF</button>' +
-    '<button class="btn" id="wyslij">Wyślij podsumowanie</button><a class="btn" href="#oferta/' + o.id + '/suma">← Edytuj</a></div>' +
+    '<button class="btn" id="wyslij">Wyślij podsumowanie</button><a class="btn" href="#oferta/' + o.id + '/' + (o.przyklad ? 'pomiary' : 'suma') + '">' + (o.przyklad ? 'Zobacz, jak to policzono →' : '← Edytuj') + '</a></div>' +
+    (o.przyklad ? '<div class="demo">To jest przykład. Wszystkie ilości policzyła aplikacja z kilku wymiarów. Zmień liczby w zakładce Pomiary i zobacz, jak zmienia się oferta.' + (demoUzyte(o.fach) ? '' : ' Swoją pierwszą ofertę dla tego fachu zrobisz za darmo: „＋ Nowa”.') + '</div>' : '') +
     '<p class="info">PDF: przycisk „Drukuj / zapisz PDF”, potem w oknie drukowania wybierz „Zapisz jako PDF” i wyślij plik klientowi.</p></div>' + dokument(o);
   $('#pdf').onclick = function () { if (!o.status) { o.status = 'wysłana'; zapisz(); } window.print(); };
   $('#wyslij').onclick = function () {
@@ -389,27 +635,33 @@ function widokPodglad(oid) {
 }
 
 // ---------- cennik ----------
+function rynek(m, i) {
+  var c = m.kod ? WF.cenaRynkowa(S.ceny, m.kod, m.ile) : null; if (c == null) return '';
+  return '<div class="met">Cena rynkowa: <b>' + WF.zl(c) + '</b> ' + (m.auto === false ? '<button class="btn ma" data-rynek="' + i + '">↺ użyj ceny rynkowej</button>' : '(aktualizowana automatycznie)') + '</div>';
+}
 function widokCennik() {
   ustawTytul('Cennik');
-  var h = '<div class="k"><h2>Robocizna</h2><p class="info">Twoje stawki. Zmiana tutaj działa dla nowych pozycji w ofertach.</p>';
+  var h = '<div class="k"><h2>Ceny materiałów</h2><p class="info">Raz dziennie, gdy masz internet, aplikacja pobiera aktualne ceny rynkowe materiałów (' + (S.ceny ? 'ostatnio: ' + dataPL(S.ceny.data) + ', ' + esc(S.ceny.zrodlo) : 'jeszcze nie pobrano') + '). Cenę, którą zmienisz sam, zostawiamy Twoją. Płytki i panele wpisujesz sam, bo zależą od wyboru klienta.</p></div>' +
+    '<div class="k"><h2>Robocizna</h2><p class="info">Twoje stawki. Zmiana tutaj działa dla nowych pozycji w ofertach.</p>';
   S.cennik.forEach(function (c, i) {
     h += '<div class="poz"><div class="nag"><input data-c="cennik.' + i + '.nazwa" value="' + esc(c.nazwa) + '"><button class="btn ma us" data-usc="' + i + '">✕</button></div><div class="r3">' +
       '<div><label>Cena</label><input data-c="cennik.' + i + '.cena" value="' + esc(c.cena) + '"' + NUM + '></div><div><label>J.m.</label><input data-c="cennik.' + i + '.jedn" value="' + esc(c.jedn) + '"></div>' +
-      '<div><label>Liczone od</label><select data-c="cennik.' + i + '.baza">' + Object.keys(WF.BAZY).map(function (b) { return '<option value="' + b + '" ' + (b === c.baza ? 'selected' : '') + '>' + WF.BAZY[b] + '</option>'; }).join('') + '</select></div></div></div>';
+      '<div><label>Liczone od</label>' + opcjeBaza('cennik.' + i + '.baza', c.baza, 'data-c', c.fk ? [c.fk] : S.fachy) + '</div></div></div>';
   });
   h += '<button class="btn szer" id="dodC">+ Dodaj pozycję</button></div><div class="k"><h2>Materiały</h2>';
   S.katMat.forEach(function (m, i) {
-    h += '<div class="poz"><div class="nag"><input data-c="katMat.' + i + '.nazwa" value="' + esc(m.nazwa) + '"><button class="btn ma us" data-usm="' + i + '">✕</button></div><div class="r4">' +
-      '<div><label>Zużycie/j.</label><input data-c="katMat.' + i + '.zuzycie" value="' + esc(pl(m.zuzycie)) + '"' + NUM + '></div><div><label>W opak.</label><input data-c="katMat.' + i + '.opak" value="' + esc(pl(m.opak)) + '"' + NUM + '></div>' +
-      '<div><label>Opakowanie</label><input data-c="katMat.' + i + '.opis" value="' + esc(m.opis) + '"></div><div><label>Cena</label><input data-c="katMat.' + i + '.cena" value="' + esc(m.cena) + '"' + NUM + '></div></div></div>';
+    h += '<div class="poz"><div class="nag"><input data-c="katMat.' + i + '.nazwa" value="' + esc(m.nazwa) + '"><button class="btn ma us" data-usm="' + i + '">✕</button></div><label>Liczone od</label>' + opcjeBaza('katMat.' + i + '.baza', m.baza, 'data-c', m.fk ? [m.fk] : S.fachy) + rynek(m, i) + '<div class="r2">' +
+      '<div><label>Zużycie na 1 ' + (m.baza === 'reczna' ? 'szt.' : WF.opisBazy(m.baza).jedn) + '</label><input data-c="katMat.' + i + '.zuzycie" value="' + esc(pl(m.zuzycie)) + '"' + NUM + '></div><div><label>Ilość w opakowaniu</label><input data-c="katMat.' + i + '.opak" value="' + esc(pl(m.opak)) + '"' + NUM + '></div></div><div class="r2">' +
+      '<div><label>Opakowanie</label><input data-c="katMat.' + i + '.opis" value="' + esc(m.opis) + '"></div><div><label>Cena za opakowanie</label><input data-c="katMat.' + i + '.cena" value="' + esc(m.cena) + '"' + NUM + '></div></div></div>';
   });
   h += '<button class="btn szer" id="dodM">+ Dodaj materiał</button></div><div class="k"><h2>Dodaj cennik fachu</h2>' +
     Object.keys(WF_CENNIKI).map(function (k) { return '<button class="btn ma" style="margin:4px" data-fach="' + k + '">' + esc(WF_CENNIKI[k].nazwa) + '</button>'; }).join('') + '</div>';
   $('#m').innerHTML = h;
   [].forEach.call(document.querySelectorAll('[data-c]'), function (el) {
-    el.addEventListener('change', function () { ustawPole(S, el.dataset.c, el.value); zapisz(); });
+    el.addEventListener('change', function () { ustawPole(S, el.dataset.c, el.value); if (/^katMat\.\d+\.cena$/.test(el.dataset.c)) S.katMat[+el.dataset.c.split('.')[1]].auto = false; zapisz(); if (el.tagName === 'SELECT' || /\.cena$/.test(el.dataset.c)) widokCennik(); });
   });
   [].forEach.call(document.querySelectorAll('[data-usc]'), function (x) { x.onclick = function () { S.cennik.splice(+x.dataset.usc, 1); zapisz(); widokCennik(); }; });
+  [].forEach.call(document.querySelectorAll('[data-rynek]'), function (x) { x.onclick = function () { var m = S.katMat[+x.dataset.rynek]; m.auto = true; zastosujCeny(); zapisz(); widokCennik(); toast('Przywrócono cenę rynkową'); }; });
   [].forEach.call(document.querySelectorAll('[data-usm]'), function (x) { x.onclick = function () { S.katMat.splice(+x.dataset.usm, 1); zapisz(); widokCennik(); }; });
   [].forEach.call(document.querySelectorAll('[data-fach]'), function (x) { x.onclick = function () { dodajFach(x.dataset.fach); zapisz(); widokCennik(); toast('Dodano cennik: ' + WF_CENNIKI[x.dataset.fach].nazwa); }; });
   $('#dodC').onclick = function () { S.cennik.push({ id: id(), nazwa: 'Nowa praca', jedn: 'm²', cena: 0, baza: 'podloga' }); zapisz(); widokCennik(); };
@@ -434,7 +686,7 @@ function widokUstawienia() {
     '<label>Stały tekst na ofercie</label><textarea data-u="warunki" rows="3">' + esc(u.warunki) + '</textarea>' +
     '<p class="info">VAT 8% dotyczy zwykle remontów w budownictwie mieszkaniowym; sprawdź ze swoją księgową, która stawka Cię dotyczy.</p></div>' +
     '<div class="k"><h2>Kopia zapasowa</h2><p class="info">Dane są tylko w tym telefonie. Zrób kopię raz na jakiś czas.</p><div class="pasek"><button class="btn" id="eksp">Zapisz kopię</button><label class="btn" style="margin:0">Wczytaj kopię<input type="file" id="imp" accept=".json,application/json" hidden></label></div></div>' +
-    '<p class="info" style="text-align:center">Wycena Fachowca 1.0 · MasterSSon</p>';
+    '<p class="info" style="text-align:center">Wycena Fachowca 1.2 · MasterSSon</p>';
   [].forEach.call(document.querySelectorAll('[data-f]'), function (el) { el.addEventListener('change', function () { f[el.dataset.f] = el.value.trim(); zapisz(); }); });
   [].forEach.call(document.querySelectorAll('[data-u]'), function (el) { el.addEventListener('change', function () { u[el.dataset.u] = el.value; zapisz(); }); });
   var b;
@@ -460,7 +712,7 @@ function widokUstawienia() {
   };
 }
 
-wczytaj(); pokaz();
+wczytaj(); pokaz(); pobierzCeny();
 if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(function () {});
 </script>
 </body>

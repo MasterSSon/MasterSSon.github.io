@@ -133,7 +133,7 @@ function wzorMaterialu(nazwa) { var w = null; Object.keys(WF_CENNIKI).forEach(fu
 function wzorPracy(nazwa) { var w = null; Object.keys(WF_CENNIKI).forEach(function (k) { WF_CENNIKI[k].robocizna.forEach(function (r) { if (r[0] === nazwa && !w) w = k; }); }); return w; }
 function wczytaj() {
   try { S = JSON.parse(localStorage.getItem(KLUCZ)) || nowyStan(); } catch (e) { S = nowyStan(); }
-  if (window.WF_TEST) S.odblok = true;
+  if (window.WF_TEST || window.WF_ODBLOK) S.odblok = true; // WF_ODBLOK: publiczna wersja w pełni odblokowana na czas darmowych testów (decyzja Adriana 26.10.2026)
   // pozycje cennika rozbite na osobne (1.2.8: membrana / kontrłaty / łaty) — stara znika, jeśli nie zmieniałeś jej ceny
   [['Membrana, łaty i kontrłaty', 25, 'dekarz']].forEach(function (u) {
     var przed = (S.cennik || []).length;
@@ -227,6 +227,18 @@ function widokStart() {
 }
 
 // ---------- lista ofert ----------
+// Propozycje zmian i pomysły od użytkowników → e-mail autora (adres składany w skrypcie, żeby nie zbierały go roboty)
+function kartaPomyslu() {
+  return '<div class="k pomysl"><h2>💡 Masz pomysł albo uwagę?</h2><p>Aplikacja jest w fazie testów. Mile widziane są propozycje zmian, nowe funkcje, brakujące fachy, materiały i wszystko, co ułatwi Ci wyceny — każda wiadomość trafia prosto do autora i do kolejnej wersji.</p>' +
+    '<button class="btn" data-pomysl="1">✉️ Napisz propozycję</button></div>';
+}
+function adresPomyslu() {
+  var adres = ['moz2598', 'gmail.com'].join('@');
+  var tresc = 'Mój fach: \n\nCo zmienić albo poprawić: \n\nNowy pomysł / funkcja: \n\n---\nWycena Fachowca ' + WERSJA_APP + ' · ' + (navigator.userAgent || '').slice(0, 80);
+  return 'mailto:' + adres + '?subject=' + encodeURIComponent('Wycena Fachowca — propozycja') + '&body=' + encodeURIComponent(tresc);
+}
+function napiszPomysl() { location.href = adresPomyslu(); }
+document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-pomysl]'); if (b) { e.preventDefault(); napiszPomysl(); } });
 function widokLista() {
   ustawTytul('Oferty');
   var h = bannerDemo() + '<div class="k lista">';
@@ -237,7 +249,7 @@ function widokLista() {
     h += '<a class="o" href="#oferta/' + o.id + '/klient"><span><b>' + (f ? f.ikona + ' ' : '') + esc(o.tytul || 'Oferta') + (o.przyklad ? ' <i class="prz">PRZYKŁAD</i>' : '') + '</b><small>' + esc(o.nr) + ' · ' +
       esc(o.klient.imie || 'bez klienta') + ' · ' + dataPL(o.data) + (o.status ? ' · ' + esc(o.status) : '') + '</small></span><span class="kw">' + WF.zl(p.brutto) + '</span></a>';
   });
-  $('#m').innerHTML = h + '</div>';
+  $('#m').innerHTML = h + '</div>' + kartaPomyslu();
 }
 
 function kafelFachu(k) {
@@ -495,7 +507,7 @@ function opcjeBaza(sciezka, wart, atr, fachy) {
   return '<select ' + (atr || 'data-p') + '="' + sciezka + '">' + Object.keys(grupy).map(function (g) { return '<optgroup label="' + esc(g) + '">' + grupy[g].join('') + '</optgroup>'; }).join('') + '</select>';
 }
 // Legenda skrótów: każdy skrót w oknie dostaje gwiazdki (*, **, …), opis na dole okna
-var WERSJA_APP = '1.2.9'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
+var WERSJA_APP = '1.2.10'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
 var SKROTY = [['J.m.', ''], ['j.m.', 'jednostka miary — w czym liczysz pracę (m², mb, szt., kpl…)'], ['kpl', 'komplet — usługa liczona w całości, jako 1 sztuka'],
   ['mb', 'metr bieżący — długość (np. listwy, przewody, rury)'], ['szt.', 'sztuka'], ['opak.', 'opakowanie'], ['Ø', 'średnica rury w mm'],
   ['wod.', 'instalacja wodna'], ['kan.', 'kanalizacja'], ['h', 'godzina'], ['t', 'tona'], ['Lp.', 'liczba porządkowa']];
@@ -792,7 +804,7 @@ function widokUstawienia() {
     '<div><label>Ważność (dni)</label><input data-u="waznosc" value="' + esc(u.waznosc) + '"' + NUM + '></div><div><label>Zaliczka %</label><input data-u="zaliczka" value="' + esc(u.zaliczka) + '"' + NUM + '></div></div>' +
     '<label>Stały tekst na ofercie</label><textarea data-u="warunki" rows="3">' + esc(u.warunki) + '</textarea>' +
     '<p class="info">VAT 8% dotyczy zwykle remontów w budownictwie mieszkaniowym; sprawdź ze swoją księgową, która stawka Cię dotyczy.</p></div>' +
-    '<div class="k"><h2>Kopia zapasowa</h2><p class="info">Dane są tylko w tym telefonie. Zrób kopię raz na jakiś czas.</p><div class="pasek"><button class="btn" id="eksp">Zapisz kopię</button><label class="btn" style="margin:0">Wczytaj kopię<input type="file" id="imp" accept=".json,application/json" hidden></label></div></div>' +
+    kartaPomyslu() + '<div class="k"><h2>Kopia zapasowa</h2><p class="info">Dane są tylko w tym telefonie. Zrób kopię raz na jakiś czas.</p><div class="pasek"><button class="btn" id="eksp">Zapisz kopię</button><label class="btn" style="margin:0">Wczytaj kopię<input type="file" id="imp" accept=".json,application/json" hidden></label></div></div>' +
     (window.WF_TEST ? '<div class="k"><h2>Moje poprawki tekstów (' + Object.keys(ETYK).length + ')</h2>' +
       (Object.keys(ETYK).length ? '<div class="mala bezleg">' + Object.keys(ETYK).map(function (k) { return '<div>„' + esc(k) + '” → „' + esc(ETYK[k]) + '”</div>'; }).join('') + '</div>' : '<p class="info">Włącz ✏️ Edytuj teksty i stuknij w dowolny opis.</p>') +
       '<div class="pasek" style="margin-top:8px"><button class="btn" id="etykKop">Kopiuj dla Jarvisa</button><button class="btn ma" id="etykCzysc">Wyczyść</button></div></div>' : '') +

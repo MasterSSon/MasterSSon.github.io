@@ -507,9 +507,10 @@ function opcjeBaza(sciezka, wart, atr, fachy) {
   return '<select ' + (atr || 'data-p') + '="' + sciezka + '">' + Object.keys(grupy).map(function (g) { return '<optgroup label="' + esc(g) + '">' + grupy[g].join('') + '</optgroup>'; }).join('') + '</select>';
 }
 // Legenda skrótów: każdy skrót w oknie dostaje gwiazdki (*, **, …), opis na dole okna
-var WERSJA_APP = '1.2.11'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
+var WERSJA_APP = '1.2.12'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
 var SKROTY = [['J.m.', ''], ['j.m.', 'jednostka miary — w czym liczysz pracę (m², mb, szt., kpl…)'], ['kpl', 'komplet — usługa liczona w całości, jako 1 sztuka'],
   ['mb', 'metr bieżący — długość (np. listwy, przewody, rury)'], ['szt.', 'sztuka'], ['opak.', 'opakowanie'], ['Ø', 'średnica rury w mm'],
+  ['Śr.', 'średnio — przeciętna długość przewodu na 1 punkt (gniazdo, włącznik, lampę)'], ['dł.', 'długość'], ['szer.', 'szerokość'],
   ['wod.', 'instalacja wodna'], ['kan.', 'kanalizacja'], ['h', 'godzina'], ['t', 'tona'], ['Lp.', 'liczba porządkowa']];
 var LEG = { mapa: {}, hash: '' }, LEG_RE = new RegExp('(^|[^\\p{L}.*])(' + SKROTY.map(function (s) { return s[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|') + ')(?![\\p{L}*])', 'gu');
 // Wersja testowa: Adrian poprawia opisy w miejscu (✏️), poprawki w localStorage, eksport dla Jarvisa w Ustawieniach

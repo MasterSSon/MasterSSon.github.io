@@ -62,6 +62,11 @@ body.etyk label,body.etyk h2,body.etyk .info,body.etyk .met,body.etyk summary,bo
 .chk{display:flex;gap:8px;align-items:center;font-size:.95rem;color:var(--t);margin:8px 0}
 .chk input{width:auto}
 .demo{background:#fef3c7;color:#92400e;border-radius:10px;padding:10px;font-size:.88rem;margin-bottom:12px}
+.okno{position:fixed;inset:0;background:rgba(17,24,39,.55);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+.okno .w{background:var(--b);width:100%;max-width:560px;border-radius:16px 16px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto}
+.okno h2{margin:0 0 6px;font-size:1.1rem}.okno label{display:block;font-size:.85rem;color:var(--s);margin:10px 0 4px}
+.okno input,.okno textarea{width:100%;font:inherit;padding:10px;border:1px solid var(--r);border-radius:10px;background:var(--b);color:var(--t)}
+.okno textarea{min-height:140px;resize:vertical}.okno .pasek{display:flex;gap:8px;margin-top:14px}.okno .pasek .btn{flex:1;margin:0}
 .toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 16px;border-radius:10px;z-index:9;font-size:.9rem}
 /* ---- dokument oferty ---- */
 .dok{background:#fff;color:#111;padding:22px;border-radius:6px;font-size:13px;line-height:1.45;position:relative;overflow:hidden}
@@ -88,7 +93,7 @@ details.k summary{cursor:pointer;color:var(--k)}.fach details{margin:6px 0}.fach
 @media print{
   @page{size:A4;margin:12mm}
   body{background:#fff}
-  header.g,nav.d,.nie-druk,.toast{display:none!important}
+  header.g,nav.d,.nie-druk,.toast,.okno{display:none!important}
   main{padding:0;max-width:none}
   .dok{padding:0;border-radius:0}
 }
@@ -232,12 +237,41 @@ function kartaPomyslu() {
   return '<div class="k pomysl"><h2>💡 Masz pomysł albo uwagę?</h2><p>Aplikacja jest w fazie testów. Mile widziane są propozycje zmian, nowe funkcje, brakujące fachy, materiały i wszystko, co ułatwi Ci wyceny — każda wiadomość trafia prosto do autora i do kolejnej wersji.</p>' +
     '<button class="btn" data-pomysl="1">✉️ Napisz propozycję</button></div>';
 }
-function adresPomyslu() {
-  var adres = ['moz2598', 'gmail.com'].join('@');
-  var tresc = 'Mój fach: \n\nCo zmienić albo poprawić: \n\nNowy pomysł / funkcja: \n\n---\nWycena Fachowca ' + WERSJA_APP + ' · ' + (navigator.userAgent || '').slice(0, 80);
-  return 'mailto:' + adres + '?subject=' + encodeURIComponent('Wycena Fachowca — propozycja') + '&body=' + encodeURIComponent(tresc);
+// Propozycje: okienko w aplikacji → bramka FormSubmit → mail Adriana. Bez sieci: kolejka w localStorage, wysyłka po powrocie sieci.
+var POMYSL_URL = 'https://formsubmit.co/ajax/' + ['moz2598', 'gmail.com'].join('@'), POMYSL_KLUCZ = 'wycenaPomyslyKolejka';
+function kolejkaPomyslow() { try { return JSON.parse(localStorage.getItem(POMYSL_KLUCZ)) || []; } catch (e) { return []; } }
+function zapiszKolejke(k) { try { if (k.length) localStorage.setItem(POMYSL_KLUCZ, JSON.stringify(k)); else localStorage.removeItem(POMYSL_KLUCZ); } catch (e) {} }
+function wyslijPomysl(d) {
+  return fetch(POMYSL_URL, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(d) })
+    .then(function (r) { return r.json(); }).then(function (j) { if (String(j.success) !== 'true') throw new Error(j.message || 'blad'); });
 }
-function napiszPomysl() { location.href = adresPomyslu(); }
+function wyslijKolejke() {
+  var k = kolejkaPomyslow(); if (!k.length || !navigator.onLine) return;
+  wyslijPomysl(k[0]).then(function () { zapiszKolejke(kolejkaPomyslow().slice(1)); toast('Wysłano zaległą propozycję — dzięki!'); wyslijKolejke(); }, function () {});
+}
+window.addEventListener('online', wyslijKolejke); setTimeout(wyslijKolejke, 3000);
+function napiszPomysl() {
+  if ($('.okno')) return;
+  var o = document.createElement('div'); o.className = 'okno';
+  o.innerHTML = '<div class="w"><h2>💡 Twoja propozycja</h2><p class="info">Napisz, co zmienić, czego brakuje albo co by Ci ułatwiło wyceny. Wiadomość trafi prosto do autora.</p>' +
+    '<label for="pmFach">Twój fach (nieobowiązkowo)</label><input id="pmFach" maxlength="80" placeholder="np. glazurnik">' +
+    '<label for="pmTresc">Wiadomość</label><textarea id="pmTresc" maxlength="4000" placeholder="Co zmienić albo dodać?"></textarea>' +
+    '<label for="pmKontakt">Telefon lub e-mail (nieobowiązkowo, jeśli chcesz odpowiedź)</label><input id="pmKontakt" maxlength="120">' +
+    '<div class="pasek"><button class="btn" id="pmAnuluj" type="button">Anuluj</button><button class="btn gl" id="pmWyslij" type="button">Wyślij</button></div></div>';
+  document.body.appendChild(o);
+  var zamknij = function () { o.remove(); };
+  o.addEventListener('click', function (e) { if (e.target === o) zamknij(); });
+  $('#pmAnuluj').onclick = zamknij; $('#pmTresc').focus();
+  $('#pmWyslij').onclick = function () {
+    var tresc = $('#pmTresc').value.trim(); if (!tresc) { toast('Wpisz wiadomość'); $('#pmTresc').focus(); return; }
+    var d = { _subject: 'Wycena Fachowca — propozycja', _template: 'table', _captcha: 'false', 'Fach': $('#pmFach').value.trim() || '—', 'Wiadomość': tresc,
+      'Kontakt': $('#pmKontakt').value.trim() || '—', 'Wersja': WERSJA_APP + (window.WF_TEST ? ' (test)' : ''), 'Telefon/przeglądarka': (navigator.userAgent || '').slice(0, 120), 'Data': new Date().toLocaleString('pl-PL') };
+    var b = $('#pmWyslij'); b.disabled = true; b.textContent = 'Wysyłam…';
+    var doKolejki = function () { var k = kolejkaPomyslow(); k.push(d); zapiszKolejke(k); zamknij(); toast('Brak internetu — wyślę, gdy wróci sieć'); };
+    if (!navigator.onLine) return doKolejki();
+    wyslijPomysl(d).then(function () { zamknij(); toast('Wysłano — dzięki za propozycję!'); }, doKolejki);
+  };
+}
 document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-pomysl]'); if (b) { e.preventDefault(); napiszPomysl(); } });
 function widokLista() {
   ustawTytul('Oferty');
@@ -507,7 +541,7 @@ function opcjeBaza(sciezka, wart, atr, fachy) {
   return '<select ' + (atr || 'data-p') + '="' + sciezka + '">' + Object.keys(grupy).map(function (g) { return '<optgroup label="' + esc(g) + '">' + grupy[g].join('') + '</optgroup>'; }).join('') + '</select>';
 }
 // Legenda skrótów: każdy skrót w oknie dostaje gwiazdki (*, **, …), opis na dole okna
-var WERSJA_APP = '1.2.12'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
+var WERSJA_APP = '1.2.13'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
 var SKROTY = [['J.m.', ''], ['j.m.', 'jednostka miary — w czym liczysz pracę (m², mb, szt., kpl…)'], ['kpl', 'komplet — usługa liczona w całości, jako 1 sztuka'],
   ['mb', 'metr bieżący — długość (np. listwy, przewody, rury)'], ['szt.', 'sztuka'], ['opak.', 'opakowanie'], ['Ø', 'średnica rury w mm'],
   ['Śr.', 'średnio — przeciętna długość przewodu na 1 punkt (gniazdo, włącznik, lampę)'], ['dł.', 'długość'], ['szer.', 'szerokość'],

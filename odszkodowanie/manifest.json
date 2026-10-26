@@ -1,0 +1,15 @@
+{
+ "name": "Odszkodowanie za lot",
+ "short_name": "Odszkodowanie",
+ "start_url": "./index.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#f1f5f9",
+ "theme_color": "#1d4ed8",
+ "lang": "pl",
+ "description": "Sprawdź, czy za opóźniony lub odwołany lot należy ci się 250–600 EUR, i przygotuj wniosek do linii.",
+ "icons": [
+  {"src": "ikona-192.png", "sizes": "192x192", "type": "image/png"},
+  {"src": "ikona-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
+ ]
+}

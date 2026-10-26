@@ -135,6 +135,9 @@
   function widokWniosek() {
     var wej = wejscie(S.sprawa), w = WL.ocen(wej), o = S.osoba;
     if (!(w.kwota > 0)) return '<div class="k"><h2>Najpierw sprawdź lot</h2><p>Wniosek przygotujesz, gdy kalkulator pokaże kwotę odszkodowania.</p><a class="btn" href="#kalkulator">Sprawdź lot</a></div>';
+    if (window.WL_PUBLICZNA) return '<div class="k" id="pelna"><h2>Należy ci się ' + w.kwota + ' EUR na pasażera</h2><p>W pełnej wersji aplikacja przygotuje gotowy wniosek do linii (po polsku albo angielsku, z podstawą prawną), ' +
+      'wniosek do Rzecznika Praw Pasażerów, gdy linia nie odpowie, i przypilnuje terminów. Pełna wersja będzie dostępna wkrótce.</p>' +
+      '<p class="info">Możesz też napisać wniosek sam: zobacz zakładkę „Zasady” — krok po kroku, co i gdzie wysłać.</p><a class="btn" href="#info">Krok po kroku</a></div>'; // publiczny kalkulator: wniosek tylko w pełnej wersji
     var ibanZly = o.iban && !WL.ibanOk(o.iban);
     var h = '<div class="k nie-drukuj"><h2>Twoje dane do wniosku</h2>' + polO('Imię i nazwisko', 'imie', o.imie) + polO('Adres', 'adres', o.adres) +
       '<div class="r2"><div>' + polO('E-mail', 'email', o.email, 'email') + '</div><div>' + polO('Telefon (opcjonalnie)', 'telefon', o.telefon, 'tel') + '</div></div>' +

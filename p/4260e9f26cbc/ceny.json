@@ -1,11 +1,11 @@
 {
-"data": "2026-10-25",
+"data": "2026-10-27",
 "zrodlo": "OBI.pl, mediana cen z wyszukiwarki sklepu",
 "ceny": {
 "klej_plytki": {
 "jedn": "kg",
-"cena": 1.88,
-"n": 10
+"cena": 2.18,
+"n": 12
 },
 "fuga": {
 "jedn": "kg",
@@ -19,8 +19,8 @@
 },
 "farba_biala": {
 "jedn": "l",
-"cena": 17.3,
-"n": 12
+"cena": 17.6,
+"n": 11
 },
 "gladz": {
 "jedn": "kg",
@@ -115,7 +115,7 @@
 "lakier_parkiet": {
 "jedn": "l",
 "cena": 83.6,
-"n": 18
+"n": 19
 },
 "rura_podlogowka": {
 "jedn": "m",
@@ -124,7 +124,7 @@
 },
 "pianka": {
 "jedn": "szt",
-"cena": 31.99,
+"cena": 32.99,
 "n": 23
 },
 "cement": {

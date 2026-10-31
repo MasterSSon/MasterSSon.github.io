@@ -1,11 +1,11 @@
 {
-"data": "2026-10-27",
+"data": "2026-10-31",
 "zrodlo": "OBI.pl, mediana cen z wyszukiwarki sklepu",
 "ceny": {
 "klej_plytki": {
 "jedn": "kg",
-"cena": 2.18,
-"n": 12
+"cena": 2.23,
+"n": 13
 },
 "fuga": {
 "jedn": "kg",
@@ -124,7 +124,7 @@
 },
 "pianka": {
 "jedn": "szt",
-"cena": 32.99,
+"cena": 31.99,
 "n": 23
 },
 "cement": {

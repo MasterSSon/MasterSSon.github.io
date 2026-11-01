@@ -5,7 +5,7 @@
  "scope": "./",
  "display": "standalone",
  "background_color": "#f3f4f6",
- "theme_color": "#0f766e",
+ "theme_color": "#10233F",
  "lang": "pl",
  "description": "Wycena i oferta dla klienta w 2 minuty, prosto z telefonu.",
  "icons": [

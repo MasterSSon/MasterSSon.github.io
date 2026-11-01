@@ -5,7 +5,7 @@
 <script>window.WF_TEST = true;</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0f766e">
+<meta name="theme-color" content="#10233F">
 <title>Wycena Fachowca</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="ikona-192.png">
@@ -98,6 +98,58 @@ details.k summary{cursor:pointer;color:var(--k)}.fach details{margin:6px 0}.fach
   main{padding:0;max-width:none}
   .dok{padding:0;border-radius:0}
 }
+</style>
+<style>
+/* ===== Motyw „jak sklep MasterSSon” (2.11.2026): granat = zaufanie, pomarańcz = działanie, zieleń = OK; lekkie 3D.
+   Tylko ekran — dokument oferty i druk bez zmian układu. Wydajność: bez fixed, bez backdrop-filter, animacje tylko transform. ===== */
+:root{--k:#1D4ED8;--kj:#E3ECFF;--t:#10233F;--s:#4E6180;--r:#D3DEEE;--b:#fff;--tlo:#EEF3FA;--cta:#FF7A1A;--cta2:#F05E00;--granat:#10233F;
+  --cien:0 1px 2px rgba(16,35,63,.08),0 8px 18px -8px rgba(16,35,63,.25);--swiatlo:inset 0 1px 0 rgba(255,255,255,.9)}
+@media screen{
+html{background:linear-gradient(180deg,#F5F8FD 0,#E8EFF9 700px,#E8EFF9 100%)}
+body{background:transparent;-webkit-tap-highlight-color:transparent}
+header.g{background:linear-gradient(135deg,#10233F 0%,#1D3F9E 100%);box-shadow:0 6px 16px -8px rgba(16,35,63,.6);padding:14px 16px}
+header.g h1{font-size:1.15rem;font-weight:800;letter-spacing:.2px}
+header.g button{background:linear-gradient(180deg,rgba(255,255,255,.22),rgba(255,255,255,.1));border:1px solid rgba(255,255,255,.25);box-shadow:0 2px 0 rgba(0,0,0,.25);font-weight:700}
+main{padding:14px 14px 104px}
+/* menu na dole: wypukły pasek, aktywna zakładka jako niebieski guzik */
+nav.d{left:8px;right:8px;bottom:8px;border:1px solid #C9D7EE;border-radius:20px;background:linear-gradient(180deg,#FFFFFF,#F1F5FC);
+  box-shadow:0 10px 24px -8px rgba(16,35,63,.45),var(--swiatlo);padding:6px 6px calc(6px + env(safe-area-inset-bottom));gap:6px}
+nav.d a{border-radius:14px;padding:7px 0 6px;color:var(--s);font-weight:700;font-size:.78rem;transition:transform .12s}
+nav.d a b{width:38px;height:38px;margin:0 auto 3px;display:grid;place-items:center;border-radius:12px;font-size:1.2rem;background:linear-gradient(180deg,#FFFFFF,#E3ECF9);box-shadow:0 3px 0 #C3D2EC,var(--swiatlo)}
+nav.d a:active{transform:translateY(2px)}
+nav.d a.on{color:var(--k)}
+nav.d a.on b{background:linear-gradient(180deg,#4C7BF0,#1D4ED8);color:#fff;box-shadow:0 4px 0 #10307F,0 8px 14px -4px rgba(29,78,216,.55);transform:translateY(-4px)}
+/* karty */
+.k{border:1px solid #CAD8EE;border-radius:18px;background:linear-gradient(180deg,#FFFFFF,#F8FAFF);box-shadow:var(--cien),var(--swiatlo);padding:16px}
+.k h2{font-size:1.05rem;font-weight:800;color:var(--granat)}
+.poz,.kf,.fk{border-color:#CAD8EE;border-radius:14px;background:linear-gradient(180deg,#FFFFFF,#F6F9FF);box-shadow:0 2px 6px -3px rgba(16,35,63,.25),var(--swiatlo)}
+.fk{transition:transform .12s}.fk:active{transform:translateY(2px)}
+.fk:has(input:checked){border-color:#7FA2EE;background:linear-gradient(180deg,#F1F6FF,#E2EBFF);box-shadow:0 3px 0 #B9C9E6,var(--swiatlo)}
+/* zakładki-pigułki */
+.zak{gap:8px;padding:2px 2px 8px}
+.zak a{padding:9px 15px;font-weight:700;border-color:#C9D7EE;background:linear-gradient(180deg,#FFFFFF,#EEF3FB);box-shadow:0 3px 0 #C3D2EC,var(--swiatlo);transition:transform .12s}
+.zak a:active{transform:translateY(2px)}
+.zak a.on{background:linear-gradient(180deg,#4C7BF0,#1D4ED8);border-color:transparent;color:#fff;box-shadow:0 3px 0 #10307F,0 6px 12px -4px rgba(29,78,216,.5)}
+/* przyciski: drugorzędne białe wypukłe, główne pomarańczowe; wciśnięcie po kliknięciu */
+.btn{border:1px solid #BFD0EE;border-radius:12px;background:linear-gradient(180deg,#FFFFFF,#EDF2FB);color:var(--k);font-weight:800;box-shadow:0 4px 0 #BFD0EE,0 8px 14px -8px rgba(16,35,63,.35);transition:transform .12s}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 #BFD0EE}
+.btn.gl{border:0;background:linear-gradient(180deg,#FF9440,var(--cta) 55%,var(--cta2));color:var(--granat);text-shadow:0 1px 0 rgba(255,255,255,.35);box-shadow:0 4px 0 #C24A00,0 10px 18px -6px rgba(240,94,0,.5),inset 0 1px 0 rgba(255,255,255,.5)}
+.btn.gl:active{box-shadow:0 1px 0 #C24A00}
+.btn.us{border-color:#F3B4B4;color:#C62828;box-shadow:0 4px 0 #F3C9C9}
+/* pola */
+input,select,textarea{border-color:#C9D7EE;border-radius:12px;background:#FBFCFF;box-shadow:inset 0 2px 3px rgba(16,35,63,.06)}
+input:focus,select:focus,textarea:focus{outline:3px solid rgba(29,78,216,.35);border-color:var(--k)}
+/* liczby i listy */
+.kw{color:var(--k)}
+.suma .duza{color:var(--granat);font-size:1.35rem}
+.lista .o{border-radius:12px;padding:12px 8px}
+.lista .o:active{background:#F1F6FF}
+.demo{border:1px solid #F4D58A;box-shadow:0 2px 0 #F4D58A}
+.okno .w{border-radius:22px 22px 0 0;box-shadow:0 -10px 30px rgba(16,35,63,.35)}
+.toast{border-radius:14px;box-shadow:0 10px 24px -8px rgba(16,35,63,.6)}
+details.k summary,.fach summary{color:var(--k);font-weight:700}
+}
+@media (prefers-reduced-motion:reduce){nav.d a,.zak a,.btn,.fk{transition:none}nav.d a.on b{transform:none}}
 </style>
 </head>
 <body>
@@ -541,7 +593,7 @@ function opcjeBaza(sciezka, wart, atr, fachy) {
   return '<select ' + (atr || 'data-p') + '="' + sciezka + '">' + Object.keys(grupy).map(function (g) { return '<optgroup label="' + esc(g) + '">' + grupy[g].join('') + '</optgroup>'; }).join('') + '</select>';
 }
 // Legenda skrótów: każdy skrót w oknie dostaje gwiazdki (*, **, …), opis na dole okna
-var WERSJA_APP = '1.2.13'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
+var WERSJA_APP = '1.2.14'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
 var SKROTY = [['J.m.', ''], ['j.m.', 'jednostka miary — w czym liczysz pracę (m², mb, szt., kpl…)'], ['kpl', 'komplet — usługa liczona w całości, jako 1 sztuka'],
   ['mb', 'metr bieżący — długość (np. listwy, przewody, rury)'], ['szt.', 'sztuka'], ['opak.', 'opakowanie'], ['Ø', 'średnica rury w mm'],
   ['Śr.', 'średnio — przeciętna długość przewodu na 1 punkt (gniazdo, włącznik, lampę)'], ['dł.', 'długość'], ['szer.', 'szerokość'],
@@ -829,7 +881,7 @@ function sha256(t) {
 function widokUstawienia() {
   ustawTytul('Ustawienia');
   var f = S.firma, u = S.ust;
-  var p = function (et, k, typ) { return '<label>' + et + '</label><input data-f="' + k + '" value="' + esc(f[k]) + '"' + (typ ? ' type="' + typ + '"' : '') + '>'; };
+  var p = function (et, k, typ) { return '<div><label>' + et + '</label><input data-f="' + k + '" value="' + esc(f[k]) + '"' + (typ ? ' type="' + typ + '"' : '') + '></div>'; };  // div: etykieta i pole w jednej komórce siatki .r2
   $('#m').innerHTML = '<div class="k"><h2>Pełna wersja</h2>' + (S.odblok ? (window.WF_ODBLOK || window.WF_TEST ? '<p>✅ Wersja testowa — wszystko odblokowane za darmo. Twoje uwagi są dla nas najcenniejsze (karta „Masz pomysł?” niżej).</p>' : '<p>✅ Odblokowana. Dziękujemy za zakup!</p>') :
     '<p class="info">Wpisz kod z pliku, który dostałeś po zakupie.</p><input id="kod" placeholder="WF-XXXX-XXXX" autocapitalize="characters"><button class="btn gl szer" id="odb">Odblokuj</button>') + '</div>' +
     '<div class="k"><h2>Twoja firma (na ofercie)</h2>' + p('Nazwa firmy', 'nazwa') + p('Imię i nazwisko', 'osoba') + '<div class="r2">' + p('Telefon', 'tel', 'tel') + p('E-mail', 'email', 'email') + '</div>' +

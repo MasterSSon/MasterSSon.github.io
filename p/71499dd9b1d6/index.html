@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta name="robots" content="noindex, nofollow">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1d4ed8">
+<title>Odszkodowanie za lot — sprawdź i napisz wniosek</title>
+<meta name="description" content="Sprawdź, czy za opóźniony lub odwołany lot należy ci się 250–600 EUR, i przygotuj gotowy wniosek do linii. Bez prowizji, dane zostają w telefonie.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="ikona-192.png">
+<style>
+:root{--g:#1d4ed8;--gc:#1e3a8a;--t:#0f172a;--s:#64748b;--b:#e2e8f0;--ok:#15803d;--zle:#b91c1c;--uw:#b45309}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--t);background:#f1f5f9;padding-bottom:76px}
+header{background:var(--g);color:#fff;padding:14px 16px;position:sticky;top:0;z-index:5}
+header h1{margin:0;font-size:1.15rem}
+main{max-width:680px;margin:0 auto;padding:12px}
+.k{background:#fff;border-radius:14px;padding:14px;margin:0 0 12px;box-shadow:0 1px 2px #0001}
+.k h2{margin:0 0 10px;font-size:1.05rem}
+label{display:block;font-size:.9rem;color:var(--s);margin:10px 0 4px}
+input,select,textarea{width:100%;font:inherit;padding:11px;border:1px solid var(--b);border-radius:10px;background:#fff;color:var(--t)}
+textarea{min-height:80px}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wybory{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.wybory label{margin:0;display:flex;align-items:center;gap:6px;border:1px solid var(--b);border-radius:20px;padding:8px 12px;color:var(--t);cursor:pointer}
+.wybory input{width:auto}
+.wybory label.on{border-color:var(--g);background:#eff6ff}
+.chk{display:flex;align-items:center;gap:8px;color:var(--t)}
+.chk input{width:auto}
+.info{color:var(--s);font-size:.88rem}
+.podp{position:relative}
+.lista{position:absolute;left:0;right:0;top:100%;background:#fff;border:1px solid var(--b);border-radius:10px;margin:2px 0 0;padding:0;list-style:none;max-height:260px;overflow:auto;z-index:4;box-shadow:0 6px 16px #0002}
+.lista li{padding:10px;border-bottom:1px solid #f1f5f9;cursor:pointer}
+.lista li:hover{background:#eff6ff}
+.wybrane{margin-top:4px;font-size:.88rem;color:var(--ok)}
+.btn{display:inline-block;border:0;border-radius:10px;padding:12px 16px;font:inherit;font-weight:600;background:var(--g);color:#fff;cursor:pointer;text-decoration:none;text-align:center}
+.btn.ma{background:#fff;color:var(--g);border:1px solid var(--g)}
+.btn.szer{display:block;width:100%;margin-top:10px}
+.pasek{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.wynik{border-left:6px solid var(--s)}
+.wynik.tak{border-color:var(--ok)}.wynik.nie{border-color:var(--zle)}.wynik.zalezy,.wynik.raczej_nie{border-color:var(--uw)}
+.kw{font-size:1.8rem;font-weight:800;margin:4px 0}
+.wynik ul{padding-left:18px;margin:6px 0}
+pre{white-space:pre-wrap;font:inherit;font-size:.92rem;background:#f8fafc;border:1px solid var(--b);border-radius:10px;padding:12px}
+nav.d{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--b);display:flex;z-index:6}
+nav.d a{flex:1;text-align:center;padding:10px 4px;color:var(--s);text-decoration:none;font-size:.8rem}
+nav.d a.on{color:var(--g);font-weight:700}
+nav.d b{display:block;font-size:1.2rem}
+.sprawa{border-top:1px solid var(--b);padding:10px 0}
+.blad{color:var(--zle);font-size:.85rem;margin-top:4px}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 16px;border-radius:20px;z-index:9}
+.ukryj{display:none}
+@media print{header,nav.d,.nie-drukuj{display:none!important}body{background:#fff;padding:0}.k{box-shadow:none}pre{border:0;background:#fff;font-size:11pt}}
+</style>
+</head>
+<body>
+<header><h1 id="tyt">Odszkodowanie za lot</h1></header>
+<main id="m"></main>
+<nav class="d">
+  <a href="#kalkulator" data-n="kalkulator"><b>✈️</b>Sprawdź</a>
+  <a href="#wniosek" data-n="wniosek"><b>📝</b>Wniosek</a>
+  <a href="#sprawy" data-n="sprawy"><b>📂</b>Moje sprawy</a>
+  <a href="#info" data-n="info"><b>ℹ️</b>Zasady</a>
+</nav>
+<script src="lotniska.js"></script>
+<script src="rdzen.js"></script>
+<script src="pismo.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

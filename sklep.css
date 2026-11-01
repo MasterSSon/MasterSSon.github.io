@@ -228,14 +228,18 @@ tr.lockrow td{background:repeating-linear-gradient(-45deg,var(--calc) 0 8px,var(
 
 /* ===== Motyw MasterSSon: jasny brąz, beż, krem (Adrian, 1.11.2026). Nadpisuje zmienne silnika demo. ===== */
 :root{
-  --bg:#FBF6EC; --surface:#FFFDF8; --ink:#3E2C1E; --muted:#7A644E; --line:#E4D5BE; --line2:#EFE4D2;
-  --accent:#96693F; --accent-2:#7B532F; --on-accent:#FFFDF8; --accent-soft:#F1E3CF;
-  --in:#FFF4D6; --in-line:#DCC07E; --calc:#FBF7F0; --hdr:#EFE3D0; --sel:#96693F;
-  --bez:#EADBC4; --braz:#A9784A; --krem:#FBF6EC;
-  --shadow:0 1px 2px rgba(62,44,30,.06),0 12px 32px rgba(62,44,30,.08);
+  --bg:#EEF3FA; --surface:#FFFFFF; --ink:#10233F; --muted:#4E6180; --line:#D3DEEE; --line2:#E4ECF7;
+  --accent:#1D4ED8; --accent-2:#163CA8; --on-accent:#FFFFFF; --accent-soft:#E3ECFF;
+  --in:#FFF6D9; --in-line:#E9C766; --calc:#F6F9FE; --hdr:#E6EEFA; --sel:#1D4ED8;
+  --cta:#FF7A1A; --cta-2:#F05E00; --on-cta:#10233F; --zielen:#15803D; --zielen-bg:#DCF5E5;
+  --bez:#DCE7F8; --braz:#2F5BD3; --krem:#F5F8FD;
+  --shadow:0 1px 1px rgba(16,35,63,.06),0 4px 10px rgba(16,35,63,.08),0 18px 36px -12px rgba(16,35,63,.22);
+  --shadow-wys:0 2px 2px rgba(16,35,63,.06),0 10px 20px rgba(16,35,63,.12),0 28px 50px -16px rgba(16,35,63,.32);
+  --swiatlo:inset 0 1px 0 rgba(255,255,255,.9);
   --f-display:'Fraunces',Georgia,serif; --f-body:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
 }
 html{background:var(--bg)}
+body.dom,body.prod{background:radial-gradient(1200px 600px at 50% -10%,#FFFFFF 0%,rgba(255,255,255,0) 60%),linear-gradient(180deg,#F3F7FD 0%,#E7EEF9 100%) fixed}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body)}
 a{color:var(--accent-2)}
 :focus-visible{outline:3px solid var(--braz);outline-offset:3px}
@@ -318,3 +322,48 @@ a{color:var(--accent-2)}
   .pasek .logo-maly{height:38px}
 }
 @media (prefers-reduced-motion:reduce){.produkty:not([hidden]){animation:none}.pokaz{transition:none}}
+
+/* ===== 3D i wyraziste elementy interaktywne (1.11.2026) ===== */
+.pasek{background:rgba(238,243,250,.9);box-shadow:0 6px 18px -10px rgba(16,35,63,.35)}
+/* przyciski działania: pomarańcz, gruba dolna krawędź, wciśnięcie po kliknięciu */
+.pokaz,.kup,.cta,.mbuy .kup{background:linear-gradient(180deg,#FF9440 0%,var(--cta) 55%,var(--cta-2) 100%)!important;color:var(--on-cta)!important;font-weight:800;border:0;border-radius:14px;
+  box-shadow:0 5px 0 #C24A00,0 12px 22px -6px rgba(240,94,0,.55),inset 0 1px 0 rgba(255,255,255,.55)!important;transform:translateY(0);transition:transform .12s,box-shadow .12s,filter .12s;text-shadow:0 1px 0 rgba(255,255,255,.35)}
+.pokaz:hover,.kup:hover,.cta:hover{transform:translateY(-2px);filter:saturate(1.1);box-shadow:0 7px 0 #C24A00,0 18px 28px -8px rgba(240,94,0,.6),inset 0 1px 0 rgba(255,255,255,.55)!important}
+.pokaz:active,.kup:active,.cta:active{transform:translateY(4px);box-shadow:0 1px 0 #C24A00,0 4px 10px -4px rgba(240,94,0,.5),inset 0 2px 4px rgba(0,0,0,.12)!important}
+.pokaz{font-size:20px;padding:19px 44px;border-radius:999px}
+.pokaz[aria-expanded="true"]{background:linear-gradient(180deg,#FFFFFF,#E9F0FB)!important;color:var(--accent-2)!important;box-shadow:0 5px 0 #B9C9E6,0 12px 22px -8px rgba(16,35,63,.3),var(--swiatlo)!important;text-shadow:none}
+.kup.jasny{background:linear-gradient(180deg,#FFFFFF,#E9F0FB)!important;color:var(--accent-2)!important;box-shadow:0 5px 0 #B9C9E6,0 12px 22px -8px rgba(16,35,63,.3)!important;text-shadow:none}
+/* karty kategorii: wypukłe, z połyskiem u góry, unoszą się po najechaniu */
+.kat{border:1px solid #CAD8EE;border-radius:20px;background:linear-gradient(180deg,#FFFFFF 0%,#F7FAFF 100%);box-shadow:var(--shadow),var(--swiatlo);transition:transform .18s,box-shadow .18s}
+.kat:hover{transform:translateY(-3px);box-shadow:var(--shadow-wys),var(--swiatlo)}
+.kat[open]{transform:none;box-shadow:var(--shadow-wys),var(--swiatlo)}
+.kat summary{padding:20px 24px}
+.kat[open] summary{background:linear-gradient(180deg,#EAF1FF,#DCE8FF);box-shadow:inset 0 -1px 0 #C7D7F5}
+.kat .kn{color:var(--ink)}
+.kat .kl{background:linear-gradient(180deg,#FFFFFF,#DCE7F8);color:var(--accent-2);box-shadow:0 3px 0 #B9C9E6,0 6px 12px -4px rgba(16,35,63,.3);border:1px solid #CAD8EE}
+.kat[open] .kl{background:linear-gradient(180deg,#3B6CF0,var(--accent));color:#fff;box-shadow:0 3px 0 #10307F,0 6px 12px -4px rgba(29,78,216,.5);border-color:transparent}
+.kat summary::after{content:"";grid-column:2;grid-row:1/span 2;justify-self:end;width:0;height:0}
+/* wiersze produktów: wyraźne podświetlenie i strzałka */
+.lista a{position:relative;border:1px solid transparent;transition:transform .14s,box-shadow .14s,background .14s;padding-right:44px}
+.lista a::after{content:"→";position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--accent);font-weight:800;font-size:20px;opacity:.55;transition:transform .14s,opacity .14s}
+.lista a:hover{background:#FFFFFF;border-color:#C7D7F5;transform:translateY(-2px);box-shadow:0 8px 18px -8px rgba(16,35,63,.35)}
+.lista a:hover::after{opacity:1;transform:translate(4px,-50%)}
+.lista .pc{color:var(--accent-2)}
+.lista .pc.darmo,.cena.darmo{color:var(--zielen)}
+.lista .pc.darmo{background:var(--zielen-bg);border-radius:999px;padding:1px 10px;font-size:14px;align-self:start}
+.podkat{border:2px dashed #7FA2EE;background:linear-gradient(180deg,#F4F8FF,#EAF1FF);box-shadow:inset 0 2px 6px rgba(16,35,63,.06)}
+.podkat .kn{color:var(--accent-2)}
+.kat .podkat .kl,.kat[open] .podkat .kl{background:linear-gradient(180deg,#34C26F,var(--zielen));color:#fff;box-shadow:0 3px 0 #0E5A2B;border-color:transparent}
+/* strona produktu: boks ceny i karty jak fizyczne kafle */
+.cena-box{border:1px solid #CAD8EE;border-radius:20px;background:linear-gradient(180deg,#FFFFFF,#F5F8FE);box-shadow:var(--shadow-wys),var(--swiatlo)}
+.demo-sek.app{border-radius:20px;background:linear-gradient(180deg,#FFFFFF,#F5F8FE);box-shadow:var(--shadow),var(--swiatlo)}
+.sim{border-radius:16px;box-shadow:var(--shadow-wys)!important}
+.tab{transition:transform .12s}.tab:hover{transform:translateY(-1px)}
+.podobne a{border-radius:18px;background:linear-gradient(180deg,#FFFFFF,#F6F9FF);box-shadow:var(--shadow),var(--swiatlo);transition:transform .16s,box-shadow .16s}
+.podobne a:hover{transform:translateY(-4px);box-shadow:var(--shadow-wys),var(--swiatlo);border-color:#9DB8F2}
+.faq{background:#FFFFFF;border:1px solid var(--line);border-radius:14px;padding:12px 16px;margin:0 0 10px;box-shadow:0 3px 8px -4px rgba(16,35,63,.18)}
+.ptaszki li::before{color:var(--zielen)}
+.dla li::before{background:var(--cta)}
+.mbuy{background:linear-gradient(180deg,#FFFFFF,#F2F6FD);box-shadow:0 -10px 24px -10px rgba(16,35,63,.35)}
+.powitanie .logo{filter:drop-shadow(0 10px 18px rgba(16,35,63,.18))}
+@media (prefers-reduced-motion:reduce){.pokaz,.kup,.cta,.kat,.lista a,.podobne a,.tab{transition:none}.kat:hover,.lista a:hover,.podobne a:hover{transform:none}}

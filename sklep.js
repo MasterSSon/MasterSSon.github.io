@@ -774,12 +774,17 @@ function lockModal(msg){
   const p = CUR ? CUR.p : null;
   const m = h('div', {class:'modal', role:'dialog', 'aria-modal':'true', onclick:e => { if (e.target === m) m.remove(); }},
     h('div', {class:'box'}, h('h3', null, 'Ta funkcja jest w pełnej wersji'), h('p', null, msg),
-      p ? h('p', null, 'Pełny plik: ', h('b', null, p.name), ', ' + p.price + ' zł. Działa w Excelu i Google Sheets, pobierasz go od razu po zakupie.') : null,
-      h('div', {class:'acts'}, p ? h('a', {class:'cta', href:buyUrl(p), target:'_blank', rel:'noopener'}, 'Kup na naffy za ' + p.price + ' zł') : null, h('button', {class:'ghost', onclick:() => m.remove()}, 'Wracam do demo'))));
+      p ? h('p', null, 'Pełny plik: ', h('b', null, p.name), (DARMO[p.id] ? ', za darmo. Działa w Excelu i Google Sheets, pobierasz go jednym kliknięciem.' : ', ' + p.price + ' zł. Działa w Excelu i Google Sheets, pobierasz go od razu po zakupie.')) : null,
+      h('div', {class:'acts'}, p ? h('a', {class:'cta', href:kupUrl(p), target:'_blank', rel:'noopener'}, kupTxt(p)) : null, h('button', {class:'ghost', onclick:() => m.remove()}, 'Wracam do demo'))));
   document.body.append(m); m.querySelector('.ghost').focus();
   document.addEventListener('keydown', function esc(e){ if (e.key === 'Escape'){ m.remove(); document.removeEventListener('keydown', esc); } });
 }
 
+
+/* darmowe szablony (1.11.2026) */
+const DARMO = {"glazurnik": "/pobierz/Kosztorys_i_oferta_glazurnik.xlsx", "elektryk": "/pobierz/Kosztorys_i_oferta_elektryk.xlsx", "malarz": "/pobierz/Kosztorys_i_oferta_malarz.xlsx", "przeprowadzka": "/pobierz/Kosztorys_i_oferta_przeprowadzki.xlsx", "ogrodnik": "/pobierz/Kosztorys_i_oferta_ogrodnik.xlsx"};
+const kupUrl = p => DARMO[p.id] || buyUrl(p);
+const kupTxt = (p, krotko) => DARMO[p.id] ? 'Pobierz pełny plik za darmo' : (krotko ? 'Kup za ' : 'Kup na naffy za ') + p.price + ' zł';
 
 /* ===== montaż dema na stronie produktu (/produkt/<id>/) — wycięte z dawnego renderDemo, logika bez zmian ===== */
 function renderSheet(){
@@ -792,7 +797,7 @@ function renderSheet(){
     // locked "Instrukcja" tab
     const steps = CUR.p.sheets.map((s,i) => h('p', null, 'Krok ' + (i+1) + '. Zakładka „' + s.name + '”: wpisz swoje dane w żółte pola. Arkusz sam przeliczy wyniki i podsumowania, a szare komórki są zablokowane przed przypadkową zmianą.'));
     sheet.replaceChildren(h('div', {class:'instr'}, h('div', {class:'fake', 'aria-hidden':'true'}, h('h4', null, 'Instrukcja krok po kroku'), steps, h('p', null, 'Jak dopasować arkusz do siebie: zmiana cennika, własne pozycje, zapis do PDF i praca w Google Sheets na telefonie.')),
-      h('div', {class:'ov'}, h('div', null, h('p', {style:'margin:0 0 12px;font-weight:600'}, 'Instrukcja po polsku jest w pełnym pliku'), h('a', {class:'cta', href:buyUrl(CUR.p), target:'_blank', rel:'noopener'}, 'Kup na naffy za ' + CUR.p.price + ' zł')))));
+      h('div', {class:'ov'}, h('div', null, h('p', {style:'margin:0 0 12px;font-weight:600'}, 'Instrukcja po polsku jest w pełnym pliku'), h('a', {class:'cta', href:kupUrl(CUR.p), target:'_blank', rel:'noopener'}, kupTxt(CUR.p))))));
   }
   document.querySelectorAll('.tab').forEach((b,i) => b.setAttribute('aria-selected', String(i === CUR.tab)));
   document.querySelector('.fx .addr').textContent = 'A1';
@@ -827,7 +832,7 @@ function mountDemo(p){
   sim.addEventListener('change', () => {
     CUR.edits++;
     if (CUR.edits >= 4 && !CUR.nudged){ CUR.nudged = true;
-      nudgeSlot.replaceChildren(h('div', {class:'nudge'}, h('span', null, 'Liczy tak, jak chcesz? W pełnym pliku zrobisz to na swoich danych i zapiszesz wynik.'), h('a', {class:'cta', style:'padding:8px 14px;font-size:14px', href:buyUrl(p), target:'_blank', rel:'noopener'}, 'Kup za ' + p.price + ' zł'))); }
+      nudgeSlot.replaceChildren(h('div', {class:'nudge'}, h('span', null, 'Liczy tak, jak chcesz? W pełnym pliku zrobisz to na swoich danych i zapiszesz wynik.'), h('a', {class:'cta', style:'padding:8px 14px;font-size:14px', href:kupUrl(p), target:'_blank', rel:'noopener'}, kupTxt(p, 1)))); }
   });
 
   app.replaceChildren(sim);

@@ -151,6 +151,20 @@ input:focus,select:focus,textarea:focus{outline:3px solid rgba(29,78,216,.35);bo
 details.k summary,.fach summary{color:var(--k);font-weight:700}
 }
 @media (prefers-reduced-motion:reduce){nav.d a,.zak a,.btn,.fk{transition:none}nav.d a.on b{transform:none}}
+/* ===== Chmurki „co wpisać?” (2.11.2026) — mała półprzezroczysta przy polu, duża z opisem po kliknięciu ===== */
+.cwm{position:absolute;z-index:10000;display:none;margin:0;padding:3px 9px;border:1px solid #9DB6E8;border-radius:12px 12px 12px 3px;background:#1D4ED8;color:#fff;
+  font:700 .72rem/1.3 system-ui,sans-serif;opacity:.55;cursor:pointer;box-shadow:0 3px 8px -3px rgba(16,35,63,.5);transition:opacity .15s}
+.cwm.mocny,.cwm:focus-visible{opacity:1}
+@media (hover:none){.cwm{opacity:.7;padding:5px 11px;font-size:.78rem}}
+.cwd{position:fixed;inset:0;z-index:10001;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(16,35,63,.45)}
+.cwk{position:relative;width:100%;max-width:420px;max-height:80vh;overflow:auto;padding:18px 18px 16px;border-radius:18px;background:#fff;color:#10233F;
+  border:1px solid #CAD8EE;box-shadow:0 18px 40px -12px rgba(16,35,63,.55)}
+.cwk h3{margin:4px 34px 8px 0;font-size:1.05rem;color:#10233F}
+.cwk p{margin:0;line-height:1.5;font-size:.95rem;color:#24395C}
+.cwe{font-size:.75rem;font-weight:800;color:#1D4ED8;text-transform:uppercase;letter-spacing:.4px}
+.cwp{display:inline-block;margin-top:8px;padding:6px 10px;border-radius:10px;background:#EEF3FF;color:#10233F;font-weight:600}
+.cwx{position:absolute;top:10px;right:10px;width:34px;height:34px;border:1px solid #CAD8EE;border-radius:10px;background:#F4F7FD;color:#10233F;font-size:1rem;cursor:pointer}
+@media print{.cwm,.cwd{display:none!important}}
 </style>
 </head>
 <body>
@@ -164,6 +178,7 @@ details.k summary,.fach summary{color:var(--k);font-weight:700}
 </nav>
 <script src="rdzen.js"></script>
 <script src="cenniki.js"></script>
+<script src="pomoc.js"></script>
 <script>
 // Wersja testowa Adriana (wdroz.sh wstrzykuje window.WF_TEST tylko do prywatnej kopii): pełna, osobna pamięć
 var KLUCZ = window.WF_TEST ? 'wycenaFachowcaTest' : 'wycenaFachowca1';
@@ -594,7 +609,7 @@ function opcjeBaza(sciezka, wart, atr, fachy) {
   return '<select ' + (atr || 'data-p') + '="' + sciezka + '">' + Object.keys(grupy).map(function (g) { return '<optgroup label="' + esc(g) + '">' + grupy[g].join('') + '</optgroup>'; }).join('') + '</select>';
 }
 // Legenda skrótów: każdy skrót w oknie dostaje gwiazdki (*, **, …), opis na dole okna
-var WERSJA_APP = '1.2.14'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
+var WERSJA_APP = '1.2.15'; // trzymaj zgodnie z WERSJA w sw.js (test to sprawdza)
 var SKROTY = [['J.m.', ''], ['j.m.', 'jednostka miary — w czym liczysz pracę (m², mb, szt., kpl…)'], ['kpl', 'komplet — usługa liczona w całości, jako 1 sztuka'],
   ['mb', 'metr bieżący — długość (np. listwy, przewody, rury)'], ['szt.', 'sztuka'], ['opak.', 'opakowanie'], ['Ø', 'średnica rury w mm'],
   ['Śr.', 'średnio — przeciętna długość przewodu na 1 punkt (gniazdo, włącznik, lampę)'], ['dł.', 'długość'], ['szer.', 'szerokość'],

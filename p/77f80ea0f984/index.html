@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miedziana Aura — rękodzieło z miedzi i kwarcu</title>
+<meta name="description" content="Ręcznie skręcane bransolety z miedzi, łączone z naturalnym kwarcem. Każda sztuka wykonana pojedynczo.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F6F1E8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+/* Miedziana Aura — wzór: arackalcreations.com (kremowe tło, duże karty z twardym cieniem, szeryfowe nagłówki z jednym kolorowym słowem, pasek haseł, kule 3D).
+   Kolory 60/30/10: krem (tło) / grafit + patyna (treść, karty) / miedź (akcent i przyciski). Wydajność: bez fixed, bez backdrop-filter, animacje tylko transform/opacity. */
+:root{
+  --krem:#F6F1E8; --krem2:#FFFDF8; --grafit:#23292E; --grafit2:#4A545C;
+  --miedz:#C2652F; --miedz2:#E08A4F; --miedzc:#8E4520;
+  --patyna:#7DBBAE; --patyna2:#4E8F82; --piasek:#EFC17A; --len:#E9DCC6; --wrzos:#CDBFE6;
+  --cien:6px 7px 0 rgba(35,41,46,.22); --r:26px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{margin:0;background:var(--krem);color:var(--grafit);font:400 1rem/1.6 Manrope,system-ui,sans-serif;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:700;letter-spacing:-.035em;line-height:.98;margin:0}
+.m{color:var(--miedz)}
+.etyk{font:800 .72rem/1 Manrope,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:999px;font-weight:800;font-size:.92rem;text-decoration:none;border:2px solid var(--grafit);
+  box-shadow:3px 4px 0 var(--grafit);transition:transform .15s}
+.btn:hover{transform:translate(-2px,-2px)}
+.btn:active{transform:translate(2px,3px)}
+.btn.ciemny{background:var(--grafit);color:var(--krem2)}
+.btn.jasny{background:var(--krem2);color:var(--grafit)}
+.btn.miedz{background:var(--miedz);color:#fff;border-color:var(--miedzc);box-shadow:3px 4px 0 var(--miedzc)}
+.chip{display:inline-block;padding:5px 12px;border:1.5px solid rgba(35,41,46,.55);border-radius:999px;font-weight:800;font-size:.74rem}
+.karta{border-radius:var(--r);box-shadow:var(--cien);position:relative;overflow:hidden}
+
+/* nagłówek */
+header{padding:22px 0}
+header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo b{font:700 1.15rem/1 Fraunces,serif;letter-spacing:.02em}
+.logo small{display:block;font:800 .58rem/1.2 Manrope;letter-spacing:.2em;color:var(--grafit2)}
+nav{display:flex;gap:26px;font-weight:600;font-size:.9rem}
+nav a{text-decoration:none}
+nav a:hover{color:var(--miedz)}
+.menu-btn{display:none}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;padding:8px 0 34px}
+.hero .gl{background:linear-gradient(160deg,#F3C988,var(--piasek));padding:104px 44px 40px;min-height:470px;display:flex;flex-direction:column;justify-content:flex-end}
+.hero .gl .szuk{position:absolute;top:30px;left:44px;right:auto;display:flex;align-items:center;gap:10px;padding:9px 18px;border-radius:999px;background:rgba(255,253,248,.45);border:1.5px solid rgba(35,41,46,.25);font-size:.85rem;color:var(--grafit2);min-width:260px}
+.hero .gl .szuk i{width:8px;height:8px;border-radius:50%;background:var(--miedz);margin-left:auto}
+.hero h1{font-size:clamp(2.7rem,6.4vw,5.1rem);margin:14px 0 18px}
+.hero p{max-width:470px;margin:0 0 18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.przyc{display:flex;flex-wrap:wrap;gap:12px}
+.kula{position:absolute;border-radius:50%;background:radial-gradient(circle at 32% 28%,#FFD2AE 0,var(--miedz2) 22%,var(--miedz) 55%,var(--miedzc) 100%);box-shadow:8px 10px 0 rgba(35,41,46,.18)}
+.hero .gl .kula{width:96px;height:96px;top:24px;right:34px;animation:plyw 7s ease-in-out infinite}
+.hero .gl .luk{position:absolute;right:-90px;bottom:-140px;width:360px;height:360px;border-radius:50%;border:34px solid rgba(255,253,248,.28)}
+.hero .bok{background:linear-gradient(170deg,var(--patyna2),var(--patyna));color:var(--krem2);min-height:470px;display:flex;flex-direction:column}
+.hero .bok img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.9}
+.hero .bok::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(35,60,55,.15) 30%,rgba(25,45,42,.85))}
+.hero .bok .top,.hero .bok .dol{position:relative;z-index:1;padding:22px 24px}
+.hero .bok .top{display:flex;justify-content:space-between}
+.hero .bok .dol{margin-top:auto}
+.hero .bok h2{font-size:clamp(2rem,3.4vw,2.7rem);margin:8px 0}
+.hero .bok .ramka{position:absolute;inset:12px;border:1.5px solid rgba(255,253,248,.4);border-radius:18px;z-index:1;pointer-events:none}
+
+/* pasek haseł */
+.pasek{background:var(--patyna2);color:var(--krem2);border-top:2px solid var(--grafit);border-bottom:2px solid var(--grafit);overflow:hidden;white-space:nowrap;margin:6px 0 70px}
+.pasek div{display:inline-block;padding:13px 0;animation:jedz 32s linear infinite}
+.pasek span{font:800 .8rem/1 Manrope;letter-spacing:.16em;margin:0 18px}
+.pasek em{color:var(--piasek);font-style:normal}
+
+/* sekcje */
+section{padding:0 0 90px}
+.tyt{font-size:clamp(2.3rem,5vw,3.9rem);margin:12px 0 34px;max-width:720px}
+.wst{max-width:560px;color:var(--grafit2);margin:-18px 0 34px}
+
+/* sklep */
+.produkty{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.prod{background:var(--krem2);border:2px solid var(--grafit);display:flex;flex-direction:column;transition:transform .2s}
+.prod:hover{transform:translate(-3px,-4px)}
+.prod .fot{aspect-ratio:1/1;overflow:hidden;border-bottom:2px solid var(--grafit)}
+.prod .fot img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.prod:hover .fot img{transform:scale(1.06)}
+.prod .nr{position:absolute;top:12px;left:12px;background:var(--krem2);border:1.5px solid var(--grafit);border-radius:999px;padding:3px 10px;font:800 .7rem/1.3 Manrope}
+.prod .inf{padding:16px 16px 18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.prod h3{font-size:1.35rem}
+.prod .cena{font:800 1.1rem/1 Manrope;color:var(--miedz)}
+.prod .btn{margin-top:auto;justify-content:center;padding:10px 14px;font-size:.84rem}
+.prod:nth-child(4n+1){background:#FBE4D3}.prod:nth-child(4n+2){background:#DCEFEA}.prod:nth-child(4n+3){background:#FBEBCB}.prod:nth-child(4n+4){background:#ECE5F7}
+
+/* galeria */
+.gal{display:grid;grid-template-columns:1fr 1.6fr;gap:40px;align-items:start}
+.kafle{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.kafel{aspect-ratio:1/1;border:2px solid var(--grafit);background:var(--len)}
+.kafel img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.kafel:hover img{transform:scale(1.07)}
+.kafel .n{position:absolute;top:10px;left:10px;font:800 .66rem/1 Manrope;background:var(--krem2);border-radius:999px;padding:4px 8px;border:1.5px solid var(--grafit)}
+
+/* proces */
+.proces{background:var(--wrzos);padding:44px 40px 50px;border:2px solid var(--grafit)}
+.proces .ramka{position:absolute;inset:12px;border:1.5px solid rgba(35,41,46,.25);border-radius:18px;pointer-events:none}
+.proces .gora{display:flex;justify-content:space-between}
+.proces h2{font-size:clamp(2.2rem,4.6vw,3.6rem);margin:30px 0 34px;max-width:620px}
+.kroki{display:grid;grid-template-columns:repeat(3,minmax(0,240px));gap:14px;position:relative;z-index:1}
+.krok{background:rgba(255,253,248,.55);border-radius:16px;padding:18px}
+.krok h3{font-size:1.3rem;margin:6px 0}
+.krok p{margin:0;font-size:.88rem;color:var(--grafit2)}
+.proces .kula{width:190px;height:190px;right:60px;bottom:-60px;background:radial-gradient(circle at 32% 28%,#D9F2EC 0,var(--patyna) 30%,var(--patyna2) 75%,#2F6157 100%)}
+
+/* o miedzi i kwarcu */
+.omiedzi{display:grid;grid-template-columns:.9fr 1.3fr;gap:50px;align-items:center}
+.godlo{position:relative;aspect-ratio:1/1;max-width:340px;margin:0 auto;width:100%}
+.godlo .kula{inset:8%;width:auto;height:auto}
+.godlo .orb{position:absolute;inset:4% -6%;border:1.5px solid var(--grafit);border-radius:50%;transform:rotate(-24deg)}
+.godlo .orb.b{transform:rotate(36deg)}
+.godlo b{position:absolute;inset:0;display:grid;place-items:center;font:700 3rem/1 Fraunces,serif;color:#fff;letter-spacing:-.02em;z-index:1}
+.omiedzi h2{font-size:clamp(2.2rem,4.6vw,3.6rem);margin:12px 0 18px}
+.omiedzi p{margin:0 0 12px;color:var(--grafit2);max-width:620px}
+.zastrz{font-size:.8rem;color:#7A746B;border-left:3px solid var(--miedz);padding-left:12px;margin-top:14px}
+.kwarc{display:grid;grid-template-columns:1fr 1.2fr;gap:0;background:var(--krem2);border:2px solid var(--grafit);margin-top:70px}
+.kwarc .kfot{position:relative;min-height:340px;border-right:2px solid var(--grafit)}.kwarc .kfot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 70%}
+.kwarc .t{padding:40px}
+.kwarc h2{font-size:clamp(2rem,4vw,3rem);margin:12px 0 16px}
+.kwarc p{color:var(--grafit2);margin:0 0 12px}
+
+/* kontakt */
+.kontakt{background:var(--grafit);color:var(--krem2);padding:56px 48px;display:grid;grid-template-columns:1.4fr 1fr;align-items:center;gap:30px}
+.kontakt .etyk{color:var(--patyna)}
+.kontakt h2{font-size:clamp(2.3rem,5vw,3.9rem);margin:14px 0 26px}
+.kontakt h2 em{color:var(--piasek);font-style:normal}
+.kontakt .mail{font:800 1.15rem/1.4 Manrope;text-decoration:none;border-bottom:2px solid var(--piasek);padding-bottom:4px}
+.kontakt .kula{position:relative;display:block;width:200px;height:200px;margin:0 auto;box-shadow:-14px 16px 0 rgba(0,0,0,.35)}
+.kontakt .gw{position:absolute;right:calc(50% - 130px);bottom:-6px;font-size:3.4rem;color:var(--piasek);line-height:1}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:40px 20px 50px;font-size:.84rem;color:var(--grafit2)}
+
+/* animacje */
+@keyframes jedz{to{transform:translateX(-50%)}}
+@keyframes plyw{50%{transform:translateY(-12px)}}
+.wej{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+.wej.jest{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.pasek div,.hero .gl .kula{animation:none}.wej{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+
+/* telefon */
+@media (max-width:960px){
+  .hero{grid-template-columns:1fr}.hero .bok{min-height:380px}
+  .produkty{grid-template-columns:repeat(2,1fr)}
+  .gal,.omiedzi,.kontakt,.kwarc{grid-template-columns:1fr}
+  .kwarc .kfot{border-right:0;border-bottom:2px solid var(--grafit);min-height:300px}
+}
+@media (max-width:720px){
+  nav{display:none;position:absolute;top:70px;left:16px;right:16px;flex-direction:column;gap:0;background:var(--krem2);border:2px solid var(--grafit);border-radius:20px;box-shadow:var(--cien);z-index:20;padding:8px}
+  nav.otw{display:flex}
+  nav a{padding:12px 14px;border-radius:12px}
+  .menu-btn{display:inline-flex;padding:9px 14px}
+  header .wrap{position:relative}
+  header .btn.cta{display:none}
+  .wrap{padding:0 16px}
+  .hero .gl{padding:80px 22px 28px;min-height:0}
+  .hero .gl .szuk{left:16px;right:16px;min-width:0}
+  .hero .gl .kula{display:none}
+  .produkty{gap:12px}.prod .inf{padding:12px}.prod h3{font-size:1.1rem}
+  .kafle{gap:10px}
+  .proces{padding:30px 20px 40px}.kroki{grid-template-columns:1fr}.proces .kula{width:90px;height:90px;right:-24px;bottom:-46px}
+  .kontakt{padding:36px 22px}.kontakt .kula{width:140px;height:140px}
+  .kwarc .t{padding:24px}
+  section{padding-bottom:64px}.pasek{margin-bottom:56px}
+  .godlo{max-width:270px}.godlo .orb{inset:6% 0}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top">
+      <svg width="42" height="42" viewBox="0 0 42 42" aria-hidden="true"><defs><radialGradient id="g" cx=".32" cy=".28"><stop offset="0" stop-color="#FFD2AE"/><stop offset=".45" stop-color="#C2652F"/><stop offset="1" stop-color="#8E4520"/></radialGradient></defs><circle cx="17" cy="21" r="14" fill="none" stroke="url(#g)" stroke-width="6"/><circle cx="29" cy="21" r="9" fill="#7DBBAE"/></svg>
+      <span><b>MIEDZIANA AURA</b><small>RĘKODZIEŁO Z MIEDZI</small></span>
+    </a>
+    <nav id="nav">
+      <a href="#sklep">Sklep</a>
+      <a href="#galeria">Galeria</a>
+      <a href="#galeria">Wykonanie</a>
+      <a href="#miedz">O miedzi</a>
+      <a href="#kwarc">O kwarcu</a>
+    </nav>
+    <a class="btn jasny cta" href="#kontakt">Zamów bransoletę ↗</a>
+    <button class="btn jasny menu-btn" id="menu" aria-expanded="false" aria-controls="nav">Menu ☰</button>
+  </div>
+</header>
+
+<main id="top">
+<div class="wrap">
+  <div class="hero">
+    <div class="karta gl wej">
+      <div class="szuk">⌕ Każda sztuka jest jedyna<i></i></div>
+      <span class="kula" aria-hidden="true"></span><span class="luk" aria-hidden="true"></span>
+      <div class="etyk">Ręcznie skręcana miedź · Polska pracownia</div>
+      <h1>Miedź, która ma <span class="m">charakter.</span></h1>
+      <p>Ręcznie skręcane bransolety z miedzi, łączone z naturalnym kwarcem. Każda sztuka wykonana pojedynczo — nie ma dwóch takich samych.</p>
+      <div class="chips"><span class="chip">Miedź</span><span class="chip">Kwarc</span><span class="chip">Ręczny splot</span><span class="chip">Regulowany rozmiar</span></div>
+      <div class="przyc"><a class="btn ciemny" href="#sklep">Zobacz kolekcję ↗</a><a class="btn jasny" href="#miedz">Poznaj miedź ↓</a></div>
+    </div>
+    <div class="karta bok wej">
+      <img src="Sklep/braslet (77).jpg" alt="Szeroka bransoleta z miedzi na zwiniętym sznurze" fetchpriority="high">
+      <span class="ramka" aria-hidden="true"></span>
+      <div class="top etyk"><span>MA / 01</span><span>Prosto z pracowni</span></div>
+      <div class="dol"><div class="etyk">Nie ma dwóch takich samych</div><h2>Biżuteria z duszą metalu.</h2><p style="margin:0;max-width:300px;opacity:.9">Miedź z czasem nabiera patyny — Twoja bransoleta starzeje się razem z Tobą.</p></div>
+    </div>
+  </div>
+</div>
+
+<div class="pasek" aria-hidden="true"><div>
+  <span>RĘCZNIE SKRĘCANA MIEDŹ</span><em>✦</em><span>NATURALNY KWARC</span><em>✦</em><span>JEDNA SZTUKA — JEDEN WZÓR</span><em>✦</em><span>REGULOWANY ROZMIAR</span><em>✦</em><span>NATURALNA PATYNA</span><em>✦</em>
+  <span>RĘCZNIE SKRĘCANA MIEDŹ</span><em>✦</em><span>NATURALNY KWARC</span><em>✦</em><span>JEDNA SZTUKA — JEDEN WZÓR</span><em>✦</em><span>REGULOWANY ROZMIAR</span><em>✦</em><span>NATURALNA PATYNA</span><em>✦</em>
+</div></div>
+
+<section id="sklep"><div class="wrap">
+  <div class="etyk wej">Sklep</div>
+  <h2 class="tyt wej">Bransolety z <span class="m">duszą</span> metalu.</h2>
+  <p class="wst wej">Wybrane wzory z aktualnej kolekcji. Każda bransoleta regulowana — jeden rozmiar dopasowuje się do nadgarstka.</p>
+  <div class="produkty">
+    <article class="karta prod wej"><span class="nr">01</span><div class="fot"><img src="Sklep/braslet (120).jpg" alt="Bransoleta z kwarcem" loading="lazy"></div><div class="inf"><h3>Aura z Kwarcem</h3><span class="cena">129 zł</span><a class="btn ciemny" href="#kontakt">Zapytaj o dostępność ↗</a></div></article>
+    <article class="karta prod wej"><span class="nr">02</span><div class="fot"><img src="Sklep/braslet (104).jpg" alt="Wąska skręcana bransoleta na nadgarstku" loading="lazy"></div><div class="inf"><h3>Ażurowa Wąska</h3><span class="cena">79 zł</span><a class="btn ciemny" href="#kontakt">Zapytaj o dostępność ↗</a></div></article>
+    <article class="karta prod wej"><span class="nr">03</span><div class="fot"><img src="Sklep/braslet (77).jpg" alt="Masywna szeroka bransoleta z miedzi" loading="lazy"></div><div class="inf"><h3>Masywna Rzemieślnicza</h3><span class="cena">109 zł</span><a class="btn ciemny" href="#kontakt">Zapytaj o dostępność ↗</a></div></article>
+    <article class="karta prod wej"><span class="nr">04</span><div class="fot"><img src="Sklep/braslet (47).jpg" alt="Cienka skręcana bransoleta na nadgarstku" loading="lazy"></div><div class="inf"><h3>Minimal Line</h3><span class="cena">69 zł</span><a class="btn ciemny" href="#kontakt">Zapytaj o dostępność ↗</a></div></article>
+    <article class="karta prod wej"><span class="nr">05</span><div class="fot"><img src="Sklep/braslet (151).jpg" alt="Otwarta bransoleta ze spiralnym splotem" loading="lazy"></div><div class="inf"><h3>Spirala Słońca</h3><span class="cena">99 zł</span><a class="btn ciemny" href="#kontakt">Zapytaj o dostępność ↗</a></div></article>
+    <article class="karta prod wej"><span class="nr">06</span><div class="fot"><img src="Sklep/braslet (57).jpg" alt="Bransoleta skręcana z miedzi i srebrnego drutu" loading="lazy"></div><div class="inf"><h3>Dwa Metale</h3><span class="cena">119 zł</span><a class="btn ciemny" href="#kontakt">Zapytaj o dostępność ↗</a></div></article>
+    <article class="karta prod wej"><span class="nr">07</span><div class="fot"><img src="Sklep/braslet (170).jpg" alt="Szeroka bransoleta na nadgarstku" loading="lazy"></div><div class="inf"><h3>Elegancka Wieczorowa</h3><span class="cena">139 zł</span><a class="btn ciemny" href="#kontakt">Zapytaj o dostępność ↗</a></div></article>
+    <article class="karta prod wej"><span class="nr">08</span><div class="fot"><img src="Sklep/braslet (137).jpg" alt="Szeroka bransoleta z wybijanym wzorem" loading="lazy"></div><div class="inf"><h3>Boho Wide</h3><span class="cena">95 zł</span><a class="btn ciemny" href="#kontakt">Zapytaj o dostępność ↗</a></div></article>
+  </div>
+</div></section>
+
+<section id="galeria"><div class="wrap gal">
+  <div>
+    <div class="etyk wej">Galeria</div>
+    <h2 class="tyt wej" style="margin-bottom:20px">Prosto z <span class="m">pracowni.</span></h2>
+    <p class="wst wej" style="margin:0 0 24px">Podgląd naszych realizacji i tego, jak powstają — od surowego drutu do gotowej bransolety.</p>
+    <div class="przyc wej"><a class="btn ciemny" href="#galeria">Pełna galeria ↗</a><a class="btn jasny" href="#galeria">Jak powstają ↗</a></div>
+  </div>
+  <div class="kafle">
+    <a class="karta kafel wej" href="#galeria"><span class="n">01</span><img src="Sklep/braslet (30).jpg" alt="Bransoleta na sznurze" loading="lazy"></a>
+    <a class="karta kafel wej" href="#galeria"><span class="n">02</span><img src="Sklep/braslet (21).jpg" alt="Bransoleta w dłoni" loading="lazy"></a>
+    <a class="karta kafel wej" href="#galeria"><span class="n">03</span><img src="Sklep/braslet (145).jpg" alt="Splot z bliska" loading="lazy"></a>
+    <a class="karta kafel wej" href="#galeria"><span class="n">04</span><img src="Sklep/braslet (168).jpg" alt="Kolekcja na wieszaku" loading="lazy"></a>
+    <a class="karta kafel wej" href="#galeria"><span class="n">05</span><img src="Making of/braslet (90).jpg" alt="Pasek miedzi przed wygięciem" loading="lazy"></a>
+    <a class="karta kafel wej" href="#galeria"><span class="n">06</span><img src="Making of/braslet (70).jpg" alt="Detal z pracowni" loading="lazy"></a>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="karta proces wej">
+    <span class="ramka" aria-hidden="true"></span>
+    <div class="gora etyk"><span>Jak powstaje</span><span>MA / 02</span></div>
+    <h2>Od surowego drutu do <span class="m">aury.</span></h2>
+    <div class="kroki">
+      <div class="krok"><span class="etyk">01</span><h3>Skręcanie</h3><p>Druty miedzi skręcamy ręcznie w splot — każdy splot wychodzi trochę inaczej.</p></div>
+      <div class="krok"><span class="etyk">02</span><h3>Kształt</h3><p>Formujemy bransoletę i jej końcówki, tak żeby dała się dopasować do nadgarstka.</p></div>
+      <div class="krok"><span class="etyk">03</span><h3>Wykończenie</h3><p>Polerujemy, a w wybranych modelach osadzamy naturalny kwarc.</p></div>
+    </div>
+    <span class="kula" aria-hidden="true"></span>
+  </div>
+</div></section>
+
+<section id="miedz"><div class="wrap">
+  <div class="omiedzi">
+    <div class="godlo wej" aria-hidden="true"><span class="kula"></span><span class="orb"></span><span class="orb b"></span><b>MA</b></div>
+    <div class="wej">
+      <div class="etyk">O miedzi</div>
+      <h2>Metal, który nosi się <span class="m">z historią.</span></h2>
+      <p>Miedź towarzyszy człowiekowi od tysięcy lat — od narzędzi po biżuterię noszoną jako talizman. W tradycjach ludowych i wierzeniach wielu kultur przypisywano jej właściwości ochronne i harmonizujące, symbol ciepła, energii i witalności słońca.</p>
+      <p>Nasze bransolety skręcamy ręcznie z surowej miedzi — z czasem metal naturalnie patynuje się, co część osób traktuje jako część rytuału noszenia takiej biżuterii.</p>
+      <div class="chips"><span class="chip">Surowa miedź</span><span class="chip">Naturalna patyna</span><span class="chip">Ręczna robota</span></div>
+      <p class="zastrz">Powyższe odnosi się do tradycyjnych wierzeń i symboliki, nie do właściwości leczniczych ani medycznych — nasze wyroby to biżuteria, nie produkt medyczny.</p>
+    </div>
+  </div>
+  <div class="karta kwarc wej" id="kwarc">
+    <div class="kfot"><img src="Sklep/braslet (120).jpg" alt="Bransoleta z kwarcem" loading="lazy"></div>
+    <div class="t">
+      <div class="etyk">O kwarcu</div>
+      <h2>Kamień jasności, <span class="m">oprawiony w miedź.</span></h2>
+      <p>Kwarc to jeden z najstarszych kamieni używanych w rękodziele i symbolice duchowej — w wielu tradycjach uznawany za kamień jasności umysłu i równowagi, często łączony z miedzią jako „przewodnikiem” energii.</p>
+      <p>W naszych wybranych modelach osadzamy naturalne kryształy kwarcu — każdy nieco inny, bo taka jest natura tego kamienia.</p>
+      <p class="zastrz">Opis ma charakter symboliczny i tradycyjny, nie stanowi obietnicy działania zdrowotnego.</p>
+    </div>
+  </div>
+</div></section>
+
+<section id="kontakt"><div class="wrap">
+  <div class="karta kontakt wej">
+    <div>
+      <div class="etyk">Kontakt</div>
+      <h2>Wybierz wzór. <em>Resztę dobierzemy razem.</em></h2>
+      <p style="margin:0 0 22px;opacity:.85;max-width:460px">Podoba Ci się dany wzór? Napisz do nas — dobierzemy rozmiar i wykończenie.</p>
+      <a class="mail" href="mailto:kontakt@miedzianaaura.pl">kontakt@miedzianaaura.pl ↗</a>
+    </div>
+    <div style="position:relative"><span class="kula" aria-hidden="true"></span><span class="gw" aria-hidden="true">✦</span></div>
+  </div>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <a class="logo" href="#top"><svg width="30" height="30" viewBox="0 0 42 42" aria-hidden="true"><circle cx="17" cy="21" r="14" fill="none" stroke="#C2652F" stroke-width="6"/><circle cx="29" cy="21" r="9" fill="#7DBBAE"/></svg><b style="font-size:.95rem">MIEDZIANA AURA</b></a>
+  <span>© 2026 Miedziana Aura — rękodzieło z miedzi i kwarcu</span>
+  <span>Strona demonstracyjna</span>
+</div></footer>
+
+<script>
+(function () {
+  var b = document.getElementById('menu'), n = document.getElementById('nav');
+  b.addEventListener('click', function () { var o = n.classList.toggle('otw'); b.setAttribute('aria-expanded', o); });
+  n.addEventListener('click', function (e) { if (e.target.tagName === 'A') { n.classList.remove('otw'); b.setAttribute('aria-expanded', false); } });
+  var el = document.querySelectorAll('.wej');
+  if (!('IntersectionObserver' in window)) { el.forEach(function (x) { x.classList.add('jest'); }); return; }
+  var io = new IntersectionObserver(function (w) { w.forEach(function (x) { if (x.isIntersecting) { x.target.classList.add('jest'); io.unobserve(x.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
+  el.forEach(function (x) { io.observe(x); });
+})();
+</script>
+</body>
+</html>

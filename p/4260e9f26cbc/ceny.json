@@ -1,11 +1,11 @@
 {
-"data": "2026-11-04",
+"data": "2026-11-05",
 "zrodlo": "OBI.pl, mediana cen z wyszukiwarki sklepu",
 "ceny": {
 "klej_plytki": {
 "jedn": "kg",
 "cena": 2.27,
-"n": 13
+"n": 11
 },
 "fuga": {
 "jedn": "kg",
@@ -19,8 +19,8 @@
 },
 "farba_biala": {
 "jedn": "l",
-"cena": 17.6,
-"n": 11
+"cena": 17.8,
+"n": 10
 },
 "gladz": {
 "jedn": "kg",
@@ -74,12 +74,12 @@
 },
 "profil_cd60": {
 "jedn": "m",
-"cena": 4.69,
+"cena": 4.85,
 "n": 6
 },
 "masa_spoinowa": {
 "jedn": "kg",
-"cena": 6.99,
+"cena": 7.01,
 "n": 4
 },
 "tynk_gipsowy": {
@@ -94,8 +94,8 @@
 },
 "klej_styropian": {
 "jedn": "kg",
-"cena": 1.27,
-"n": 4
+"cena": 1.3,
+"n": 5
 },
 "kolki": {
 "jedn": "szt",
@@ -115,7 +115,7 @@
 "lakier_parkiet": {
 "jedn": "l",
 "cena": 83.6,
-"n": 18
+"n": 20
 },
 "rura_podlogowka": {
 "jedn": "m",
@@ -124,13 +124,13 @@
 },
 "pianka": {
 "jedn": "szt",
-"cena": 33.89,
-"n": 22
+"cena": 36.79,
+"n": 23
 },
 "cement": {
 "jedn": "kg",
-"cena": 0.66,
-"n": 3
+"cena": 0.72,
+"n": 4
 }
 }
 }

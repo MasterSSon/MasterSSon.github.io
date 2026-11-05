@@ -124,7 +124,7 @@ const T = s => { const e = h('span', null, s); return e; };
 const span = (el, n) => { el.span = n; return el; };
 
 /* ---------- product catalogue ---------- */
-const BASE = 'https://www.naffy.io/mastersson/';
+const BASE = '';
 const CATS = {fach:'Wyceny dla fachowców', sprzedaz:'Sprzedaż online', podatki:'Podatki i ewidencja', uslugi:'Usługi i małe firmy', dom:'Plany prywatne'};
 const P = [];
 const buyUrl = p => BASE + p.slug + '?utm_source=demo&utm_medium=strona&utm_campaign=' + p.id;
@@ -774,7 +774,7 @@ function lockModal(msg){
   const p = CUR ? CUR.p : null;
   const m = h('div', {class:'modal', role:'dialog', 'aria-modal':'true', onclick:e => { if (e.target === m) m.remove(); }},
     h('div', {class:'box'}, h('h3', null, 'Ta funkcja jest w pełnej wersji'), h('p', null, msg),
-      p ? h('p', null, 'Pełny plik: ', h('b', null, p.name), (DARMO[p.id] ? ', za darmo. Działa w Excelu i Google Sheets, pobierasz go jednym kliknięciem.' : ', ' + p.price + ' zł. Działa w Excelu i Google Sheets, pobierasz go od razu po zakupie.')) : null,
+      p ? h('p', null, 'Pełny plik: ', h('b', null, p.name), (DARMO[p.id] ? ', za darmo. Działa w Excelu i Google Sheets, pobierasz go jednym kliknięciem.' : '. Działa w Excelu i Google Sheets, pobierasz go od razu po zakupie.')) : null,
       h('div', {class:'acts'}, p ? h('a', {class:'cta', href:kupUrl(p), target:'_blank', rel:'noopener'}, kupTxt(p)) : null, h('button', {class:'ghost', onclick:() => m.remove()}, 'Wracam do demo'))));
   document.body.append(m); m.querySelector('.ghost').focus();
   document.addEventListener('keydown', function esc(e){ if (e.key === 'Escape'){ m.remove(); document.removeEventListener('keydown', esc); } });
@@ -783,8 +783,8 @@ function lockModal(msg){
 
 /* darmowe szablony (1.11.2026) */
 const DARMO = {"glazurnik": "/pobierz/Kosztorys_i_oferta_glazurnik.xlsx", "elektryk": "/pobierz/Kosztorys_i_oferta_elektryk.xlsx", "malarz": "/pobierz/Kosztorys_i_oferta_malarz.xlsx", "przeprowadzka": "/pobierz/Kosztorys_i_oferta_przeprowadzki.xlsx", "ogrodnik": "/pobierz/Kosztorys_i_oferta_ogrodnik.xlsx"};
-const kupUrl = p => DARMO[p.id] || buyUrl(p);
-const kupTxt = (p, krotko) => DARMO[p.id] ? 'Pobierz pełny plik za darmo' : (krotko ? 'Kup za ' : 'Kup na naffy za ') + p.price + ' zł';
+const kupUrl = p => DARMO[p.id] || '#demo';
+const kupTxt = (p, krotko) => DARMO[p.id] ? 'Pobierz pełny plik za darmo' : 'Wypróbuj demo';
 
 /* ===== montaż dema na stronie produktu (/produkt/<id>/) — wycięte z dawnego renderDemo, logika bez zmian ===== */
 function renderSheet(){

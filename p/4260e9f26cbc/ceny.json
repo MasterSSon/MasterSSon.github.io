@@ -1,11 +1,11 @@
 {
-"data": "2026-11-05",
+"data": "2026-11-06",
 "zrodlo": "OBI.pl, mediana cen z wyszukiwarki sklepu",
 "ceny": {
 "klej_plytki": {
 "jedn": "kg",
 "cena": 2.27,
-"n": 11
+"n": 13
 },
 "fuga": {
 "jedn": "kg",
@@ -29,7 +29,7 @@
 },
 "masa_samopoz": {
 "jedn": "kg",
-"cena": 2.18,
+"cena": 2.29,
 "n": 10
 },
 "ydy15": {
@@ -94,8 +94,8 @@
 },
 "klej_styropian": {
 "jedn": "kg",
-"cena": 1.3,
-"n": 5
+"cena": 1.27,
+"n": 4
 },
 "kolki": {
 "jedn": "szt",
@@ -115,7 +115,7 @@
 "lakier_parkiet": {
 "jedn": "l",
 "cena": 83.6,
-"n": 20
+"n": 21
 },
 "rura_podlogowka": {
 "jedn": "m",
@@ -124,7 +124,7 @@
 },
 "pianka": {
 "jedn": "szt",
-"cena": 36.79,
+"cena": 39.79,
 "n": 23
 },
 "cement": {

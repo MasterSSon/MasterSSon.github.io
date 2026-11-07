@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rezerwacja wizyty</title>
+<style>
+:root{--k:#7c3aed;--kj:#f5f3ff;--t:#1f2937;--s:#6b7280;--r:#e5e7eb}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:var(--t);background:#f9fafb}
+.w{max-width:560px;margin:0 auto;padding:20px 16px 48px}
+header{text-align:center;margin-bottom:18px}
+header h1{margin:0;font-size:1.6rem}
+header p{margin:4px 0 0;color:var(--s);font-size:.92rem}
+.kroki{display:flex;gap:6px;margin:16px 0}
+.kroki i{flex:1;height:4px;border-radius:4px;background:var(--r)}
+.kroki i.on{background:var(--k)}
+.k{background:#fff;border:1px solid var(--r);border-radius:16px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+h2{font-size:1.1rem;margin:0 0 12px}
+.usl{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:1px solid var(--r);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;font:inherit;color:inherit}
+.usl:hover,.usl:focus{border-color:var(--k);outline:none;background:var(--kj)}
+.usl b{display:block}.usl small{color:var(--s)}
+.cena{font-weight:700;color:var(--k);white-space:nowrap}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.nav button,.wroc{background:none;border:0;color:var(--k);font:inherit;font-weight:600;cursor:pointer;padding:6px}
+.nav button:disabled{color:var(--r);cursor:default}
+.kal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.kal span{font-size:.75rem;color:var(--s);padding:4px 0}
+.kal button{aspect-ratio:1;border:0;border-radius:10px;background:none;font:inherit;color:#c4c4cc;cursor:default}
+.kal button.wol{background:var(--kj);color:var(--k);font-weight:700;cursor:pointer}
+.kal button.wol:hover,.kal button.wyb{background:var(--k);color:#fff}
+.godz{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px;margin-top:14px}
+.godz button{padding:10px 0;border:1px solid var(--k);border-radius:10px;background:#fff;color:var(--k);font:inherit;font-weight:600;cursor:pointer}
+.godz button:hover{background:var(--k);color:#fff}
+label{display:block;font-size:.9rem;margin:12px 0 4px;font-weight:600}
+input,textarea{width:100%;padding:11px;border:1px solid var(--r);border-radius:10px;font:inherit}
+input:focus,textarea:focus{outline:2px solid var(--k);border-color:transparent}
+.zg{display:flex;gap:8px;align-items:flex-start;font-weight:400;font-size:.85rem;color:var(--s)}
+.zg input{width:auto;margin-top:3px}
+.gl{display:block;width:100%;margin-top:16px;padding:14px;border:0;border-radius:12px;background:var(--k);color:#fff;font:inherit;font-weight:700;font-size:1.05rem;cursor:pointer}
+.gl:disabled{opacity:.6}
+.pod{background:var(--kj);border-radius:12px;padding:12px;font-size:.92rem;margin-bottom:6px}
+.blad{color:#b91c1c;font-size:.9rem;margin-top:10px}
+.ok{text-align:center}.ok .zn{font-size:3rem;color:var(--k)}
+.info{color:var(--s);font-size:.9rem;text-align:center;padding:12px}
+.ukr{position:absolute;left:-9999px}
+footer{text-align:center;color:var(--s);font-size:.8rem;margin-top:20px}
+.demo{background:#fef3c7;color:#92400e;border-radius:10px;padding:8px 12px;font-size:.85rem;text-align:center;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div class="w">
+  <div id="demo" class="demo" hidden>Wersja demonstracyjna — rezerwacje zapisują się tylko w tej przeglądarce.</div>
+  <header><h1 id="firma">Rezerwacja wizyty</h1><p id="kontakt"></p></header>
+  <div class="kroki"><i></i><i></i><i></i><i></i></div>
+  <div class="k" id="ekran"><div class="info">Ładowanie…</div></div>
+  <footer>System rezerwacji online</footer>
+</div>
+<script>
+// ===== RDZEŃ: czysta logika terminów (wspólna dla Apps Script i trybu demo strony) =====
+var DNI_TYG = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
+
+function rzMin(t) {
+  var m = String(t || '').trim().match(/^(\d{1,2})[:.](\d{2})$/);
+  if (!m) return null;
+  var h = +m[1], mi = +m[2];
+  if (h > 24 || mi > 59 || h * 60 + mi > 1440) return null;
+  return h * 60 + mi;
+}
+
+function rzGodz(min) {
+  var h = Math.floor(min / 60), m = min % 60;
+  return (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+}
+
+// „9:00-13:00, 14:00-18:00” -> [[540,780],[840,1080]]; „wolne”/puste -> []
+function rzZakresy(tekst) {
+  var wynik = [];
+  String(tekst || '').split(/[,;]/).forEach(function (cz) {
+    var m = cz.trim().match(/^(\d{1,2}[:.]\d{2})\s*[-–]\s*(\d{1,2}[:.]\d{2})$/);
+    if (!m) return;
+    var a = rzMin(m[1]), b = rzMin(m[2]);
+    if (a !== null && b !== null && b > a) wynik.push([a, b]);
+  });
+  return wynik;
+}
+
+// „2026-10-23” lub „23.10.2026” -> „2026-10-23”; błędne -> null
+function rzData(tekst) {
+  var s = String(tekst || '').trim(), m;
+  if ((m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/))) return rzSkladaj(+m[1], +m[2], +m[3]);
+  if ((m = s.match(/^(\d{1,2})[.\/](\d{1,2})[.\/](\d{4})/))) return rzSkladaj(+m[3], +m[2], +m[1]);
+  return null;
+}
+
+function rzSkladaj(r, mc, d) {
+  var dt = new Date(Date.UTC(r, mc - 1, d));
+  if (dt.getUTCFullYear() !== r || dt.getUTCMonth() !== mc - 1 || dt.getUTCDate() !== d) return null;
+  return dt.toISOString().slice(0, 10);
+}
+
+function rzNrDnia(data) { var p = data.split('-'); return Math.round(Date.UTC(+p[0], +p[1] - 1, +p[2]) / 864e5); }
+function rzDzienTyg(data) { return new Date(rzNrDnia(data) * 864e5).getUTCDay(); }
+function rzDodajDni(data, n) { return new Date((rzNrDnia(data) + n) * 864e5).toISOString().slice(0, 10); }
+
+function rzKoliduje(a1, b1, a2, b2) { return a1 < b2 && b1 > a2; }
+
+/*
+ Wolne godziny startu wizyty w danym dniu.
+ o = {
+   data, godziny: [7 tekstów, indeks 0 = niedziela], krok, bufor, czas,
+   zajete: [[od,do],...] (wizyty), blokady: [[od,do],...] (wolne godziny / urlop),
+   dzis, terazMin, wyprzedzenieMin, horyzontDni
+ }
+*/
+function rzWolneTerminy(o) {
+  if (!o.czas || o.czas <= 0) return [];
+  var nr = rzNrDnia(o.data), nrDzis = rzNrDnia(o.dzis);
+  if (nr < nrDzis || nr > nrDzis + (o.horyzontDni || 0)) return [];
+  var granica = nrDzis * 1440 + (o.terazMin || 0) + (o.wyprzedzenieMin || 0);
+  var krok = o.krok > 0 ? o.krok : 15, bufor = o.bufor > 0 ? o.bufor : 0, wynik = [];
+  rzZakresy(o.godziny[rzDzienTyg(o.data)]).forEach(function (z) {
+    for (var t = z[0]; t + o.czas <= z[1]; t += krok) {
+      if (nr * 1440 + t < granica) continue;
+      var k = t + o.czas, wolny = true, i;
+      for (i = 0; wolny && i < (o.zajete || []).length; i++)
+        if (rzKoliduje(t, k, o.zajete[i][0] - bufor, o.zajete[i][1] + bufor)) wolny = false;
+      for (i = 0; wolny && i < (o.blokady || []).length; i++)
+        if (rzKoliduje(t, k, o.blokady[i][0], o.blokady[i][1])) wolny = false;
+      if (wolny && wynik.indexOf(t) < 0) wynik.push(t);
+    }
+  });
+  return wynik.sort(function (a, b) { return a - b; });
+}
+
+// Blokady z tabeli „Wolne dni” dla danego dnia: [{od:'2026-12-24', do:'2026-12-26', godzOd:'', godzDo:''}]
+function rzBlokadyDnia(wolne, data) {
+  var wynik = [];
+  (wolne || []).forEach(function (w) {
+    var od = rzData(w.od), dz = rzData(w.do) || od;
+    if (!od || data < od || data > dz) return;
+    var a = rzMin(w.godzOd), b = rzMin(w.godzDo);
+    wynik.push(a !== null && b !== null && b > a ? [a, b] : [0, 1440]);
+  });
+  return wynik;
+}
+
+// Ochrona arkusza przed formułami wstrzykniętymi w polach formularza
+function rzBezpieczny(tekst, max) {
+  var s = String(tekst == null ? '' : tekst).replace(/[\u0000-\u001f\u007f]/g, ' ').trim().slice(0, max || 200);
+  return /^[=+\-@]/.test(s) ? "'" + s : s;
+}
+
+if (typeof module !== 'undefined') module.exports = {
+  rzMin: rzMin, rzGodz: rzGodz, rzZakresy: rzZakresy, rzData: rzData, rzDzienTyg: rzDzienTyg,
+  rzDodajDni: rzDodajDni, rzWolneTerminy: rzWolneTerminy, rzBlokadyDnia: rzBlokadyDnia,
+  rzBezpieczny: rzBezpieczny, rzNrDnia: rzNrDnia, DNI_TYG: DNI_TYG
+};
+
+
+// Adres API, gdy strona stoi poza Google (np. na Twojej stronie www). 'DEMO' = tryb pokazowy.
+var API_URL = 'DEMO';
+
+var S = { dane: null, usl: null, mies: null, dzien: null, godz: null };
+var $ = function (id) { return document.getElementById(id); };
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+function wywolaj(akcja, p) {
+  p = p || {};
+  if (typeof google !== 'undefined' && google.script && google.script.run) {
+    return new Promise(function (ok, nie) { google.script.run.withSuccessHandler(ok).withFailureHandler(nie).api(akcja, p); });
+  }
+  if (API_URL === 'DEMO') return Promise.resolve(DEMO.api(akcja, p));
+  if (akcja === 'rezerwuj') {
+    p.akcja = akcja;
+    return fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(p) }).then(function (r) { return r.json(); });
+  }
+  var q = Object.keys(p).map(function (k) { return k + '=' + encodeURIComponent(p[k]); }).join('&');
+  return fetch(API_URL + '?a=' + akcja + (q ? '&' + q : '')).then(function (r) { return r.json(); });
+}
+
+function krok(n) { [].forEach.call(document.querySelectorAll('.kroki i'), function (el, i) { el.className = i < n ? 'on' : ''; }); }
+function blad(e) { $('ekran').innerHTML = '<div class="info">Coś poszło nie tak. Odśwież stronę' + (S.dane && S.dane.telefon ? ' albo zadzwoń: ' + esc(S.dane.telefon) : '') + '.</div>'; console.error(e); }
+function cenaTxt(c) { c = String(c || '').trim(); if (!c) return ''; if (c === '0') return 'bezpłatnie'; return /^\d+([.,]\d+)?$/.test(c) ? c + ' zł' : c; }
+function czasTxt(m) { return m >= 60 ? Math.floor(m / 60) + ' h' + (m % 60 ? ' ' + m % 60 + ' min' : '') : m + ' min'; }
+var MIES = ['styczeń', 'luty', 'marzec', 'kwiecień', 'maj', 'czerwiec', 'lipiec', 'sierpień', 'wrzesień', 'październik', 'listopad', 'grudzień'];
+function dataTxt(d) { var p = d.split('-'); return DNI_TYG[rzDzienTyg(d)].toLowerCase() + ', ' + (+p[2]) + '.' + p[1] + '.' + p[0]; }
+
+function start() {
+  if (API_URL === 'DEMO') $('demo').hidden = false;
+  wywolaj('dane').then(function (d) {
+    if (!d.ok) return blad(d);
+    S.dane = d;
+    document.documentElement.style.setProperty('--k', d.kolor);
+    document.documentElement.style.setProperty('--kj', d.kolor + '14');
+    $('firma').textContent = d.firma;
+    document.title = 'Rezerwacja — ' + d.firma;
+    $('kontakt').textContent = [d.adres, d.telefon].filter(Boolean).join(' · ');
+    ekranUslugi();
+  }).catch(blad);
+}
+
+function ekranUslugi() {
+  krok(1);
+  var h = '<h2>Wybierz usługę</h2>';
+  if (!S.dane.uslugi.length) h += '<div class="info">Brak usług do rezerwacji.</div>';
+  S.dane.uslugi.forEach(function (u) {
+    h += '<button class="usl" data-id="' + u.id + '"><span><b>' + esc(u.nazwa) + '</b><small>' + czasTxt(u.czas) +
+      (u.opis ? ' · ' + esc(u.opis) : '') + '</small></span><span class="cena">' + esc(cenaTxt(u.cena)) + '</span></button>';
+  });
+  $('ekran').innerHTML = h;
+  [].forEach.call(document.querySelectorAll('.usl'), function (b) {
+    b.onclick = function () {
+      S.usl = S.dane.uslugi.filter(function (u) { return String(u.id) === b.dataset.id; })[0];
+      S.mies = S.dane.dzis.slice(0, 7); S.dzien = null;
+      ekranKalendarz();
+    };
+  });
+}
+
+function miesDodaj(m, n) { var r = +m.slice(0, 4), mc = +m.slice(5, 7) - 1 + n; r += Math.floor(mc / 12); mc = ((mc % 12) + 12) % 12; return r + '-' + (mc < 9 ? '0' : '') + (mc + 1); }
+
+function ekranKalendarz() {
+  krok(2);
+  var max = rzDodajDni(S.dane.dzis, S.dane.horyzont).slice(0, 7);
+  $('ekran').innerHTML = '<button class="wroc" id="wr">← ' + esc(S.usl.nazwa) + '</button><h2>Wybierz dzień</h2>' +
+    '<div class="nav"><button id="pm">‹</button><b>' + MIES[+S.mies.slice(5) - 1] + ' ' + S.mies.slice(0, 4) + '</b><button id="nm">›</button></div>' +
+    '<div class="kal" id="kal"><div class="info" style="grid-column:1/8">Szukam wolnych terminów…</div></div><div id="gz"></div>';
+  $('wr').onclick = ekranUslugi;
+  $('pm').disabled = S.mies <= S.dane.dzis.slice(0, 7);
+  $('nm').disabled = S.mies >= max;
+  $('pm').onclick = function () { S.mies = miesDodaj(S.mies, -1); S.dzien = null; ekranKalendarz(); };
+  $('nm').onclick = function () { S.mies = miesDodaj(S.mies, 1); S.dzien = null; ekranKalendarz(); };
+  var mies = S.mies;
+  wywolaj('dni', { miesiac: mies, usluga: S.usl.id }).then(function (r) {
+    if (mies !== S.mies) return;
+    if (!r.ok) return blad(r);
+    var h = ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So', 'Nd'].map(function (d) { return '<span>' + d + '</span>'; }).join('');
+    var d1 = mies + '-01', przes = (rzDzienTyg(d1) + 6) % 7;
+    for (var i = 0; i < przes; i++) h += '<span></span>';
+    for (var d = d1; d.slice(0, 7) === mies; d = rzDodajDni(d, 1)) {
+      var wol = r.dni.indexOf(d) >= 0;
+      h += '<button ' + (wol ? 'class="wol" data-d="' + d + '"' : 'disabled') + '>' + (+d.slice(8)) + '</button>';
+    }
+    $('kal').innerHTML = h;
+    if (!r.dni.length) $('gz').innerHTML = '<div class="info">Brak wolnych terminów w tym miesiącu — sprawdź następny.</div>';
+    [].forEach.call(document.querySelectorAll('.kal .wol'), function (b) {
+      b.onclick = function () {
+        [].forEach.call(document.querySelectorAll('.kal .wyb'), function (x) { x.classList.remove('wyb'); });
+        b.classList.add('wyb'); S.dzien = b.dataset.d; pokazGodziny();
+      };
+    });
+  }).catch(blad);
+}
+
+function pokazGodziny() {
+  var dzien = S.dzien;
+  $('gz').innerHTML = '<div class="info">Ładowanie godzin…</div>';
+  wywolaj('terminy', { data: dzien, usluga: S.usl.id }).then(function (r) {
+    if (dzien !== S.dzien) return;
+    if (!r.ok) return blad(r);
+    var h = '<h2 style="margin-top:18px">' + esc(dataTxt(dzien)) + '</h2>';
+    h += r.terminy.length ? '<div class="godz">' + r.terminy.map(function (g) { return '<button data-g="' + g + '">' + g + '</button>'; }).join('') + '</div>'
+      : '<div class="info">Ten dzień właśnie się zapełnił. Wybierz inny.</div>';
+    $('gz').innerHTML = h;
+    [].forEach.call(document.querySelectorAll('.godz button'), function (b) { b.onclick = function () { S.godz = b.dataset.g; ekranDane(); }; });
+    $('gz').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }).catch(blad);
+}
+
+function ekranDane() {
+  krok(3);
+  $('ekran').innerHTML = '<button class="wroc" id="wr">← zmień termin</button>' +
+    '<div class="pod"><b>' + esc(S.usl.nazwa) + '</b><br>' + esc(dataTxt(S.dzien)) + ', godz. ' + esc(S.godz) + ' (' + czasTxt(S.usl.czas) + ')</div>' +
+    '<form id="f" novalidate><label for="im">Imię i nazwisko</label><input id="im" autocomplete="name" required maxlength="80">' +
+    '<label for="te">Telefon</label><input id="te" type="tel" autocomplete="tel" required maxlength="30">' +
+    '<label for="em">E-mail <small style="font-weight:400;color:var(--s)">(potwierdzenie i przypomnienie)</small></label><input id="em" type="email" autocomplete="email" maxlength="120">' +
+    '<label for="uw">Uwagi <small style="font-weight:400;color:var(--s)">(opcjonalnie)</small></label><textarea id="uw" rows="2" maxlength="300"></textarea>' +
+    '<input class="ukr" id="www" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+    '<label class="zg"><input type="checkbox" id="zg"> <span>' + esc(S.dane.rodo || 'Zgadzam się na przetwarzanie danych w celu realizacji wizyty.') + '</span></label>' +
+    '<div class="blad" id="bl"></div><button class="gl" id="wy">Rezerwuję</button></form>';
+  $('wr').onclick = ekranKalendarz;
+  $('f').onsubmit = function (e) {
+    e.preventDefault();
+    var p = { usluga: S.usl.id, data: S.dzien, godzina: S.godz, imie: $('im').value, telefon: $('te').value,
+      email: $('em').value, uwagi: $('uw').value, zgoda: $('zg').checked, www: $('www').value };
+    if (p.imie.trim().length < 2) return ($('bl').textContent = 'Podaj imię i nazwisko.');
+    if (p.telefon.replace(/\D/g, '').length < 9) return ($('bl').textContent = 'Podaj poprawny numer telefonu.');
+    if (!p.zgoda) return ($('bl').textContent = 'Zaznacz zgodę.');
+    $('wy').disabled = true; $('wy').textContent = 'Zapisuję…'; $('bl').textContent = '';
+    wywolaj('rezerwuj', p).then(function (r) {
+      if (r.ok) return ekranOk(r);
+      $('bl').textContent = r.blad || 'Nie udało się zapisać.';
+      $('wy').disabled = false; $('wy').textContent = 'Rezerwuję';
+      if (r.zajety) setTimeout(ekranKalendarz, 2500);
+    }).catch(function (e) { $('bl').textContent = 'Brak połączenia. Spróbuj ponownie.'; $('wy').disabled = false; $('wy').textContent = 'Rezerwuję'; console.error(e); });
+  };
+}
+
+function ekranOk(r) {
+  krok(4);
+  $('ekran').innerHTML = '<div class="ok"><div class="zn">✓</div><h2>Zarezerwowane!</h2><div class="pod"><b>' + esc(r.usluga) + '</b><br>' +
+    esc(dataTxt(r.data)) + ', godz. ' + esc(r.godzina) + '<br><small>Nr rezerwacji: ' + esc(r.id) + '</small></div>' +
+    '<p class="info">' + (r.mail ? 'Potwierdzenie z linkiem do odwołania wysłaliśmy na e-mail.' : 'Zapisz numer rezerwacji. W razie zmiany zadzwoń' + (S.dane.telefon ? ': ' + esc(S.dane.telefon) : '') + '.') + '</p>' +
+    '<button class="gl" id="nw">Zarezerwuj kolejną wizytę</button></div>';
+  $('nw').onclick = ekranUslugi;
+}
+
+/* ---------- Tryb DEMO: backend w przeglądarce ---------- */
+var DEMO = {
+  ust: { firma: 'Studio Anna — demo', telefon: '500 600 700', adres: 'ul. Przykładowa 1, Warszawa', kolor: '#7c3aed',
+    rodo: 'Zgadzam się na przetwarzanie moich danych w celu realizacji wizyty.',
+    godziny: ['wolne', '9:00-17:00', '9:00-17:00', '9:00-13:00, 14:00-18:00', '11:00-19:00', '9:00-15:00', 'wolne'],
+    krok: 30, bufor: 10, wyprzedzenie: 2, horyzont: 60 },
+  uslugi: [{ id: 0, nazwa: 'Strzyżenie damskie', czas: 60, cena: '90', opis: 'Mycie, strzyżenie, modelowanie' },
+    { id: 1, nazwa: 'Strzyżenie męskie', czas: 30, cena: '50', opis: '' },
+    { id: 2, nazwa: 'Koloryzacja', czas: 120, cena: 'od 220 zł', opis: 'Zależy od długości włosów' }],
+  teraz: function () { var d = new Date(), z = function (n) { return (n < 10 ? '0' : '') + n; };
+    return { data: d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()), min: d.getHours() * 60 + d.getMinutes() }; },
+  rez: function () {
+    var t = this.teraz(), zap = JSON.parse(localStorage.getItem('demoRez') || '[]'), stale = [];
+    // kilka „zajętych” wizyt, żeby kalendarz wyglądał realnie
+    for (var i = 1; i <= 20; i++) { var d = rzDodajDni(t.data, i); stale.push({ data: d, od: 600 + (i % 3) * 60, do: 660 + (i % 3) * 60 }, { data: d, od: 780, do: 840 }); }
+    return stale.concat(zap);
+  },
+  terminy: function (data, usl) {
+    var t = this.teraz(), u = this.ust;
+    return rzWolneTerminy({ data: data, godziny: u.godziny, krok: u.krok, bufor: u.bufor, czas: usl.czas,
+      zajete: this.rez().filter(function (r) { return r.data === data; }).map(function (r) { return [r.od, r.do]; }),
+      blokady: [], dzis: t.data, terazMin: t.min, wyprzedzenieMin: u.wyprzedzenie * 60, horyzontDni: u.horyzont });
+  },
+  api: function (a, p) {
+    var self = this, usl = this.uslugi.filter(function (u) { return String(u.id) === String(p.usluga); })[0];
+    if (a === 'dane') { var u = this.ust; return { ok: true, firma: u.firma, telefon: u.telefon, adres: u.adres, kolor: u.kolor, rodo: u.rodo, horyzont: u.horyzont, dzis: this.teraz().data, uslugi: this.uslugi }; }
+    if (a === 'dni') { var dni = []; for (var d = p.miesiac + '-01'; d.slice(0, 7) === p.miesiac; d = rzDodajDni(d, 1)) if (self.terminy(d, usl).length) dni.push(d); return { ok: true, dni: dni }; }
+    if (a === 'terminy') return { ok: true, data: p.data, terminy: this.terminy(p.data, usl).map(rzGodz) };
+    if (a === 'rezerwuj') {
+      var od = rzMin(p.godzina);
+      if (this.terminy(p.data, usl).indexOf(od) < 0) return { ok: false, zajety: true, blad: 'Ten termin został właśnie zajęty.' };
+      var zap = JSON.parse(localStorage.getItem('demoRez') || '[]');
+      zap.push({ data: p.data, od: od, do: od + usl.czas }); localStorage.setItem('demoRez', JSON.stringify(zap));
+      return { ok: true, id: 'DEMO-' + (1000 + zap.length), data: p.data, godzina: p.godzina, usluga: usl.nazwa, mail: !!p.email };
+    }
+    return { ok: false };
+  }
+};
+
+start();
+</script>
+</body>
+</html>

@@ -137,7 +137,7 @@
     if (!(w.kwota > 0)) return '<div class="k"><h2>Najpierw sprawdź lot</h2><p>Wniosek przygotujesz, gdy kalkulator pokaże kwotę odszkodowania.</p><a class="btn" href="#kalkulator">Sprawdź lot</a></div>';
     if (window.WL_PUBLICZNA) return '<div class="k" id="pelna"><h2>Należy ci się ' + w.kwota + ' EUR na pasażera</h2><p>W pełnej wersji aplikacja przygotuje gotowy wniosek do linii (po polsku albo angielsku, z podstawą prawną), ' +
       'wniosek do Rzecznika Praw Pasażerów, gdy linia nie odpowie, i przypilnuje terminów. Płacisz raz, bez prowizji: 100% odszkodowania trafia prosto od linii na Twoje konto.</p>' +
-      '<span class="btn-zablokowany">Kup pełną wersję — 49 zł</span>' +
+      '<a class="btn szer" href="https://www.naffy.io/mastersson/odszkodowanie-za-lot-kalkulator-ue-261-i-gotowy-wniosek-do-linii-250600-aplikacja-teq" target="_blank" rel="noopener">Kup pełną wersję — 69 zł</a>' +
       '<p class="info">Możesz też napisać wniosek sam: zobacz zakładkę „Zasady” — krok po kroku, co i gdzie wysłać.</p><a class="btn" href="#info">Krok po kroku</a></div>'; // publiczny kalkulator: wniosek tylko w pełnej wersji
     var ibanZly = o.iban && !WL.ibanOk(o.iban);
     var h = '<div class="k nie-drukuj"><h2>Twoje dane do wniosku</h2>' + polO('Imię i nazwisko', 'imie', o.imie) + polO('Adres', 'adres', o.adres) +

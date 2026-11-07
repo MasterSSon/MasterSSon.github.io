@@ -1,5 +1,5 @@
 // Odszkodowanie za lot — tryb offline
-var WERSJA = 'wl-1.0.1';
+var WERSJA = 'wl-1.0.2';
 var PLIKI = ['./', './index.html', './app.js', './rdzen.js', './pismo.js', './lotniska.js', './manifest.json', './ikona-192.png', './ikona-512.png'];
 self.addEventListener('install', function (e) { e.waitUntil(caches.open(WERSJA).then(function (c) { return c.addAll(PLIKI); })); self.skipWaiting(); });
 self.addEventListener('activate', function (e) {

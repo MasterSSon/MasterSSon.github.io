@@ -6,7 +6,7 @@
 <title>Czytnik faktur KSeF — darmowe demo · MasterSSon</title>
 <meta name="description" content="Wszystkie faktury XML z KSeF w jednej tabeli, w Excelu i w PDF. Offline, bez logowania, bez abonamentu. Wypróbuj demo na przykładach Ministerstwa Finansów.">
 <meta property="og:type" content="website"><meta property="og:title" content="Czytnik faktur KSeF — darmowe demo">
-<meta property="og:description" content="Wszystkie faktury XML z KSeF w Excelu i PDF. Offline, bez abonamentu, 69 zł jednorazowo.">
+<meta property="og:description" content="Wszystkie faktury XML z KSeF w Excelu i PDF. Offline, pełna wersja PRO 129 zł / 12 miesięcy.">
 <meta property="og:image" content="https://mastersson.github.io/ksef/okladka.jpg"><meta property="og:url" content="https://mastersson.github.io/ksef/">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -23,7 +23,7 @@ main{max-width:1400px;margin:0 auto;padding:16px;display:flex;flex-direction:col
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 button{font:inherit;border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;cursor:pointer}
 button.p{background:var(--acc);color:#fff;border-color:var(--acc)}
-button:disabled{opacity:.45;cursor:default}
+.btn-kup{display:inline-block;background:#ffd23f;color:#14213d;font-weight:700;border-radius:8px;padding:8px 14px;text-decoration:none;white-space:nowrap}button:disabled{opacity:.45;cursor:default}
 input[type=search]{font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:8px;min-width:240px}
 .tw{overflow-x:auto}
 table{border-collapse:collapse;width:100%;font-size:13px}
@@ -71,7 +71,7 @@ tfoot td{font-weight:700;background:#f0f2f6}
 <body>
 <header><a href="../" style="color:#b9c3d6;text-decoration:none;margin-right:6px">← MasterSSon</a><h1>Czytnik faktur KSeF <span style="background:#ffd23f;color:#14213d;border-radius:6px;padding:2px 8px;font-size:12px;vertical-align:middle">DEMO</span></h1><span class="s">Zestawienie, eksport do Excela i wydruk faktur FA(3) · działa w Twojej przeglądarce, pliki nie opuszczają komputera</span></header>
 <main>
-  <div class="card row" style="justify-content:space-between;background:#fff8dc;border-color:#f0d77a"><div><b>Wersja demonstracyjna.</b> Wczytaj przykłady Ministerstwa Finansów albo do 3 własnych plików. Eksport do Excela i PDF jest w pełnej wersji.<br><b>Wersja PRO (99 zł)</b> dodatkowo sprawdza konta sprzedawców na białej liście VAT i oznacza faktury powyżej 15 000 zł z kontem spoza wykazu. <span class="btn-zablokowany">Zobacz wersję PRO →</span></div><span class="btn-zablokowany">Pełna wersja: 69 zł jednorazowo →</span></div>
+  <div class="card row" style="justify-content:space-between;background:#fff8dc;border-color:#f0d77a"><div><b>Wersja demonstracyjna.</b> Wczytaj przykłady Ministerstwa Finansów albo do 3 własnych plików. Eksport do Excela i PDF jest w pełnej wersji.<br><b>Czytnik KSeF PRO</b>: bez limitu faktur, eksport do Excela i PDF, sprawdzanie kont sprzedawców na białej liście VAT. Licencja na 12 miesięcy dla 1 firmy, plik działa offline. </div><a class="btn-kup" href="https://www.naffy.io/mastersson/czytnik-faktur-ksef-pro-firma-excel-pdf-i-biala-lista-vat-licencja-12-mies-aplikacja-ccg" target="_blank" rel="noopener">Kup PRO: 129 zł / 12 miesięcy →</a></div>
   <div id="drop" class="card"><b>Przeciągnij tutaj pliki XML faktur z KSeF</b><br><span class="msg">albo kliknij, żeby wybrać (możesz zaznaczyć wiele naraz). Obsługuje strukturę FA(3) i FA(2).</span>
     <input id="pliki" type="file" accept=".xml,text/xml" multiple hidden></div>
   <div class="card row" id="pasek">
@@ -223,8 +223,8 @@ $("#przyklady").onclick=()=>wczytaj(Object.entries(PRZYKLADY).map(([n,t])=>({nam
 const _wcz=wczytaj; let wlasne=0;
 wczytaj=async(lista)=>{const p=lista.filter(f=>!(f.name in PRZYKLADY)); const ok=p.slice(0,Math.max(0,3-wlasne)); wlasne+=ok.length;
   const reszta=lista.filter(f=>f.name in PRZYKLADY); await _wcz([...reszta,...ok]);
-  if(p.length>ok.length) $("#info").innerHTML+=` · <b>Demo: wczytano maks. 3 własne pliki.</b> <span class="btn-zablokowany">Pełna wersja bez limitu →</span>`;};
-const blok=()=>{$("#podglad").innerHTML=`<div class="fv"><h2>Dostępne w pełnej wersji</h2><p>Eksport do Excela, pliki CSV z pozycjami i druk/PDF wszystkich faktur są w pełnej wersji Czytnika faktur KSeF.</p><p><b>69 zł jednorazowo</b> · bez abonamentu · bez limitu faktur · działa offline.</p><p>Wersja <b>PRO za 99 zł</b> sprawdza też każde konto sprzedawcy na białej liście VAT (wykaz MF) i zapisuje identyfikator zapytania jako dowód. <span class="btn-zablokowany">Wersja PRO →</span></p><p><span class="btn-zablokowany">Wypróbuj demo →</span></p></div>`;$("#drukJedna").hidden=true;$("#modal").classList.add("on")};
+  if(p.length>ok.length) $("#info").innerHTML+=` · <b>Demo: wczytano maks. 3 własne pliki.</b> <a class="btn-kup" href="https://www.naffy.io/mastersson/czytnik-faktur-ksef-pro-firma-excel-pdf-i-biala-lista-vat-licencja-12-mies-aplikacja-ccg" target="_blank" rel="noopener">Pełna wersja bez limitu →</a>`;};
+const blok=()=>{$("#podglad").innerHTML=`<div class="fv"><h2>Dostępne w pełnej wersji</h2><p>Eksport do Excela, pliki CSV z pozycjami i druk/PDF wszystkich faktur są w pełnej wersji Czytnika faktur KSeF.</p><p><b>Czytnik KSeF PRO: 129 zł / 12 miesięcy</b> · bez limitu faktur · działa offline · sprawdza konta sprzedawców na białej liście VAT (wykaz MF) i zapisuje identyfikator zapytania jako dowód.</p><p><a class="btn-kup" href="https://www.naffy.io/mastersson/czytnik-faktur-ksef-pro-firma-excel-pdf-i-biala-lista-vat-licencja-12-mies-aplikacja-ccg" target="_blank" rel="noopener">Kup Czytnik KSeF PRO →</a></p></div>`;$("#drukJedna").hidden=true;$("#modal").classList.add("on")};
 ["#csv","#csvPoz","#drukWsz"].forEach(id=>$(id).onclick=blok);
 const _pod=fvHTML; $("#tab").addEventListener("click",()=>{$("#drukJedna").hidden=true},true);
 </script>

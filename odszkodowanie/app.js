@@ -58,6 +58,53 @@
   function esc(t) { return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
   function toast(t) { var e = document.createElement('div'); e.className = 'toast'; e.textContent = t; document.body.appendChild(e); setTimeout(function () { e.remove(); }, 2200); }
 
+  // ---------- licencja (wersja dla kupujących): wniosek generuje serwer MasterSSon, nie przeglądarka ----------
+  // WL_API = adres generatora; WL_API_PLIK = plik z adresem (np. api.json — adres tunelu zmienia się po restarcie serwera)
+  var API = window.WL_API ? String(window.WL_API).replace(/\/+$/, '') : '', PLIK_API = window.WL_API_PLIK || '', LICT = !!(API || PLIK_API), LKL = 'odszkodowanieLicencja', adresP = null;
+  function adres() {
+    if (API) return Promise.resolve(API);
+    if (!adresP) adresP = fetch(PLIK_API, { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (j) { API = String(j.api || '').replace(/\/+$/, ''); if (!API) throw new Error('brak adresu'); return API; })
+      .catch(function (e) { adresP = null; throw e; });
+    return adresP;
+  }
+  var LIC = { klucz: '', wyniki: {}, wToku: {}, ostatni: {}, ok: false, stan: '', czas: {} };
+  try { LIC.klucz = localStorage.getItem(LKL) || ''; } catch (e) {}
+  var KOMUNIKAT = { brak: 'Wpisz klucz licencji z instrukcji w paczce — wtedy przygotuję wniosek.', zly: 'Klucz licencji nieprawidłowy — przepisz go dokładnie z instrukcji (np. MSS-ABCD-EFGH-JKLM).',
+    format: 'Klucz ma postać MSS-XXXX-XXXX-XXXX — przepisz go w całości z instrukcji.', limit: 'Za dużo prób z błędnym kluczem — spróbuj za 10 minut.', siec: 'Brak połączenia z serwerem — wniosek przygotowuje się online. Sprawdź internet i spróbuj ponownie.', czeka: 'Przygotowuję wniosek…' };
+  function zdalnie(rodzaj, wej, o, jezyk) { // zwraca gotowy tekst z pamięci albo komunikat; wynik dociąga w tle
+    LIC.ok = false;
+    if (!LIC.klucz) { LIC.stan = 'brak'; return KOMUNIKAT.brak; }
+    if (!/^MSS(-[A-Z0-9]{4}){3}$/.test(LIC.klucz)) { LIC.stan = 'format'; return KOMUNIKAT.format; } // niepełny klucz: bez zapytania do serwera
+    var cialo = JSON.stringify({ klucz: LIC.klucz, rodzaj: rodzaj, s: wej, o: o, jezyk: jezyk }), r = LIC.wyniki[cialo];
+    if (r && r.do && r.do < Date.now()) { delete LIC.wyniki[cialo]; r = null; } // błąd sieci/limit: ponowna próba po 15 s, przy następnej akcji
+    if (r) { LIC.stan = r.stan; LIC.ok = r.stan === 'ok'; if (LIC.ok) LIC.ostatni[rodzaj] = r.tekst; return LIC.ok ? r.tekst : KOMUNIKAT[r.stan]; }
+    if (!LIC.wToku[cialo]) {
+      var pobierz = function () {
+        LIC.wToku[cialo] = true;
+        adres().then(function (u) { return fetch(u + '/wniosek', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: cialo }); }).then(function (x) {
+          return x.json().catch(function () { return {}; }).then(function (j) {
+            if (x.ok && j.ok && typeof j.tekst === 'string') LIC.wyniki[cialo] = { stan: 'ok', tekst: j.tekst };
+            else if (x.status === 403) LIC.wyniki[cialo] = { stan: 'zly' };
+            else LIC.wyniki[cialo] = { stan: x.status === 429 ? 'limit' : 'siec', do: Date.now() + 15000 };
+          });
+        }).catch(function () { LIC.wyniki[cialo] = { stan: 'siec', do: Date.now() + 15000 }; if (PLIK_API) { API = ''; adresP = null; } }) // błąd: tunel mógł dostać nowy adres
+          .then(function () { delete LIC.wToku[cialo]; odswiezLicencje(); });
+      };
+      if (rodzaj === 'linia') { clearTimeout(LIC.czas.linia); LIC.czas.linia = setTimeout(pobierz, 350); } // 350 ms przerwy w pisaniu = jedno zapytanie
+      else pobierz();
+    }
+    return (rodzaj === 'linia' && LIC.ostatni.linia) || KOMUNIKAT.czeka;
+  }
+  function odswiezLicencje() {
+    if (widok() === 'wniosek') { odswiezTekst(); var e = $('#licStan'); if (e) e.textContent = opisLicencji(); }
+    else if (widok() === 'sprawy') pokaz();
+  }
+  function opisLicencji() { return LIC.stan === 'ok' ? '✓ Klucz przyjęty' : LIC.stan && KOMUNIKAT[LIC.stan] && LIC.stan !== 'czeka' ? KOMUNIKAT[LIC.stan] : ''; }
+  function poleLicencji() {
+    return '<div class="k nie-drukuj"><h2>Klucz licencji</h2><input id="licKlucz" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="MSS-XXXX-XXXX-XXXX" value="' + esc(LIC.klucz) + '">' +
+      '<div class="info" id="licStan">' + esc(opisLicencji()) + '</div><p class="info">Klucz jest w pliku INSTRUKCJA.txt w paczce kupionej na naffy. Nie masz go? Napisz do sklepu MasterSSon na naffy i podaj numer zamówienia.</p></div>';
+  }
+
   // Sprawa z formularza → dane wejściowe rdzenia
   function wejscie(sp) {
     var lot = function (k) { var a = LOTN[k]; return a ? { iata: a.iata, kraj: a.kraj, lat: a.lat, lon: a.lon, miasto: a.miasto } : null; };
@@ -140,7 +187,7 @@
       '<a class="btn szer" href="https://www.naffy.io/mastersson/odszkodowanie-za-lot-kalkulator-ue-261-i-gotowy-wniosek-do-linii-250600-aplikacja-teq" target="_blank" rel="noopener">Kup pełną wersję — 69 zł</a>' +
       '<p class="info">Możesz też napisać wniosek sam: zobacz zakładkę „Zasady” — krok po kroku, co i gdzie wysłać.</p><a class="btn" href="#info">Krok po kroku</a></div>'; // publiczny kalkulator: wniosek tylko w pełnej wersji
     var ibanZly = o.iban && !WL.ibanOk(o.iban);
-    var h = '<div class="k nie-drukuj"><h2>Twoje dane do wniosku</h2>' + polO('Imię i nazwisko', 'imie', o.imie) + polO('Adres', 'adres', o.adres) +
+    var h = (LICT ? poleLicencji() : '') + '<div class="k nie-drukuj"><h2>Twoje dane do wniosku</h2>' + polO('Imię i nazwisko', 'imie', o.imie) + polO('Adres', 'adres', o.adres) +
       '<div class="r2"><div>' + polO('E-mail', 'email', o.email, 'email') + '</div><div>' + polO('Telefon (opcjonalnie)', 'telefon', o.telefon, 'tel') + '</div></div>' +
       polO('Numer rezerwacji', 'rezerwacja', o.rezerwacja) + polO('Numer konta (IBAN)', 'iban', o.iban) + '<div class="blad" id="ibanBlad">' + (ibanZly ? 'Sprawdź numer konta — suma kontrolna się nie zgadza.' : '') + '</div>' +
       '<label>Wszyscy pasażerowie z biletem (jeden w linii; puste = tylko ty)</label><textarea data-o="pasazerowie">' + esc(o.pasazerowie) + '</textarea>' +
@@ -155,7 +202,7 @@
   function tekstWniosku() {
     var wej = wejscie(S.sprawa), w = WL.ocen(wej), o = {};
     Object.keys(S.osoba).forEach(function (k) { o[k] = S.osoba[k]; }); o.dzis = dzis();
-    return WLP.wniosek(wej, w, o, S.jezyk);
+    return LICT ? zdalnie('linia', wej, o, S.jezyk) : WLP.wniosek(wej, w, o, S.jezyk);
   }
 
   // ---------- widok: moje sprawy ----------
@@ -181,7 +228,7 @@
   function tekstRzecznika(z) {
     var wej = wejscie(z.sprawa), w = WL.ocen(wej), o = {};
     Object.keys(z.osoba).forEach(function (k) { o[k] = z.osoba[k]; }); o.dzis = dzis(); o.dataWyslania = z.dataWyslania; o.odpowiedz = z.odpowiedz;
-    return WLP.wniosekRzecznik(wej, w, o);
+    return LICT ? zdalnie('rzecznik', wej, o) : WLP.wniosekRzecznik(wej, w, o);
   }
 
   // ---------- widok: zasady ----------
@@ -197,7 +244,7 @@
       '<div class="k"><h2>Krok po kroku</h2><ol><li>Sprawdź lot w kalkulatorze.</li><li>Wyślij wniosek do linii (formularz na jej stronie albo e-mail).</li>' +
       '<li>Brak odpowiedzi po 30 dniach albo odmowa — bezpłatny wniosek do Rzecznika Praw Pasażerów przy ULC.</li><li>Ostatecznie — sąd (pozew w postępowaniu uproszczonym).</li></ol></div>' +
       '<div class="k"><h2>Zmiany od 23.10.2027</h2><p>Rozporządzenie (UE) 2026/2202 zachowuje próg 3 godzin i kwoty 250/400/600 EUR, ale dla lotów od 23.10.2027 wniosek trzeba złożyć w ciągu 9 miesięcy od wylotu.</p></div>' +
-      '<div class="k"><h2>Prywatność i zastrzeżenia</h2><p class="info">Wszystkie dane zostają w tym urządzeniu — aplikacja niczego nie wysyła. Wynik jest orientacyjny i nie stanowi porady prawnej; ostatecznie o wypłacie decyduje linia, Rzecznik albo sąd.</p></div>';
+      '<div class="k"><h2>Prywatność i zastrzeżenia</h2><p class="info">' + (LICT ? 'Dane zapisują się tylko w tym urządzeniu. Gdy przygotowujesz wniosek, dane sprawy idą szyfrowanym połączeniem do serwera MasterSSon, który od razu odsyła gotowy tekst i niczego nie zapisuje.' : 'Wszystkie dane zostają w tym urządzeniu — aplikacja niczego nie wysyła.') + ' Wynik jest orientacyjny i nie stanowi porady prawnej; ostatecznie o wypłacie decyduje linia, Rzecznik albo sąd.</p></div>';
   }
 
   // ---------- nawigacja i zdarzenia ----------
@@ -248,14 +295,22 @@
     if ((b = $('#nowa'))) b.onclick = function () { if (confirm('Wyczyścić dane lotu?')) { S.sprawa = nowaSprawa(); zapisz(); pokaz(); } };
     if ((b = $('#kopiuj'))) b.onclick = function () {
       var t = tekstWniosku(), pre = $('#tekst'); // element zapamiętany teraz: obietnica rozstrzyga się później
+      if (LICT && !LIC.ok) return toast('Wniosek jeszcze nie jest gotowy');
       (navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { toast('Skopiowano wniosek'); }, function () {
         if (!document.body.contains(pre)) return;
         var r = document.createRange(); r.selectNodeContents(pre); var s = window.getSelection(); s.removeAllRanges(); s.addRange(r); toast('Zaznaczono tekst — skopiuj ręcznie');
       });
     };
     if ((b = $('#drukuj'))) b.onclick = function () { window.print(); };
+    var lk = $('#licKlucz');
+    if (lk) lk.addEventListener('input', function () {
+      LIC.klucz = lk.value.trim().toUpperCase(); LIC.stan = ''; LIC.ostatni = {};
+      try { localStorage.setItem(LKL, LIC.klucz); } catch (e) {}
+      odswiezLicencje();
+    });
     if ((b = $('#pobierz'))) b.onclick = function () {
-      var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([tekstWniosku()], { type: 'text/plain;charset=utf-8' }));
+      var t = tekstWniosku(); if (LICT && !LIC.ok) return toast('Wniosek jeszcze nie jest gotowy');
+      var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([t], { type: 'text/plain;charset=utf-8' }));
       a.download = 'wniosek-odszkodowanie-' + (S.sprawa.nrLotu || 'lot').replace(/[^\w-]/g, '') + '.txt'; document.body.appendChild(a); a.click(); a.remove();
     };
     if ((b = $('#zapiszSprawe'))) b.onclick = function () {

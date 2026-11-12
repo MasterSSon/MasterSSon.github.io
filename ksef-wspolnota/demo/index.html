@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>DEMO · Czytnik faktur KSeF Pro Wspólnota · MasterSSon</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--fg:#1c2230;--dim:#5e6675;--line:#dde1e7;--acc:#1f5fbf;--acc2:#e8f0fc;--ok:#1e7a46;--warn:#b45309;--bad:#b42318}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:#14213d;color:#fff;padding:14px 20px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+header h1{font-size:18px;margin:0}header .s{color:#b9c3d6;font-size:13px}
+main{max-width:1400px;margin:0 auto;padding:16px;display:flex;flex-direction:column;gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px}
+#drop{border:2px dashed #9fb4d8;border-radius:12px;padding:26px;text-align:center;background:var(--acc2);cursor:pointer}
+#drop.on{background:#d5e4fa;border-color:var(--acc)}
+#drop b{font-size:16px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+button{font:inherit;border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 12px;cursor:pointer}
+button.p{background:var(--acc);color:#fff;border-color:var(--acc)}
+button:disabled{opacity:.45;cursor:default}
+input[type=search]{font:inherit;padding:7px 10px;border:1px solid var(--line);border-radius:8px;min-width:240px}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;white-space:nowrap}
+th{background:#f0f2f6;position:sticky;top:0;cursor:pointer;user-select:none}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+tr.inv:hover td{background:#f6f9ff;cursor:pointer}
+tfoot td{font-weight:700;background:#f0f2f6}
+.tag{display:inline-block;padding:1px 7px;border-radius:9px;font-size:11px;font-weight:600;background:#eef1f5}
+.tag.KOR,.tag.KOR_ZAL,.tag.KOR_ROZ{background:#fdecec;color:var(--bad)}
+.tag.ZAL{background:#fff4e5;color:var(--warn)}
+.tag.MPP{background:#e7f6ee;color:var(--ok)}
+.wl{display:inline-block;padding:1px 8px;border-radius:9px;font-size:11px;font-weight:700}
+.wl.ok{background:#e7f6ee;color:var(--ok)}.wl.zle{background:#fff4e5;color:var(--warn)}.wl.ryz{background:var(--bad);color:#fff}.wl.nd{background:#eef1f5;color:var(--dim)}.wl.bl{background:#fdecec;color:var(--bad)}
+tr.ryz td{background:#fff5f5}
+#wlBox{display:flex;gap:10px;flex-wrap:wrap;align-items:center;border-left:4px solid var(--acc)}
+#wlBox input[type=date]{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px}
+.fv .wlr{margin-top:10px;border:1px solid #ccc;border-radius:6px;padding:8px}
+.fv .wlr.ryz{border-color:#e08a8a;background:#fff6f6}
+.msg{color:var(--dim)}
+.err{color:var(--bad)}
+.stat{display:flex;gap:18px;flex-wrap:wrap}
+.stat div{min-width:120px}.stat b{display:block;font-size:18px;font-variant-numeric:tabular-nums}
+/* podgląd faktury */
+#modal{position:fixed;inset:0;background:rgba(10,15,30,.55);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:24px 10px;z-index:9}
+#modal.on{display:flex}
+#modal .box{background:#fff;max-width:900px;width:100%;border-radius:10px;padding:10px 10px 18px}
+.fv{padding:26px 30px;color:#111;font-size:13px}
+.fv h2{margin:0 0 4px;font-size:20px}.fv .meta{color:#444}
+.fv .strony{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:16px 0}
+.fv .strony div{border:1px solid #ccc;border-radius:6px;padding:10px}
+.fv .strony h4{margin:0 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:#555}
+.fv table{font-size:12px}.fv th{background:#eee;cursor:default;position:static}
+.fv td,.fv th{white-space:normal;border:1px solid #ccc}
+.fv .sumy{margin-top:12px;display:flex;justify-content:flex-end}
+.fv .sumy table{width:auto}
+.fv .razem{font-size:16px;font-weight:700;text-align:right;margin-top:8px}
+.fv .info{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fv .info div{border:1px solid #ddd;border-radius:6px;padding:8px}
+.fv .foot{margin-top:14px;font-size:11px;color:#666;border-top:1px solid #ddd;padding-top:6px}
+.fv .kor{border:1px solid #f0b4b4;background:#fff6f6;border-radius:6px;padding:8px;margin-top:8px}
+#wsp{border-left:4px solid var(--ok)}
+#wsp h3{margin:14px 0 6px;font-size:14px}
+#wsp select,#wsp input[type=date]{font:inherit;padding:6px 8px;border:1px solid var(--line);border-radius:8px;max-width:340px}
+#wsp table th{cursor:default}
+tr.pt td{background:#fff5f5}tr.dz td{background:#fff9ec}
+.zr{color:var(--dim);font-size:11px}
+#druk{display:none}
+@media print{
+  body{background:#fff}
+  header,main,#modal{display:none!important}
+  #druk{display:block}
+  .fv{page-break-after:always;padding:0}
+}
+</style>
+</head>
+<body>
+<header><h1>Czytnik faktur KSeF <span style="background:#c8f560;color:#14213d;border-radius:6px;padding:1px 8px;font-size:14px">PRO Wspólnota</span></h1><span class="s">Zestawienie, Excel, PDF i sprawdzanie kont na białej liście VAT · faktury nie opuszczają komputera, do Ministerstwa Finansów idą tylko NIP i numer konta sprzedawcy</span></header>
+<main>
+  <div style="background:#fff4d6;border:1px solid #e0b84a;border-radius:10px;padding:10px 14px;margin:10px 0"><b>DEMO</b> na 7 przykładowych fakturach wspólnoty (daty przesunięte na bieżący miesiąc). Własne pliki XML wczytasz w pełnej wersji: <a href="https://mastersson.github.io/ksef-wspolnota/">Czytnik KSeF PRO Wspólnota, 249 zł/12 mies.</a></div><div id="drop" class="card"><b>Kliknij, żeby wczytać 7 przykładowych faktur</b><br><span class="msg">albo kliknij, żeby wybrać (możesz zaznaczyć wiele naraz). Obsługuje strukturę FA(3) i FA(2).</span>
+    <input id="pliki" type="file" accept=".xml,text/xml" multiple hidden></div>
+  <div class="card row" id="pasek">
+    <input type="search" id="szukaj" placeholder="Szukaj: NIP, nazwa, numer faktury…">
+    <button id="csv" class="p" disabled>Pobierz zestawienie (Excel/CSV)</button>
+    <button id="csvPoz" disabled>Pobierz wszystkie pozycje (CSV)</button>
+    <button id="drukWsz" disabled>Drukuj / PDF wszystkie</button>
+    <button id="wyczysc" disabled>Wyczyść</button>
+    <span id="info" class="msg"></span>
+  </div>
+  <div class="card" id="wlBox"><b>Biała lista VAT</b>
+    <label class="msg">Dzień sprawdzenia <input type="date" id="wlData"></label>
+    <button id="wlSprawdz" class="p" disabled>Sprawdź konta na białej liście</button>
+    <span id="wlInfo" class="msg">Sprawdza w wykazie Ministerstwa Finansów, czy konto sprzedawcy jest na białej liście w dniu przelewu. Gdy faktura ma datę zapłaty, liczy się ta data.</span></div>
+  <div class="card stat" id="staty"></div>
+  <div class="card" id="wsp">
+    <div class="row"><b>Płatności wspólnoty</b>
+      <label class="msg">Stan na dzień <input type="date" id="wspDzien"></label>
+      <label class="msg">Grupuj według <select id="wspKlucz"></select></label>
+      <label class="msg"><input type="checkbox" id="wspZapl"> licz też faktury oznaczone jako zapłacone</label>
+      <button id="csvTerm" disabled>Terminarz (CSV)</button>
+      <button id="csvGrupy" disabled>Według obiektu (CSV)</button>
+      <button id="csvPrzelewy" class="p" disabled>Lista przelewów (CSV)</button>
+    </div>
+    <div class="stat" id="wspStat" style="margin-top:10px"></div>
+    <h3>Terminarz: ile i kiedy trzeba zapłacić</h3>
+    <div class="tw"><table id="wspTerm"><thead></thead><tbody></tbody></table></div>
+    <h3>Według obiektu</h3>
+    <div class="tw"><table id="wspGrupy"><thead></thead><tbody></tbody></table></div>
+    <h3>Faktury do zapłaty (zaznacz zapłacone)</h3>
+    <div class="tw"><table id="wspFak"><thead></thead><tbody></tbody></table></div>
+    <div class="msg" style="font-size:12px;margin-top:4px">Zaznaczenia „zapłacone” zapisują się w tej przeglądarce na tym komputerze (nic nie jest wysyłane). Po ponownym wczytaniu tych samych faktur zaznaczenia wracają.</div>
+    <div class="msg" style="font-size:12px;margin-top:8px">Termin płatności jest szukany kolejno: w sekcji Płatność, w dodatkowych opisach faktury, w stopce, a gdy sprzedawca podał tylko liczbę dni, jest liczony od daty wystawienia (oznaczony „wyliczony”, sprawdź go na fakturze). Kwota „do zapłaty” to kwota brutto faktury, chyba że sprzedawca wpisał osobną kwotę „do zapłaty” w dodatkowym opisie. Sumy obejmują tylko faktury w PLN.</div>
+  </div>
+  <div class="card tw"><table id="tab"><thead></thead><tbody></tbody><tfoot></tfoot></table></div>
+  <div class="msg" style="font-size:12px">Biała lista: zapłata powyżej 15 000 zł na konto spoza wykazu oznacza brak kosztu w PIT/CIT i solidarną odpowiedzialność za VAT, chyba że w terminie złożysz zawiadomienie ZAW-NR. Konta wirtualne (np. przy płatnościach masowych) mogą dać wynik „spoza listy”; sprawdź je wtedy ręcznie na podatki.gov.pl. Identyfikator zapytania MF jest dowodem sprawdzenia. Narzędzie pomocnicze do przeglądania faktur. Wiążąca jest faktura w KSeF. Kwoty faktur korygujących to różnice (tak jak w KSeF). © MasterSSon · naffy.io/mastersson · wersja Pro Wspólnota</div>
+</main>
+<div id="modal"><div class="box"><div class="row" style="justify-content:flex-end"><button id="drukJedna" class="p">Drukuj / zapisz PDF</button><button id="zamknij">Zamknij</button></div><div id="podglad"></div></div></div>
+<div id="druk"></div>
+<script>
+"use strict";
+const RODZ={VAT:"Faktura VAT",KOR:"Korekta",ZAL:"Zaliczkowa",ROZ:"Rozliczeniowa",UPR:"Uproszczona",KOR_ZAL:"Korekta zaliczkowej",KOR_ROZ:"Korekta rozliczeniowej"};
+const FORMA={"1":"gotówka","2":"karta","3":"bon","4":"czek","5":"kredyt","6":"przelew","7":"płatność mobilna"};
+const STAWKI=[["1","23% / 22%"],["2","8% / 7%"],["3","5%"],["4","ryczałt taxi 4%"],["5","procedura OSS"],["6_1","0% kraj"],["6_2","0% WDT"],["6_3","0% eksport"],["7","zwolnione"],["8","poza krajem"],["9","usługi art. 100"],["10","odwrotne obciążenie"],["11","marża"]];
+let FAKTURY=[]; let sortK="data", sortDir=1;
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const num=v=>{const x=parseFloat(String(v??"").replace(",","."));return isNaN(x)?0:x};
+const zl=v=>(Math.round(v*100)/100).toLocaleString("pl-PL",{minimumFractionDigits:2,maximumFractionDigits:2,useGrouping:"always"});
+function el(root,path){let n=root;for(const p of path.split("/")){if(!n)return null;n=[...n.children].find(c=>c.localName===p)||null}return n}
+function tx(root,path){const n=el(root,path);return n?n.textContent.trim():""}
+function all(root,name){return root?[...root.children].filter(c=>c.localName===name):[]}
+function adres(a){if(!a)return"";return[tx(a,"AdresL1"),tx(a,"AdresL2"),tx(a,"KodKraju")!=="PL"?tx(a,"KodKraju"):""].filter(Boolean).join(", ")}
+function podmiot(p){if(!p)return{};const d=el(p,"DaneIdentyfikacyjne");
+  return{nip:tx(d,"NIP")||(tx(d,"KodUE")?tx(d,"KodUE")+tx(d,"NrVatUE"):"")||tx(d,"NrID")||(tx(d,"BrakID")?"brak ID":""),nazwa:tx(d,"Nazwa"),adres:adres(el(p,"Adres")),email:tx(p,"DaneKontaktowe/Email"),tel:tx(p,"DaneKontaktowe/Telefon")}}
+
+function parsuj(nazwa,tekst){
+  const doc=new DOMParser().parseFromString(tekst,"application/xml");
+  if(doc.getElementsByTagName("parsererror").length) throw new Error("to nie jest poprawny plik XML");
+  const r=doc.documentElement; if(r.localName!=="Faktura") throw new Error("to nie jest faktura KSeF (brak elementu Faktura)");
+  const fa=el(r,"Fa"); if(!fa) throw new Error("brak sekcji Fa");
+  const wariant=tx(r,"Naglowek/WariantFormularza");
+  const waluta=tx(fa,"KodWaluty")||"PLN";
+  const sumy=[]; let netto=0,vat=0,vatPLN=0;
+  for(const [k,opis] of STAWKI){
+    const n=num(tx(fa,"P_13_"+k)); const v=k.length<=1&&+k<=5?num(tx(fa,"P_14_"+k)):0; const vw=k.length<=1&&+k<=5?num(tx(fa,"P_14_"+k+"W")):0;
+    if(tx(fa,"P_13_"+k)!==""||(k.length<=1&&+k<=5&&tx(fa,"P_14_"+k)!=="")){sumy.push({opis,netto:n,vat:v,vatW:vw});netto+=n;vat+=v;vatPLN+=(vw||v)}
+  }
+  const brutto=num(tx(fa,"P_15"));
+  const wiersze=all(fa,"FaWiersz").map(w=>({lp:tx(w,"NrWierszaFa"),nazwa:tx(w,"P_7"),jm:tx(w,"P_8A"),ilosc:tx(w,"P_8B"),cenaN:tx(w,"P_9A"),cenaB:tx(w,"P_9B"),wartN:tx(w,"P_11"),wartB:tx(w,"P_11A"),stawka:tx(w,"P_12"),gtu:tx(w,"GTU"),przed:tx(w,"StanPrzed")==="1"}));
+  const pl=el(fa,"Platnosc");
+  const terminy=pl?all(pl,"TerminPlatnosci").map(t=>tx(t,"Termin")||tx(t,"TerminOpis/Ilosc")).filter(Boolean):[];
+  const terminDni=pl?all(pl,"TerminPlatnosci").filter(t=>!tx(t,"Termin")&&/^\d+$/.test(tx(t,"TerminOpis/Ilosc"))&&/^(dni|dzie[nń]|d)?\.?$/i.test(tx(t,"TerminOpis/Jednostka"))).map(t=>+tx(t,"TerminOpis/Ilosc"))[0]||0:0;
+  const rach=pl?[...all(pl,"RachunekBankowy"),...all(pl,"RachunekBankowyFaktora")].map(b=>({nr:tx(b,"NrRB"),bank:tx(b,"NazwaBanku")})):[];
+  const kor=el(fa,"DaneFaKorygowanej");
+  const adn=el(fa,"Adnotacje");
+  const p3=all(r,"Podmiot3").map(p=>({...podmiot(p),rola:tx(p,"Rola")||tx(p,"RolaInna")}));
+  const opisy=all(fa,"DodatkowyOpis").map(d=>[tx(d,"Klucz"),tx(d,"Wartosc")]);
+  return{plik:nazwa,wariant,nr:tx(fa,"P_2"),rodzaj:tx(fa,"RodzajFaktury"),data:tx(fa,"P_1"),miejsce:tx(fa,"P_1M"),dataSp:tx(fa,"P_6")||[tx(fa,"OkresFa/P_6_Od"),tx(fa,"OkresFa/P_6_Do")].filter(Boolean).join(" – "),
+    sprz:podmiot(el(r,"Podmiot1")),nab:podmiot(el(r,"Podmiot2")),p3,waluta,kurs:tx(fa,"KursWalutyZ")||"",netto,vat,vatPLN,brutto,sumy,wiersze,
+    forma:pl?(FORMA[tx(pl,"FormaPlatnosci")]||tx(pl,"OpisPlatnosci")):"",termin:terminy.join(", "),terminy,terminDni,rach,zaplacono:pl?tx(pl,"Zaplacono")==="1":false,dataZap:pl?tx(pl,"DataZaplaty"):"",
+    mpp:adn?tx(adn,"P_18A")==="1":false,odwrotne:adn?tx(adn,"P_18")==="1":false,kasowa:adn?tx(adn,"P_16")==="1":false,samof:adn?tx(adn,"P_17")==="1":false,
+    zw:adn?(tx(adn,"Zwolnienie/P_19A")||tx(adn,"Zwolnienie/P_19B")||tx(adn,"Zwolnienie/P_19C")):"",
+    kor:kor?{przyczyna:tx(fa,"PrzyczynaKorekty"),nr:tx(kor,"NrFaKorygowanej"),data:tx(kor,"DataWystFaKorygowanej"),ksef:tx(kor,"NrKSeFFaKorygowanej")}:null,
+    opisy,stopka:tx(r,"Stopka/Informacje/StopkaFaktury"),krs:tx(r,"Stopka/Rejestry/KRS"),regon:tx(r,"Stopka/Rejestry/REGON"),
+    ksef:(nazwa.match(/\d{10}-\d{8}-[0-9A-F]{6}-[0-9A-F]{6}-[0-9A-F]{2}/i)||[""])[0]};
+}
+
+async function wczytaj(lista){
+  const bledy=[]; let ok=0;
+  for(const f of lista){
+    try{const t=await f.text(); const fv=parsuj(f.name,t);
+      if(FAKTURY.some(x=>x.plik===fv.plik&&x.nr===fv.nr&&x.sprz.nip===fv.sprz.nip)) continue;
+      FAKTURY.push(fv); ok++;}
+    catch(e){bledy.push(f.name+": "+e.message)}
+  }
+  $("#info").innerHTML=`Wczytano ${ok} ${ok===1?"fakturę":(ok%10>=2&&ok%10<=4&&(ok%100<12||ok%100>14))?"faktury":"faktur"}`+(bledy.length?` · <span class="err">pominięto ${bledy.length}: ${esc(bledy.slice(0,3).join("; "))}${bledy.length>3?"…":""}</span>`:"");
+  rysuj();
+}
+
+const KOL=[["plik","Plik"],["nr","Numer"],["rodzaj","Rodzaj"],["data","Data wyst."],["sprzN","NIP sprzedawcy"],["sprz","Sprzedawca"],["nabN","NIP nabywcy"],["nab","Nabywca"],["netto","Netto","n"],["vat","VAT","n"],["brutto","Brutto","n"],["wl","Biała lista"],["waluta","Wal."],["termin","Termin płatn."],["doZap","Do zapłaty","n"],["grupa","Obiekt"],["forma","Forma"],["rach","Rachunek"]];
+function wart(f,k){return{sprzN:f.sprz.nip,sprz:f.sprz.nazwa,nabN:f.nab.nip,nab:f.nab.nazwa,rach:f.rach.map(r=>r.nr).join(" "),wl:{ryz:0,zle:1,bl:2,ok:3,nd:4}[wlOcena(f).k]??5,termin:terminF(f).d||f.termin,doZap:doZap(f).kw,grupa:grupa(f)}[k]??f[k]}
+/* ---- biała lista VAT (Pro) ---- */
+const WL={}, VATST={}; let wlTrwa=false; const PROG=15000;
+const nrb=n=>{const x=String(n||"").replace(/[\s-]/g,"").toUpperCase().replace(/^PL/,"");return /^\d{26}$/.test(x)?x:""};
+const nipPL=n=>{const x=String(n||"").replace(/[\s-]/g,"").toUpperCase().replace(/^PL/,"");return /^\d{10}$/.test(x)?x:""};
+function dzienWl(f){const d=f.dataZap,w=$("#wlData").value||dzis();return /^\d{4}-\d{2}-\d{2}$/.test(d)&&d<=dzis()?d:w}
+function wlPary(f){const nip=nipPL(f.sprz.nip);if(!nip)return[];return f.rach.map(r=>nrb(r.nr)).filter(Boolean).map(k=>({nip,konto:k,dzien:dzienWl(f),klucz:nip+"|"+k+"|"+dzienWl(f)}))}
+function wlOcena(f){
+  const nip=nipPL(f.sprz.nip);
+  if(!nip) return{k:"nd",txt:"nie dotyczy",opis:"Sprzedawca bez polskiego NIP – biała lista go nie obejmuje."};
+  const pary=wlPary(f);
+  if(!pary.length) return{k:"nd",txt:f.rach.length?"konto zagraniczne":"brak konta",opis:f.rach.length?"Rachunek nie jest polskim numerem NRB – nie da się go sprawdzić w wykazie.":"Faktura nie podaje rachunku sprzedawcy."};
+  const w=pary.map(p=>WL[p.klucz]);
+  if(w.some(x=>!x)) return{k:"",txt:"",opis:""};
+  if(w.some(x=>x.st==="BLAD")) return{k:"bl",txt:"błąd sprawdzenia",opis:w.filter(x=>x.st==="BLAD").map(x=>x.msg).join("; ")};
+  const vs=VATST[nip]; const vatTxt=vs&&vs!=="Czynny"?" · VAT: "+vs:"";
+  const ids=w.map(x=>x.id+" ("+x.czas+")").join(", ");
+  if(w.every(x=>x.st==="TAK")) return{k:"ok",txt:"na liście"+vatTxt,opis:"Konto jest w wykazie w dniu "+pary[0].dzien+". Id zapytania MF: "+ids,ids,dzien:pary[0].dzien};
+  const pln=f.waluta==="PLN"?f.brutto:0, duza=f.waluta==="PLN"?pln>PROG:true;
+  return duza?{k:"ryz",txt:"RYZYKO: spoza listy",opis:"Konto spoza wykazu w dniu "+pary[0].dzien+(f.waluta==="PLN"?", a faktura przekracza 15 000 zł":" (faktura w walucie – przelicz wartość na PLN)")+". Przed zapłatą zweryfikuj konto u kontrahenta; po zapłacie rozważ zawiadomienie ZAW-NR. Id zapytania MF: "+ids,ids,dzien:pary[0].dzien}
+    :{k:"zle",txt:"spoza listy"+vatTxt,opis:"Konto spoza wykazu w dniu "+pary[0].dzien+" (faktura do 15 000 zł). Id zapytania MF: "+ids,ids,dzien:pary[0].dzien};
+}
+const czekaj=ms=>new Promise(r=>setTimeout(r,ms));
+async function wlSprawdz(){
+  const btn=$("#wlSprawdz"); wlTrwa=true; btn.disabled=true;
+  const pary=[...new Map(FAKTURY.flatMap(wlPary).filter(p=>!WL[p.klucz]||WL[p.klucz].st==="BLAD").map(p=>[p.klucz,p])).values()];
+  const nipy=[...new Set(FAKTURY.map(f=>nipPL(f.sprz.nip)).filter(n=>n&&!VATST[n]))];
+  let i=0, stop="";
+  for(const p of pary){
+    $("#wlInfo").textContent=`Sprawdzam w wykazie MF: ${++i} z ${pary.length}…`;
+    try{const r=await fetch(`https://wl-api.mf.gov.pl/api/check/nip/${p.nip}/bank-account/${p.konto}?date=${p.dzien}`);
+      const j=await r.json().catch(()=>({}));
+      if(r.ok&&j.result) WL[p.klucz]={st:j.result.accountAssigned==="TAK"?"TAK":"NIE",id:j.result.requestId,czas:j.result.requestDateTime};
+      else{WL[p.klucz]={st:"BLAD",msg:(j.message||("HTTP "+r.status))};if(r.status===429||/limit/i.test(j.message||"")){stop=j.message||"przekroczony dzienny limit zapytań MF";break}}
+    }catch(e){WL[p.klucz]={st:"BLAD",msg:"brak połączenia z serwerem MF"};stop="brak połączenia z internetem lub serwerem MF";break}
+    rysuj(); await czekaj(120);
+  }
+  for(let k=0;k<nipy.length&&!stop;k+=30){
+    try{const r=await fetch(`https://wl-api.mf.gov.pl/api/search/nips/${nipy.slice(k,k+30).join(",")}?date=${$("#wlData").value||dzis()}`);const j=await r.json();
+      (j.result?.entries||[]).forEach(e=>{const s=(e.subjects||[])[0];VATST[e.identifier]=s?s.statusVat:"brak w wykazie"})}catch(e){}
+  }
+  rysuj();
+  const oc=FAKTURY.map(wlOcena);
+  $("#wlInfo").innerHTML=(stop?`<span class="err">Przerwano: ${esc(stop)}. Kliknij ponownie później – sprawdzone wyniki zostają.</span> `:"")+`Sprawdzono ${pary.length} ${pary.length===1?"konto":"kont"}. Na liście: ${oc.filter(o=>o.k==="ok").length}, spoza listy: ${oc.filter(o=>o.k==="zle").length}, <b style="color:var(--bad)">ryzyko powyżej 15 000 zł: ${oc.filter(o=>o.k==="ryz").length}</b>.`;
+  wlTrwa=false; btn.disabled=false;
+}
+
+/* ---- Wspólnota: terminy, grupy, terminarz ---- */
+const RE_DATA=/(\d{4})-(\d{2})-(\d{2})|(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{4})/;
+function dataZ(s){const m=RE_DATA.exec(String(s||""));if(!m)return"";
+  const d=m[1]?`${m[1]}-${m[2]}-${m[3]}`:`${m[6]}-${m[5].padStart(2,"0")}-${m[4].padStart(2,"0")}`;
+  const t=new Date(d+"T00:00:00Z");return isNaN(t)||t.toISOString().slice(0,10)!==d?"":d}
+const RE_TERM=/termin\s+(p[łl]atno[śs]ci|zap[łl]aty)|p[łl]atne\s+do|p[łl]atno[śs][ćc]\s+do|zap[łl]a(ty|ci[ćc])\s+do|termin/i;
+function plusDni(d,n){const t=new Date(d+"T00:00:00Z");if(isNaN(t))return"";t.setUTCDate(t.getUTCDate()+n);return t.toISOString().slice(0,10)}
+function terminF(f){
+  for(const t of f.terminy||[]){const d=dataZ(t);if(d)return{d,zr:"pole Płatność"}}
+  for(const [k,v] of f.opisy){if(RE_TERM.test(k)){const d=dataZ(v);if(d)return{d,zr:"opis: "+k}}}
+  for(const [k,v] of f.opisy){const i=v.search(RE_TERM);if(i>=0){const d=dataZ(v.slice(i));if(d)return{d,zr:"opis: "+k}}}
+  const i=(f.stopka||"").search(RE_TERM);if(i>=0){const d=dataZ(f.stopka.slice(i));if(d)return{d,zr:"stopka"}}
+  if(f.terminDni&&dataZ(f.data)){const d=plusDni(dataZ(f.data),f.terminDni);if(d)return{d,zr:"wyliczony: "+f.terminDni+" dni od wystawienia"}}
+  return{d:"",zr:""}}
+const RE_KW=/^-?\d[\d  ]*([.,]\d{1,2})?\s*(z[łl]|PLN)?$/i;
+function doZap(f){
+  for(const [k,v] of f.opisy){if(/do\s+zap[łl]aty/i.test(k)&&RE_KW.test(v.trim()))return{kw:num(v.replace(/[\s ]|z[łl]|PLN/gi,"")),zr:"opis: "+k}}
+  return{kw:f.brutto,zr:""}}
+const RE_OB=/PPE|punkt\w*\s+pobor|licznik|obiekt|lokal|budyn|nieruchomo|adres|miejsce\s+(dostaw|[śs]wiadcz)/i;
+let wspKlucz="";
+function kluczeGrup(){
+  const m=new Map();FAKTURY.forEach(f=>new Set(f.opisy.map(o=>o[0]).filter(Boolean)).forEach(k=>m.set(k,(m.get(k)||0)+1)));
+  const op=[["@sprz","Sprzedawca"]];
+  if(FAKTURY.some(f=>f.p3.length))op.push(["@p3","Podmiot trzeci (odbiorca na fakturze)"]);
+  op.push(["@nab","Nabywca"]);
+  [...m.entries()].sort((a,b)=>b[1]-a[1]).forEach(([k,n])=>op.push(["o:"+k,`Opis „${k}” (${n} z ${FAKTURY.length})`]));
+  return{op,m}}
+function kluczAuto(){const {m}=kluczeGrup();
+  const k=[...m.entries()].filter(([k,n])=>RE_OB.test(k)&&n*2>=FAKTURY.length).sort((a,b)=>b[1]-a[1])[0];
+  return k?"o:"+k[0]:FAKTURY.some(f=>f.p3.length)?"@p3":"@sprz"}
+function grupa(f){const k=wspKlucz||"@sprz";
+  if(k==="@sprz")return f.sprz.nazwa||f.sprz.nip||"(brak nazwy)";
+  if(k==="@nab")return f.nab.nazwa||f.nab.nip||"(brak nazwy)";
+  if(k==="@p3")return f.p3.length?f.p3.map(p=>p.nazwa||p.nip).filter(Boolean).join(" / ")||"(podmiot bez nazwy)":"(bez podmiotu trzeciego)";
+  const o=f.opisy.find(o=>"o:"+o[0]===k);return o&&o[1]?o[1]:"(brak pola na fakturze)"}
+const ZKEY="ksefWspZaplacone";let ZAPL=new Set();try{ZAPL=new Set(JSON.parse(localStorage.getItem(ZKEY)||"[]"))}catch(e){}
+function fid(f){return f.ksef||((f.sprz.nip||f.sprz.nazwa||"")+"|"+f.nr)}
+function czyZapl(f){return !!f.zaplacono||ZAPL.has(fid(f))}
+function ustawZapl(id,v){v?ZAPL.add(id):ZAPL.delete(id);try{localStorage.setItem(ZKEY,JSON.stringify([...ZAPL]))}catch(e){}rysuj()}
+function wspFaktury(){const zapl=$("#wspZapl").checked;return widoczne().filter(f=>f.waluta==="PLN"&&(zapl||!czyZapl(f)))}
+function wspDane(){
+  const D=$("#wspDzien").value||dzis(), fs=wspFaktury();
+  const w=fs.map(f=>({f,t:terminF(f),kw:doZap(f).kw,g:grupa(f)}));
+  const term=new Map();w.forEach(x=>{const k=x.t.d||"";const r=term.get(k)||{d:k,n:0,kw:0};r.n++;r.kw+=x.kw;term.set(k,r)});
+  const terminy=[...term.values()].sort((a,b)=>(a.d||"9999").localeCompare(b.d||"9999"));
+  let nar=0;terminy.forEach(r=>{if(r.d){nar+=r.kw;r.nar=nar}});
+  const gr=new Map();w.forEach(x=>{const r=gr.get(x.g)||{g:x.g,n:0,kw:0,po:0,doD:0,bez:0,naj:"",sprz:new Set()};
+    r.n++;r.kw+=x.kw;r.sprz.add(x.f.sprz.nip||x.f.sprz.nazwa);
+    if(!x.t.d)r.bez++;else{if(x.t.d<D)r.po+=x.kw;if(x.t.d<=D)r.doD+=x.kw;if(x.t.d>=D&&(!r.naj||x.t.d<r.naj))r.naj=x.t.d}
+    gr.set(x.g,r)});
+  const grupy=[...gr.values()].sort((a,b)=>b.kw-a.kw);
+  const s=fn=>w.filter(fn).reduce((a,x)=>a+x.kw,0);
+  return{D,w,terminy,grupy,razem:s(()=>true),po:s(x=>x.t.d&&x.t.d<D),doD:s(x=>x.t.d&&x.t.d<=D),
+    d7:s(x=>x.t.d&&x.t.d>D&&x.t.d<=plusDni(D,7)),bez:w.filter(x=>!x.t.d).length,bezKw:s(x=>!x.t.d),pominZapl:widoczne().filter(f=>f.waluta==="PLN"&&czyZapl(f)).length}}
+function ileDni(a,b){return Math.round((new Date(b+"T00:00:00Z")-new Date(a+"T00:00:00Z"))/864e5)}
+function wspRysuj(){
+  const sel=$("#wspKlucz"), {op}=kluczeGrup();
+  if(!FAKTURY.length)wspKlucz="";else if(!wspKlucz||!op.some(o=>o[0]===wspKlucz))wspKlucz=kluczAuto();
+  sel.innerHTML=op.map(([v,t])=>`<option value="${esc(v)}"${v===wspKlucz?" selected":""}>${esc(t)}</option>`).join("");
+  const jest=FAKTURY.length>0;["#csvTerm","#csvGrupy","#csvPrzelewy"].forEach(s=>$(s).disabled=!jest);
+  const d=wspDane(), D=d.D;
+  $("#wspStat").innerHTML=jest?`<div>Do zapłaty razem<b>${zl(d.razem)}</b></div><div>Wymagalne do ${esc(D)}<b>${zl(d.doD)}</b></div><div>Po terminie<b style="color:var(--bad)">${zl(d.po)}</b></div><div>W kolejnych 7 dniach<b>${zl(d.d7)}</b></div><div>Bez wykrytego terminu<b${d.bez?' style="color:var(--warn)"':""}>${d.bez} szt. · ${zl(d.bezKw)}</b></div><div>Obiektów<b>${d.grupy.length}</b></div>`+(d.pominZapl&&!$("#wspZapl").checked?`<div>Pominięte (zapłacone)<b>${d.pominZapl}</b></div>`:""):`<span class="msg">Wczytaj faktury, żeby zobaczyć terminarz płatności.</span>`;
+  $("#wspTerm thead").innerHTML=jest?"<tr><th>Termin płatności</th><th>Status</th><th class=\"n\">Faktur</th><th class=\"n\">Kwota</th><th class=\"n\">Narastająco</th></tr>":"";
+  $("#wspTerm tbody").innerHTML=d.terminy.map(r=>{const dn=r.d?ileDni(D,r.d):null;
+    const st=r.d===""?"brak terminu na fakturze, sprawdź ręcznie":dn<0?`po terminie ${-dn} dni`:dn===0?"dziś":`za ${dn} dni`;
+    return `<tr class="${r.d&&dn<0?"pt":r.d===""||dn===0?"dz":""}"><td>${esc(r.d||"—")}</td><td>${st}</td><td class="n">${r.n}</td><td class="n">${zl(r.kw)}</td><td class="n">${r.d?zl(r.nar):""}</td></tr>`}).join("");
+  $("#wspGrupy thead").innerHTML=jest?`<tr><th>Obiekt</th><th class="n">Faktur</th><th class="n">Sprzedawców</th><th class="n">Do zapłaty</th><th class="n">Wymagalne do ${esc(D)}</th><th class="n">Po terminie</th><th>Najbliższy termin</th><th class="n">Bez terminu</th></tr>`:"";
+  $("#wspGrupy tbody").innerHTML=d.grupy.map(r=>`<tr class="${r.po>0?"pt":""}"><td style="white-space:normal">${esc(r.g)}</td><td class="n">${r.n}</td><td class="n">${r.sprz.size}</td><td class="n">${zl(r.kw)}</td><td class="n">${zl(r.doD)}</td><td class="n">${zl(r.po)}</td><td>${esc(r.naj||"—")}</td><td class="n">${r.bez||""}</td></tr>`).join("");
+  const fk=widoczne().filter(f=>f.waluta==="PLN").map(f=>({f,t:terminF(f),kw:doZap(f).kw,g:grupa(f),z:czyZapl(f)})).sort((a,b)=>(a.z-b.z)||(a.t.d||"9999").localeCompare(b.t.d||"9999"));
+  $("#wspFak thead").innerHTML=jest?"<tr><th>Zapłacone</th><th>Termin</th><th>Sprzedawca</th><th>Nr faktury</th><th>Obiekt</th><th class=\"n\">Do zapłaty</th></tr>":"";
+  $("#wspFak tbody").innerHTML=fk.map(x=>{const id=fid(x.f),dn=x.t.d?ileDni(D,x.t.d):null;
+    return `<tr class="${!x.z&&x.t.d&&dn<0?"pt":""}"><td><input type="checkbox" data-zid="${esc(id)}"${x.z?" checked":""}${x.f.zaplacono?' disabled title="Faktura oznaczona jako zapłacona przez sprzedawcę"':""}></td><td>${esc(x.t.d||"—")}</td><td style="white-space:normal">${esc(x.f.sprz.nazwa||x.f.sprz.nip)}</td><td>${esc(x.f.nr)}</td><td style="white-space:normal">${esc(x.g)}</td><td class="n">${zl(x.kw)}</td></tr>`}).join("");
+  $("#wspFak tbody").querySelectorAll("input[data-zid]").forEach(c=>c.onchange=()=>ustawZapl(c.dataset.zid,c.checked));
+}
+function widoczne(){const q=$("#szukaj").value.trim().toLowerCase();
+  let w=FAKTURY.filter(f=>!q||[f.nr,f.sprz.nip,f.sprz.nazwa,f.nab.nip,f.nab.nazwa,f.plik].join(" ").toLowerCase().includes(q));
+  return w.sort((a,b)=>{const x=wart(a,sortK),y=wart(b,sortK);return(typeof x==="number"?x-y:String(x).localeCompare(String(y),"pl"))*sortDir})}
+function rysuj(){
+  if(!FAKTURY.length)wspKlucz="";else if(!wspKlucz)wspKlucz=kluczAuto();
+  const w=widoczne(); const jest=FAKTURY.length>0;
+  ["#csv","#csvPoz","#drukWsz","#wyczysc"].forEach(s=>$(s).disabled=!jest);$("#wlSprawdz").disabled=!jest||wlTrwa;
+  $("#tab thead").innerHTML="<tr>"+KOL.map(([k,t,c])=>`<th data-k="${k}" class="${c||""}">${t}${sortK===k?(sortDir>0?" ▲":" ▼"):""}</th>`).join("")+"</tr>";
+  $("#tab tbody").innerHTML=w.map(f=>{const i=FAKTURY.indexOf(f);const oc=wlOcena(f);return `<tr class="inv${oc.k==="ryz"?" ryz":""}" data-i="${i}">`+KOL.map(([k,,c])=>{
+    let v=wart(f,k);
+    if(k==="rodzaj") v=`<span class="tag ${esc(f.rodzaj)}">${esc(f.rodzaj)}</span>`+(f.mpp?` <span class="tag MPP">MPP</span>`:"");
+    else if(k==="wl") v=oc.k?`<span class="wl ${oc.k}" title="${esc(oc.opis)}">${esc(oc.txt)}</span>`:`<span class="msg">–</span>`;
+    else if(k==="termin"){const t=terminF(f);v=esc(v)+(t.zr&&t.zr!=="pole Płatność"?` <span class="zr">(${esc(t.zr)})</span>`:"")}
+    else if(c==="n") v=zl(v); else v=esc(v);
+    return `<td class="${c||""}">${v}</td>`}).join("")+"</tr>"}).join("")||`<tr><td colspan="${KOL.length}" class="msg">Brak faktur. Wczytaj pliki XML pobrane z KSeF (Aplikacja Podatnika → Faktury → Pobierz XML).</td></tr>`;
+  const pln=w.filter(f=>f.waluta==="PLN"); const s=k=>pln.reduce((a,f)=>a+f[k],0);
+  $("#tab tfoot").innerHTML=w.length?`<tr><td colspan="8">Razem (tylko PLN, ${pln.length} szt.)</td><td class="n">${zl(s("netto"))}</td><td class="n">${zl(s("vat"))}</td><td class="n">${zl(s("brutto"))}</td><td colspan="7"></td></tr>`:"";
+  const wal=[...new Set(w.map(f=>f.waluta))];
+  wspRysuj();
+  $("#staty").innerHTML=`<div>Faktur<b>${w.length}</b></div><div>Netto PLN<b>${zl(s("netto"))}</b></div><div>VAT PLN<b>${zl(s("vat"))}</b></div><div>Brutto PLN<b>${zl(s("brutto"))}</b></div><div>Korekty<b>${w.filter(f=>f.rodzaj.startsWith("KOR")).length}</b></div><div>Split payment (MPP)<b>${w.filter(f=>f.mpp).length}</b></div><div>Konta spoza białej listy<b>${w.filter(f=>["zle","ryz"].includes(wlOcena(f).k)).length}</b></div><div>Ryzyko &gt; 15 000 zł<b style="color:var(--bad)">${w.filter(f=>wlOcena(f).k==="ryz").length}</b></div>`+(wal.length>1?`<div>Waluty<b>${esc(wal.join(", "))}</b></div>`:"");
+}
+
+function fvHTML(f){
+  const kol=[["Cena netto","cenaN"],["Cena brutto","cenaB"],["Wartość netto","wartN"],["Wartość brutto","wartB"]].filter(([,k])=>f.wiersze.some(w=>w[k]));
+  const pozycje=f.wiersze.length?`<table style="width:100%;margin-top:6px"><tr><th>Lp.</th><th>Nazwa</th><th>J.m.</th><th>Ilość</th>${kol.map(([t])=>"<th>"+t+"</th>").join("")}<th>VAT</th></tr>`+
+    f.wiersze.map(w=>`<tr${w.przed?' style="color:#888"':""}><td>${esc(w.lp)}</td><td>${esc(w.nazwa)}${w.przed?" <i>(stan przed korektą)</i>":""}</td><td>${esc(w.jm)}</td><td style="text-align:right">${esc(w.ilosc)}</td>${kol.map(([,k])=>`<td style="text-align:right">${w[k]?zl(num(w[k])):""}</td>`).join("")}<td>${esc(w.stawka)}${/^\d+$/.test(w.stawka)?"%":""}</td></tr>`).join("")+"</table>":"<p><i>Faktura bez wierszy pozycji.</i></p>";
+  const sumy=f.sumy.length?`<table><tr><th>Stawka</th><th>Netto</th><th>VAT</th>${f.waluta!=="PLN"?"<th>VAT w PLN</th>":""}</tr>`+f.sumy.map(s=>`<tr><td>${esc(s.opis)}</td><td style="text-align:right">${zl(s.netto)}</td><td style="text-align:right">${zl(s.vat)}</td>${f.waluta!=="PLN"?`<td style="text-align:right">${s.vatW?zl(s.vatW):""}</td>`:""}</tr>`).join("")+"</table>":"";
+  const str=(t,p)=>`<div><h4>${t}</h4><b>${esc(p.nazwa)}</b><br>${p.nip?"NIP: "+esc(p.nip)+"<br>":""}${esc(p.adres)}${p.email?"<br>"+esc(p.email):""}${p.tel?" · "+esc(p.tel):""}</div>`;
+  const adn=[f.mpp&&"Mechanizm podzielonej płatności",f.odwrotne&&"Odwrotne obciążenie",f.kasowa&&"Metoda kasowa",f.samof&&"Samofakturowanie",f.zw&&("Zwolnienie: "+f.zw)].filter(Boolean);
+  return `<div class="fv"><h2>${esc(RODZ[f.rodzaj]||f.rodzaj)} nr ${esc(f.nr)}</h2>
+  <div class="meta">Data wystawienia: <b>${esc(f.data)}</b>${f.miejsce?", "+esc(f.miejsce):""}${f.dataSp?` · Data sprzedaży/dostawy: <b>${esc(f.dataSp)}</b>`:""}${f.ksef?` · Nr KSeF: ${esc(f.ksef)}`:""}</div>
+  ${f.kor?`<div class="kor"><b>Korekta faktury</b> nr ${esc(f.kor.nr)} z dnia ${esc(f.kor.data)}${f.kor.ksef?" (KSeF "+esc(f.kor.ksef)+")":""}${f.kor.przyczyna?"<br>Przyczyna: "+esc(f.kor.przyczyna):""}</div>`:""}
+  <div class="strony">${str("Sprzedawca",f.sprz)}${str("Nabywca",f.nab)}</div>
+  ${f.p3.length?`<div class="msg">Inne podmioty: ${f.p3.map(p=>esc(p.nazwa+" "+(p.nip||""))).join("; ")}</div>`:""}
+  ${pozycje}
+  <div class="sumy">${sumy}</div>
+  <div class="razem">Razem brutto: ${zl(f.brutto)} ${esc(f.waluta)}</div>
+  <div class="info"><div><b>Płatność</b><br>${esc(f.forma||"—")}${f.termin?"<br>Termin: "+esc(f.termin):""}${f.zaplacono?"<br>Zapłacono"+(f.dataZap?" "+esc(f.dataZap):""):""}${f.rach.map(r=>"<br>Konto: "+esc(r.nr)+(r.bank?" ("+esc(r.bank)+")":"")).join("")}</div>
+  <div><b>Adnotacje</b><br>${adn.length?adn.map(esc).join("<br>"):"brak"}${f.opisy.map(([k,v])=>"<br>"+esc(k)+": "+esc(v)).join("")}</div></div>
+  ${(()=>{const o=wlOcena(f);return o.k?`<div class="wlr${o.k==="ryz"?" ryz":""}"><b>Biała lista VAT: ${esc(o.txt)}</b><br>${esc(o.opis)}</div>`:""})()}
+  <div class="foot">${esc(f.stopka)}${f.krs?" · KRS "+esc(f.krs):""}${f.regon?" · REGON "+esc(f.regon):""}<br>Wizualizacja pomocnicza pliku ${esc(f.plik)} (struktura FA(${esc(f.wariant)})). Dokumentem wiążącym jest faktura w KSeF.</div></div>`;
+}
+
+function csvPobierz(nazwa,wiersze){
+  const c=v=>{const s=typeof v==="number"?String(Math.round(v*100)/100).replace(".",","):String(v??"");return /[;"\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s};
+  const blob=new Blob(["﻿"+wiersze.map(r=>r.map(c).join(";")).join("\r\n")],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=nazwa;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);
+}
+const dzis=()=>new Date().toISOString().slice(0,10);
+$("#csv").onclick=()=>csvPobierz(`zestawienie-ksef-${dzis()}.csv`,[["Plik","Nr KSeF","Numer","Rodzaj","Data wystawienia","Data sprzedaży","NIP sprzedawcy","Sprzedawca","NIP nabywcy","Nabywca","Netto","VAT","VAT w PLN","Brutto","Waluta","Forma płatności","Termin","Termin wykryty","Źródło terminu","Do zapłaty","Obiekt","Rachunek","MPP","Korygowana faktura","Przyczyna korekty","Biała lista","Dzień sprawdzenia","Status VAT sprzedawcy","Id zapytania MF"],
+  ...widoczne().map(f=>[f.plik,f.ksef,f.nr,f.rodzaj,f.data,f.dataSp,f.sprz.nip,f.sprz.nazwa,f.nab.nip,f.nab.nazwa,f.netto,f.vat,f.vatPLN,f.brutto,f.waluta,f.forma,f.termin,terminF(f).d,terminF(f).zr,doZap(f).kw,grupa(f),f.rach.map(r=>r.nr).join(" "),f.mpp?"TAK":"",f.kor?f.kor.nr:"",f.kor?f.kor.przyczyna:"",wlOcena(f).txt,wlOcena(f).dzien||"",VATST[nipPL(f.sprz.nip)]||"",wlOcena(f).ids||""])]);
+$("#csvPoz").onclick=()=>{const r=[["Numer faktury","Data","Sprzedawca","Nabywca","Lp.","Nazwa","J.m.","Ilość","Cena netto","Wartość netto","Wartość brutto","Stawka VAT","GTU"]];
+  widoczne().forEach(f=>f.wiersze.forEach(w=>r.push([f.nr,f.data,f.sprz.nazwa,f.nab.nazwa,w.lp,w.nazwa,w.jm,num(w.ilosc),num(w.cenaN),num(w.wartN),num(w.wartB),w.stawka,w.gtu])));
+  csvPobierz(`pozycje-ksef-${dzis()}.csv`,r)};
+$("#drukWsz").onclick=()=>{$("#druk").innerHTML=widoczne().map(fvHTML).join("");window.print()};
+$("#drukJedna").onclick=()=>{$("#druk").innerHTML=$("#podglad").innerHTML;window.print()};
+$("#wyczysc").onclick=()=>{FAKTURY=[];$("#wlInfo").textContent="";$("#info").textContent="";rysuj()};
+$("#zamknij").onclick=()=>$("#modal").classList.remove("on");
+$("#modal").onclick=e=>{if(e.target.id==="modal")$("#modal").classList.remove("on")};
+$("#tab").addEventListener("click",e=>{const th=e.target.closest("th");if(th&&th.dataset.k){sortDir=sortK===th.dataset.k?-sortDir:1;sortK=th.dataset.k;rysuj();return}
+  const tr=e.target.closest("tr.inv");if(tr){$("#podglad").innerHTML=fvHTML(FAKTURY[+tr.dataset.i]);$("#modal").classList.add("on")}});
+$("#wspDzien").value=dzis();$("#wspDzien").onchange=rysuj;$("#wspZapl").onchange=rysuj;
+$("#wspKlucz").onchange=e=>{wspKlucz=e.target.value;rysuj()};
+$("#csvTerm").onclick=()=>{const d=wspDane();csvPobierz(`terminarz-platnosci-${d.D}.csv`,[["Termin płatności","Dni od dnia "+d.D,"Liczba faktur","Kwota","Narastająco"],
+  ...d.terminy.map(r=>[r.d||"brak terminu",r.d?ileDni(d.D,r.d):"",r.n,r.kw,r.d?r.nar:""])])};
+$("#csvGrupy").onclick=()=>{const d=wspDane();csvPobierz(`platnosci-wg-obiektu-${d.D}.csv`,[["Obiekt","Liczba faktur","Liczba sprzedawców","Do zapłaty","Wymagalne do "+d.D,"Po terminie","Najbliższy termin","Faktur bez terminu"],
+  ...d.grupy.map(r=>[r.g,r.n,r.sprz.size,r.kw,r.doD,r.po,r.naj,r.bez])])};
+$("#csvPrzelewy").onclick=()=>{const d=wspDane();const w=[...d.w].sort((a,b)=>(a.t.d||"9999").localeCompare(b.t.d||"9999"));
+  csvPobierz(`lista-przelewow-${d.D}.csv`,[["Termin płatności","Źródło terminu","Odbiorca","NIP odbiorcy","Rachunek","Kwota","Tytuł przelewu","Nr KSeF","Podzielona płatność (MPP)","Obiekt","Biała lista","Plik"],
+  ...w.map(x=>[x.t.d||"brak terminu",x.t.zr,x.f.sprz.nazwa,x.f.sprz.nip,x.f.rach.map(r=>r.nr).join(" "),x.kw,x.f.nr+(x.f.ksef?" KSeF "+x.f.ksef:""),x.f.ksef,x.f.mpp?"TAK":"",x.g,wlOcena(x.f).txt,x.f.plik])])};
+$("#szukaj").oninput=rysuj;
+$("#wlData").value=dzis();$("#wlData").max=dzis();$("#wlData").onchange=rysuj;
+$("#wlSprawdz").onclick=wlSprawdz;
+const drop=$("#drop");
+drop.onclick=()=>$("#pliki").click();
+$("#pliki").onchange=e=>{wczytaj([...e.target.files]);e.target.value=""};
+["dragenter","dragover"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add("on")}));
+["dragleave","drop"].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove("on")}));
+drop.addEventListener("drop",e=>wczytaj([...e.dataTransfer.files].filter(f=>/\.xml$/i.test(f.name))));
+window.addEventListener("dragover",e=>e.preventDefault());window.addEventListener("drop",e=>e.preventDefault());
+rysuj();
+</script>
+<script>
+const DEMO_XML={"f1.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Faktura xmlns=\"http://crd.gov.pl/wzor/2025/06/25/13775/\">\n<Naglowek><KodFormularza kodSystemowy=\"FA (3)\" wersjaSchemy=\"1-0E\">FA<\/KodFormularza><WariantFormularza>3<\/WariantFormularza><\/Naglowek>\n<Podmiot1><DaneIdentyfikacyjne><NIP>7770000001<\/NIP><Nazwa>Prąd SA<\/Nazwa><\/DaneIdentyfikacyjne><Adres><KodKraju>PL<\/KodKraju><AdresL1>ul. Testowa 1<\/AdresL1><\/Adres><\/Podmiot1>\n<Podmiot2><DaneIdentyfikacyjne><NIP>5260000005<\/NIP><Nazwa>Wspólnota Mieszkaniowa Testowa 5<\/Nazwa><\/DaneIdentyfikacyjne><\/Podmiot2>\n\n<Fa><KodWaluty>PLN<\/KodWaluty><P_1>2026-11-02<\/P_1><P_2>E/1/11<\/P_2><P_13_1>100.00<\/P_13_1><P_14_1>23.00<\/P_14_1><P_15>123.00<\/P_15>\n<Adnotacje><P_16>2<\/P_16><P_17>2<\/P_17><P_18>2<\/P_18><P_18A>2<\/P_18A><\/Adnotacje><RodzajFaktury>VAT<\/RodzajFaktury>\n<DodatkowyOpis><Klucz>Numer PPE<\/Klucz><Wartosc>PPE-001 Testowa 5 kl. A<\/Wartosc><\/DodatkowyOpis>\n<FaWiersz><NrWierszaFa>1<\/NrWierszaFa><P_7>Energia elektryczna<\/P_7><P_11>100.00<\/P_11><P_12>23<\/P_12><\/FaWiersz>\n<Platnosc><TerminPlatnosci><Termin>2026-11-10<\/Termin><\/TerminPlatnosci><FormaPlatnosci>6<\/FormaPlatnosci><RachunekBankowy><NrRB>11114015601081110181488249<\/NrRB><\/RachunekBankowy><\/Platnosc>\n<\/Fa><\/Faktura>", "f2.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Faktura xmlns=\"http://crd.gov.pl/wzor/2025/06/25/13775/\">\n<Naglowek><KodFormularza kodSystemowy=\"FA (3)\" wersjaSchemy=\"1-0E\">FA<\/KodFormularza><WariantFormularza>3<\/WariantFormularza><\/Naglowek>\n<Podmiot1><DaneIdentyfikacyjne><NIP>7770000001<\/NIP><Nazwa>Prąd SA<\/Nazwa><\/DaneIdentyfikacyjne><Adres><KodKraju>PL<\/KodKraju><AdresL1>ul. Testowa 1<\/AdresL1><\/Adres><\/Podmiot1>\n<Podmiot2><DaneIdentyfikacyjne><NIP>5260000005<\/NIP><Nazwa>Wspólnota Mieszkaniowa Testowa 5<\/Nazwa><\/DaneIdentyfikacyjne><\/Podmiot2>\n\n<Fa><KodWaluty>PLN<\/KodWaluty><P_1>2026-11-02<\/P_1><P_2>E/2/11<\/P_2><P_13_1>200.00<\/P_13_1><P_14_1>46.00<\/P_14_1><P_15>246.00<\/P_15>\n<Adnotacje><P_16>2<\/P_16><P_17>2<\/P_17><P_18>2<\/P_18><P_18A>2<\/P_18A><\/Adnotacje><RodzajFaktury>VAT<\/RodzajFaktury>\n<DodatkowyOpis><Klucz>Numer PPE<\/Klucz><Wartosc>PPE-002 Testowa 5 kl. B<\/Wartosc><\/DodatkowyOpis><DodatkowyOpis><Klucz>Termin płatności<\/Klucz><Wartosc>20.11.2026<\/Wartosc><\/DodatkowyOpis><DodatkowyOpis><Klucz>Kwota do zapłaty<\/Klucz><Wartosc>250,50 zł<\/Wartosc><\/DodatkowyOpis>\n<FaWiersz><NrWierszaFa>1<\/NrWierszaFa><P_7>Energia elektryczna<\/P_7><P_11>200.00<\/P_11><P_12>23<\/P_12><\/FaWiersz>\n<Platnosc><FormaPlatnosci>6<\/FormaPlatnosci><RachunekBankowy><NrRB>11114015601081110181488249<\/NrRB><\/RachunekBankowy><\/Platnosc>\n<\/Fa><\/Faktura>", "f3.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Faktura xmlns=\"http://crd.gov.pl/wzor/2025/06/25/13775/\">\n<Naglowek><KodFormularza kodSystemowy=\"FA (3)\" wersjaSchemy=\"1-0E\">FA<\/KodFormularza><WariantFormularza>3<\/WariantFormularza><\/Naglowek>\n<Podmiot1><DaneIdentyfikacyjne><NIP>7770000002<\/NIP><Nazwa>Woda Sp. z o.o.<\/Nazwa><\/DaneIdentyfikacyjne><Adres><KodKraju>PL<\/KodKraju><AdresL1>ul. Testowa 1<\/AdresL1><\/Adres><\/Podmiot1>\n<Podmiot2><DaneIdentyfikacyjne><NIP>5260000005<\/NIP><Nazwa>Wspólnota Mieszkaniowa Testowa 5<\/Nazwa><\/DaneIdentyfikacyjne><\/Podmiot2>\n\n<Fa><KodWaluty>PLN<\/KodWaluty><P_1>2026-11-03<\/P_1><P_2>W/77<\/P_2><P_13_1>1000.00<\/P_13_1><P_14_1>230.00<\/P_14_1><P_15>1230.00<\/P_15>\n<Adnotacje><P_16>2<\/P_16><P_17>2<\/P_17><P_18>2<\/P_18><P_18A>2<\/P_18A><\/Adnotacje><RodzajFaktury>VAT<\/RodzajFaktury>\n<DodatkowyOpis><Klucz>Numer PPE<\/Klucz><Wartosc>PPE-001 Testowa 5 kl. A<\/Wartosc><\/DodatkowyOpis>\n<FaWiersz><NrWierszaFa>1<\/NrWierszaFa><P_7>Energia elektryczna<\/P_7><P_11>1000.00<\/P_11><P_12>23<\/P_12><\/FaWiersz>\n\n<\/Fa><Stopka><Informacje><StopkaFaktury>Prosimy o wpłatę. Płatne do 14.11.2026 r. na rachunek wskazany wyżej.<\/StopkaFaktury><\/Informacje><\/Stopka><\/Faktura>", "f4.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Faktura xmlns=\"http://crd.gov.pl/wzor/2025/06/25/13775/\">\n<Naglowek><KodFormularza kodSystemowy=\"FA (3)\" wersjaSchemy=\"1-0E\">FA<\/KodFormularza><WariantFormularza>3<\/WariantFormularza><\/Naglowek>\n<Podmiot1><DaneIdentyfikacyjne><NIP>7770000003<\/NIP><Nazwa>Sprzątanie Jan Test<\/Nazwa><\/DaneIdentyfikacyjne><Adres><KodKraju>PL<\/KodKraju><AdresL1>ul. Testowa 1<\/AdresL1><\/Adres><\/Podmiot1>\n<Podmiot2><DaneIdentyfikacyjne><NIP>5260000005<\/NIP><Nazwa>Wspólnota Mieszkaniowa Testowa 5<\/Nazwa><\/DaneIdentyfikacyjne><\/Podmiot2>\n\n<Fa><KodWaluty>PLN<\/KodWaluty><P_1>2026-11-05<\/P_1><P_2>5/11/2026<\/P_2><P_13_1>500.00<\/P_13_1><P_14_1>115.00<\/P_14_1><P_15>615.00<\/P_15>\n<Adnotacje><P_16>2<\/P_16><P_17>2<\/P_17><P_18>2<\/P_18><P_18A>2<\/P_18A><\/Adnotacje><RodzajFaktury>VAT<\/RodzajFaktury>\n\n<FaWiersz><NrWierszaFa>1<\/NrWierszaFa><P_7>Energia elektryczna<\/P_7><P_11>500.00<\/P_11><P_12>23<\/P_12><\/FaWiersz>\n<Platnosc><TerminPlatnosci><TerminOpis><Ilosc>14<\/Ilosc><Jednostka>dni<\/Jednostka><ZdarzeniePoczatkowe>wystawienie faktury<\/ZdarzeniePoczatkowe><\/TerminOpis><\/TerminPlatnosci><\/Platnosc>\n<\/Fa><\/Faktura>", "f5.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Faktura xmlns=\"http://crd.gov.pl/wzor/2025/06/25/13775/\">\n<Naglowek><KodFormularza kodSystemowy=\"FA (3)\" wersjaSchemy=\"1-0E\">FA<\/KodFormularza><WariantFormularza>3<\/WariantFormularza><\/Naglowek>\n<Podmiot1><DaneIdentyfikacyjne><NIP>7770000004<\/NIP><Nazwa>Winda Serwis<\/Nazwa><\/DaneIdentyfikacyjne><Adres><KodKraju>PL<\/KodKraju><AdresL1>ul. Testowa 1<\/AdresL1><\/Adres><\/Podmiot1>\n<Podmiot2><DaneIdentyfikacyjne><NIP>5260000005<\/NIP><Nazwa>Wspólnota Mieszkaniowa Testowa 5<\/Nazwa><\/DaneIdentyfikacyjne><\/Podmiot2>\n\n<Fa><KodWaluty>PLN<\/KodWaluty><P_1>2026-11-06<\/P_1><P_2>WS/9<\/P_2><P_13_1>300.00<\/P_13_1><P_14_1>69.00<\/P_14_1><P_15>369.00<\/P_15>\n<Adnotacje><P_16>2<\/P_16><P_17>2<\/P_17><P_18>2<\/P_18><P_18A>2<\/P_18A><\/Adnotacje><RodzajFaktury>VAT<\/RodzajFaktury>\n<DodatkowyOpis><Klucz>Numer PPE<\/Klucz><Wartosc>PPE-002 Testowa 5 kl. B<\/Wartosc><\/DodatkowyOpis>\n<FaWiersz><NrWierszaFa>1<\/NrWierszaFa><P_7>Energia elektryczna<\/P_7><P_11>300.00<\/P_11><P_12>23<\/P_12><\/FaWiersz>\n\n<\/Fa><\/Faktura>", "f6.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Faktura xmlns=\"http://crd.gov.pl/wzor/2025/06/25/13775/\">\n<Naglowek><KodFormularza kodSystemowy=\"FA (3)\" wersjaSchemy=\"1-0E\">FA<\/KodFormularza><WariantFormularza>3<\/WariantFormularza><\/Naglowek>\n<Podmiot1><DaneIdentyfikacyjne><NIP>7770000004<\/NIP><Nazwa>Winda Serwis<\/Nazwa><\/DaneIdentyfikacyjne><Adres><KodKraju>PL<\/KodKraju><AdresL1>ul. Testowa 1<\/AdresL1><\/Adres><\/Podmiot1>\n<Podmiot2><DaneIdentyfikacyjne><NIP>5260000005<\/NIP><Nazwa>Wspólnota Mieszkaniowa Testowa 5<\/Nazwa><\/DaneIdentyfikacyjne><\/Podmiot2>\n\n<Fa><KodWaluty>PLN<\/KodWaluty><P_1>2026-10-06<\/P_1><P_2>WS/8<\/P_2><P_13_1>300.00<\/P_13_1><P_14_1>69.00<\/P_14_1><P_15>369.00<\/P_15>\n<Adnotacje><P_16>2<\/P_16><P_17>2<\/P_17><P_18>2<\/P_18><P_18A>2<\/P_18A><\/Adnotacje><RodzajFaktury>VAT<\/RodzajFaktury>\n\n<FaWiersz><NrWierszaFa>1<\/NrWierszaFa><P_7>Energia elektryczna<\/P_7><P_11>300.00<\/P_11><P_12>23<\/P_12><\/FaWiersz>\n<Platnosc><Zaplacono>1<\/Zaplacono><DataZaplaty>2026-10-07<\/DataZaplaty><\/Platnosc>\n<\/Fa><\/Faktura>", "f7.xml": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<Faktura xmlns=\"http://crd.gov.pl/wzor/2025/06/25/13775/\">\n<Naglowek><KodFormularza kodSystemowy=\"FA (3)\" wersjaSchemy=\"1-0E\">FA<\/KodFormularza><WariantFormularza>3<\/WariantFormularza><\/Naglowek>\n<Podmiot1><DaneIdentyfikacyjne><NIP>7770000005<\/NIP><Nazwa>Gaz Test<\/Nazwa><\/DaneIdentyfikacyjne><Adres><KodKraju>PL<\/KodKraju><AdresL1>ul. Testowa 1<\/AdresL1><\/Adres><\/Podmiot1>\n<Podmiot2><DaneIdentyfikacyjne><NIP>5260000005<\/NIP><Nazwa>Wspólnota Mieszkaniowa Testowa 5<\/Nazwa><\/DaneIdentyfikacyjne><\/Podmiot2>\n\n<Fa><KodWaluty>PLN<\/KodWaluty><P_1>2026-11-06<\/P_1><P_2>G/1<\/P_2><P_13_1>10.00<\/P_13_1><P_14_1>2.30<\/P_14_1><P_15>12.30<\/P_15>\n<Adnotacje><P_16>2<\/P_16><P_17>2<\/P_17><P_18>2<\/P_18><P_18A>2<\/P_18A><\/Adnotacje><RodzajFaktury>VAT<\/RodzajFaktury>\n<DodatkowyOpis><Klucz>Termin płatności<\/Klucz><Wartosc>31.02.2027<\/Wartosc><\/DodatkowyOpis>\n<FaWiersz><NrWierszaFa>1<\/NrWierszaFa><P_7>Energia elektryczna<\/P_7><P_11>10.00<\/P_11><P_12>23<\/P_12><\/FaWiersz>\n\n<\/Fa><\/Faktura>"};
+const _wczytajPelne=wczytaj;
+function przesun(t){const ref=Date.UTC(2026,10,12),d=new Date(),n=Date.UTC(d.getFullYear(),d.getMonth(),d.getDate());
+  const off=Math.round((n-ref)/864e5); if(!off) return t;
+  const f=(y,m,dd)=>{const x=new Date(Date.UTC(+y,+m-1,+dd)+off*864e5);return [x.getUTCFullYear(),String(x.getUTCMonth()+1).padStart(2,"0"),String(x.getUTCDate()).padStart(2,"0")]};
+  return t.replace(/\b(20\d\d)-(\d\d)-(\d\d)\b/g,(a,y,m,dd)=>{if(+m>12||+dd>31)return a;const r=f(y,m,dd);return isNaN(r[0])?a:r.join("-")})
+          .replace(/\b(\d\d)\.(\d\d)\.(20\d\d)\b/g,(a,dd,m,y)=>{if(+m>12||+dd>31)return a;const r=f(y,m,dd);return isNaN(r[0])?a:[r[2],r[1],r[0]].join(".")});}
+wczytaj=function(){ $("#info").innerHTML='W demo działają tylko przykładowe faktury. <a href="https://mastersson.github.io/ksef-wspolnota/">Pełna wersja</a> czyta Twoje pliki XML z KSeF.';};
+drop.onclick=()=>_wczytajPelne(Object.entries(DEMO_XML).map(([n,t])=>({name:n,text:async()=>przesun(t)})));
+</script>
+</body>
+</html>

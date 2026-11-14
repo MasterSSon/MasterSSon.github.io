@@ -1,11 +1,11 @@
 {
-"data": "2026-11-13",
+"data": "2026-11-14",
 "zrodlo": "OBI.pl, mediana cen z wyszukiwarki sklepu",
 "ceny": {
 "klej_plytki": {
 "jedn": "kg",
-"cena": 2.16,
-"n": 14
+"cena": 2.23,
+"n": 15
 },
 "fuga": {
 "jedn": "kg",
@@ -119,7 +119,7 @@
 },
 "rura_podlogowka": {
 "jedn": "m",
-"cena": 6.54,
+"cena": 6.52,
 "n": 22
 },
 "pianka": {

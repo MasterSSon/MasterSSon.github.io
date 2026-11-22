@@ -5,42 +5,56 @@
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://mastersson.github.io/"/>
   <id>https://mastersson.github.io/</id>
-  <updated>2026-11-14T16:06:53Z</updated>
+  <updated>2026-11-22T08:09:21Z</updated>
   <author><name>MasterSSon</name></author>
   <entry>
     <title>MasterSSon — szablony Excel i aplikacje, które liczą za Ciebie</title>
     <link href="https://mastersson.github.io/"/>
     <id>https://mastersson.github.io/</id>
-    <updated>2026-11-14T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Kosztorysy dla fachowców, czytnik faktur KSeF, DAC7, ryczałt, odszkodowanie za lot i więcej. Wypróbuj demo, zanim kupisz.</summary>
   </entry>
   <entry>
     <title>Ryczałt, liniowy czy skala w 2026? Kalkulator i porównanie ze składką zdrowotną</title>
     <link href="https://mastersson.github.io/ryczalt-liniowy-czy-skala-2026/"/>
     <id>https://mastersson.github.io/ryczalt-liniowy-czy-skala-2026/</id>
-    <updated>2026-11-14T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Porównanie trzech form opodatkowania JDG w 2026 roku: skala 12/32%, liniowy 19% i ryczałt 2–17%, razem ze składką zdrowotną. Kalkulator liczy podatek i składkę dla Twoich liczb.</summary>
   </entry>
   <entry>
     <title>Ulga na start i preferencyjny ZUS 2026: harmonogram składek nowej firmy + kalkulator dat</title>
     <link href="https://mastersson.github.io/ulga-na-start-i-preferencyjny-zus-2026/"/>
     <id>https://mastersson.github.io/ulga-na-start-i-preferencyjny-zus-2026/</id>
-    <updated>2026-11-14T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Ile płacisz ZUS na starcie firmy w 2026: ulga na start 6 miesięcy (tylko zdrowotna), składki preferencyjne 456,18 zł przez 24 miesiące, potem 1 926,76 zł. Kalkulator liczy Twoje daty.</summary>
   </entry>
   <entry>
     <title>Kalkulator IKZE dla JDG 2026: ryczałt, liniowy, skala. Ile zwrotu przed 31.12</title>
     <link href="https://mastersson.github.io/ikze-jdg-kalkulator-2026/"/>
     <id>https://mastersson.github.io/ikze-jdg-kalkulator-2026/</id>
-    <updated>2026-11-14T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Limit IKZE 2026 dla prowadzących działalność to 16 956 zł. Policz, ile podatku zaoszczędzisz na ryczałcie, liniowym i skali, ile możesz jeszcze wpłacić i do kiedy, żeby ulga weszła do PIT za 2026.</summary>
   </entry>
   <entry>
     <title>Samochód w firmie 2026: limit 100 000 zł. Kalkulator straty w leasingu i zakupie</title>
     <link href="https://mastersson.github.io/samochod-w-firmie-limit-100000-kalkulator-2026/"/>
     <id>https://mastersson.github.io/samochod-w-firmie-limit-100000-kalkulator-2026/</id>
-    <updated>2026-11-14T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Od 2026 r. auto z emisją od 50 g CO2/km ma limit kosztów 100 000 zł. Policz, ile z rat leasingu lub amortyzacji nie wejdzie w koszty i ile więcej podatku zapłacisz na liniowym i skali.</summary>
+  </entry>
+  <entry>
+    <title>Skala czy liniowy w 2027? Nowe progi 12/24/32% — kalkulator dla JDG i B2B</title>
+    <link href="https://mastersson.github.io/skala-czy-liniowy-2027-nowe-progi/"/>
+    <id>https://mastersson.github.io/skala-czy-liniowy-2027-nowe-progi/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Sejm uchwalił nową skalę PIT od 2027: 12% do 130 tys., 24% do 150 tys., 32% powyżej. Policz, czy na B2B opłaca się skala czy liniowy 19% z nową składką zdrowotną. Decyzja do 20 lutego 2027.</summary>
+  </entry>
+  <entry>
+    <title>Remanent na 31.12.2026 w JDG: spis z natury krok po kroku + kalkulator</title>
+    <link href="https://mastersson.github.io/remanent-spis-z-natury-2026/"/>
+    <id>https://mastersson.github.io/remanent-spis-z-natury-2026/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Spis z natury na koniec 2026 r. krok po kroku: kogo dotyczy (KPiR, ryczałt), co spisać, jak wycenić towar, jak wpisać do KPiR i jak remanent zmienia dochód. Darmowy kalkulator z eksportem CSV.</summary>
   </entry>
   <entry>
     <title>Zaliczka na materiały w umowie z fachowcem: ile brać i jak zapisać (2026)</title>
@@ -48,13 +62,6 @@
     <id>https://mastersson.github.io/zaliczka-na-materialy-umowa-z-fachowcem/</id>
     <updated>2026-11-14T12:00:00Z</updated>
     <summary>Ile zaliczki brać od klienta i jak ją zapisać w umowie lub ofercie. Zaliczka a zadatek (art. 394 KC), ryczałt, odstąpienie klienta. Kalkulator: czy zaliczka pokryje materiał.</summary>
-  </entry>
-  <entry>
-    <title>Skala czy liniowy w 2027? Nowe progi 12/24/32% — kalkulator dla JDG i B2B</title>
-    <link href="https://mastersson.github.io/skala-czy-liniowy-2027-nowe-progi/"/>
-    <id>https://mastersson.github.io/skala-czy-liniowy-2027-nowe-progi/</id>
-    <updated>2026-11-14T12:00:00Z</updated>
-    <summary>Sejm uchwalił nową skalę PIT od 2027: 12% do 130 tys., 24% do 150 tys., 32% powyżej. Policz, czy na B2B opłaca się skala czy liniowy 19% z nową składką zdrowotną. Decyzja do 20 lutego 2027.</summary>
   </entry>
   <entry>
     <title>Jak otworzyć fakturę XML z KSeF i zrobić z niej Excela (2026)</title>
@@ -279,12 +286,5 @@
     <id>https://mastersson.github.io/produkt/malarz/</id>
     <updated>2026-11-12T12:00:00Z</updated>
     <summary>Metry ścian i sufitu liczone z wymiarów pokoju, kosztorys z VAT i oferta w 10 minut.</summary>
-  </entry>
-  <entry>
-    <title>Ewidencja działalności nierejestrowanej z kontrolą limitu · MasterSSon</title>
-    <link href="https://mastersson.github.io/produkt/nierejestrowana/"/>
-    <id>https://mastersson.github.io/produkt/nierejestrowana/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
-    <summary>Sumuje przychód w każdym kwartale i ostrzega, zanim przekroczysz limit 10 813,50 zł.</summary>
   </entry>
 </feed>

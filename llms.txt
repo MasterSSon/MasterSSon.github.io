@@ -74,6 +74,10 @@
 - [Ryanair: opóźniony lub odwołany lot — ile odszkodowania i jak je dostać (2026)](https://mastersson.github.io/ryanair-opozniony-lot-odszkodowanie/): Lot Ryanair spóźnił się 3+ godziny albo został odwołany? Ryanair to linia unijna, więc obowiązuje rozporządzenie 261/2004: 250–600 EUR na osobę. Sprawdź swój lot i złóż wniosek bez prowizji.
 - [Wizz Air: opóźniony lub odwołany lot — odszkodowanie 250–600 EUR (2026)](https://mastersson.github.io/wizz-air-opozniony-lot-odszkodowanie/): Lot Wizz Air opóźniony o 3+ godziny albo odwołany? Sprawdź, kiedy należy się 250–600 EUR, na co uważać przy lotach z Wielkiej Brytanii i jak złożyć wniosek bez prowizji.
 
+## Inne
+
+- [Remanent na 31.12.2026 w JDG: spis z natury krok po kroku + kalkulator](https://mastersson.github.io/remanent-spis-z-natury-2026/): Spis z natury na koniec 2026 r. krok po kroku: kogo dotyczy (KPiR, ryczałt), co spisać, jak wycenić towar, jak wpisać do KPiR i jak remanent zmienia dochód. Darmowy kalkulator z eksportem CSV.
+
 ## Kontakt
 
 - Strona główna: https://mastersson.github.io/

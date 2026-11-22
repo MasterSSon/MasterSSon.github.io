@@ -78,6 +78,7 @@
 
 - [Remanent na 31.12.2026 w JDG: spis z natury krok po kroku + kalkulator](https://mastersson.github.io/remanent-spis-z-natury-2026/): Spis z natury na koniec 2026 r. krok po kroku: kogo dotyczy (KPiR, ryczałt), co spisać, jak wycenić towar, jak wpisać do KPiR i jak remanent zmienia dochód. Darmowy kalkulator z eksportem CSV.
 - [Nadpłata kredytu czy inwestowanie (obligacje, IKE)? Kalkulator 2026](https://mastersson.github.io/nadplata-kredytu-czy-inwestowanie-2026/): Policz, czy wolne pieniądze lepiej dać na nadpłatę kredytu, czy na obligacje albo IKE: zaoszczędzone odsetki, skrócenie okresu, nowa rata, podatek 19%, prowizja i próg opłacalności. Stan stóp: listopad 2026.
+- [Koniec roku 2026 w JDG: checklista na grudzień + darmowe kalkulatory](https://mastersson.github.io/jdg-koniec-roku-2026-checklista/): Co jednoosobowa firma musi załatwić przed 31.12.2026: remanent, wpłata na IKZE, forma opodatkowania na 2027, auto w firmie, KSeF od 1.01.2027, nadpłata kredytu. Każdy punkt z darmowym kalkulatorem.
 
 ## Kontakt
 

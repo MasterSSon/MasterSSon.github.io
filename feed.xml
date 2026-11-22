@@ -5,7 +5,7 @@
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://mastersson.github.io/"/>
   <id>https://mastersson.github.io/</id>
-  <updated>2026-11-22T08:09:21Z</updated>
+  <updated>2026-11-22T12:09:12Z</updated>
   <author><name>MasterSSon</name></author>
   <entry>
     <title>MasterSSon — szablony Excel i aplikacje, które liczą za Ciebie</title>
@@ -13,6 +13,104 @@
     <id>https://mastersson.github.io/</id>
     <updated>2026-11-22T12:00:00Z</updated>
     <summary>Kosztorysy dla fachowców, czytnik faktur KSeF, DAC7, ryczałt, odszkodowanie za lot i więcej. Wypróbuj demo, zanim kupisz.</summary>
+  </entry>
+  <entry>
+    <title>Czytnik faktur KSeF — darmowe demo · MasterSSon</title>
+    <link href="https://mastersson.github.io/ksef/"/>
+    <id>https://mastersson.github.io/ksef/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Wszystkie faktury XML z KSeF w jednej tabeli: terminy płatności, duplikaty, zmienione konta, Excel i PDF. Offline, bez logowania. Wypróbuj demo na przykładowych fakturach.</summary>
+  </entry>
+  <entry>
+    <title>Wycena Fachowca</title>
+    <link href="https://mastersson.github.io/wycena/"/>
+    <id>https://mastersson.github.io/wycena/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Wycena i oferta dla klienta w 2 minuty, prosto z telefonu na budowie. Pomiar pomieszczeń, materiały z zapasem, PDF. Bez abonamentu.</summary>
+  </entry>
+  <entry>
+    <title>Odszkodowanie za lot — sprawdź i napisz wniosek</title>
+    <link href="https://mastersson.github.io/odszkodowanie/"/>
+    <id>https://mastersson.github.io/odszkodowanie/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Sprawdź, czy za opóźniony lub odwołany lot należy ci się 250–600 EUR, i przygotuj gotowy wniosek do linii. Bez prowizji, dane zostają w telefonie.</summary>
+  </entry>
+  <entry>
+    <title>Jak otworzyć fakturę XML z KSeF i zrobić z niej Excela (2026)</title>
+    <link href="https://mastersson.github.io/ksef-faktura-xml/"/>
+    <id>https://mastersson.github.io/ksef-faktura-xml/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Faktura z KSeF to plik XML pełen znaczników. Zobacz 3 sposoby, żeby ją przeczytać, i jak w minutę zrobić zestawienie wszystkich faktur w Excelu i PDF.</summary>
+  </entry>
+  <entry>
+    <title>DAC7 na Vinted i OLX: kiedy platforma zgłasza Twoje dane i kiedy płacisz podatek</title>
+    <link href="https://mastersson.github.io/dac7-vinted-olx/"/>
+    <id>https://mastersson.github.io/dac7-vinted-olx/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>DAC7 to nie podatek, tylko zgłoszenie danych przez platformę od 30 transakcji albo 2000 euro w roku. Sprawdź, kiedy sprzedaż rzeczy używanych jest wolna od PIT i jak to udokumentować.</summary>
+  </entry>
+  <entry>
+    <title>Kosztorys i oferta dla fachowca: jak wycenić robotę w 10 minut (Excel)</title>
+    <link href="https://mastersson.github.io/kosztorys-fachowca-excel/"/>
+    <id>https://mastersson.github.io/kosztorys-fachowca-excel/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Jak szybko policzyć robociznę i materiały z zapasem, ustawić VAT i dać klientowi czytelną ofertę. Gotowe kosztorysy Excel dla glazurnika, malarza, elektryka, ogrodnika i firmy przeprowadzkowej.</summary>
+  </entry>
+  <entry>
+    <title>Odszkodowanie za opóźniony lot: 250–600 EUR. Kiedy się należy i jak je dostać (2026)</title>
+    <link href="https://mastersson.github.io/odszkodowanie-za-opozniony-lot/"/>
+    <id>https://mastersson.github.io/odszkodowanie-za-opozniony-lot/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Lot spóźnił się 3 godziny lub więcej? Należy ci się 250, 400 albo 600 EUR na osobę. Sprawdź warunki, wyjątki i jak złożyć wniosek bez oddawania 35% prowizji.</summary>
+  </entry>
+  <entry>
+    <title>Odwołany lot: odszkodowanie 250–600 EUR, zwrot biletu i lot zastępczy (2026)</title>
+    <link href="https://mastersson.github.io/odwolany-lot-odszkodowanie/"/>
+    <id>https://mastersson.github.io/odwolany-lot-odszkodowanie/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Linia odwołała lot? Sprawdź, kiedy oprócz zwrotu ceny biletu należy ci się 250–600 EUR odszkodowania. Zasada 14 dni i godziny lotu zastępczego wyjaśnione po ludzku.</summary>
+  </entry>
+  <entry>
+    <title>Wniosek o odszkodowanie za lot — wzór i co w nim napisać (PL i EN)</title>
+    <link href="https://mastersson.github.io/wniosek-o-odszkodowanie-za-lot-wzor/"/>
+    <id>https://mastersson.github.io/wniosek-o-odszkodowanie-za-lot-wzor/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Co musi zawierać wniosek o odszkodowanie za opóźniony lub odwołany lot: dane, numer rezerwacji, podstawa prawna, kwota, numer konta. Gotowy wniosek wygenerujesz w aplikacji.</summary>
+  </entry>
+  <entry>
+    <title>Ryanair: opóźniony lub odwołany lot — ile odszkodowania i jak je dostać (2026)</title>
+    <link href="https://mastersson.github.io/ryanair-opozniony-lot-odszkodowanie/"/>
+    <id>https://mastersson.github.io/ryanair-opozniony-lot-odszkodowanie/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Lot Ryanair spóźnił się 3+ godziny albo został odwołany? Ryanair to linia unijna, więc obowiązuje rozporządzenie 261/2004: 250–600 EUR na osobę. Sprawdź swój lot i złóż wniosek bez prowizji.</summary>
+  </entry>
+  <entry>
+    <title>Wizz Air: opóźniony lub odwołany lot — odszkodowanie 250–600 EUR (2026)</title>
+    <link href="https://mastersson.github.io/wizz-air-opozniony-lot-odszkodowanie/"/>
+    <id>https://mastersson.github.io/wizz-air-opozniony-lot-odszkodowanie/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Lot Wizz Air opóźniony o 3+ godziny albo odwołany? Sprawdź, kiedy należy się 250–600 EUR, na co uważać przy lotach z Wielkiej Brytanii i jak złożyć wniosek bez prowizji.</summary>
+  </entry>
+  <entry>
+    <title>Biała lista VAT: jak sprawdzić konto kontrahenta przed przelewem (2026)</title>
+    <link href="https://mastersson.github.io/biala-lista-vat-jak-sprawdzic-konto/"/>
+    <id>https://mastersson.github.io/biala-lista-vat-jak-sprawdzic-konto/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Płacisz fakturę powyżej 15 000 zł? Sprawdź konto sprzedawcy na białej liście VAT w dniu przelewu. Co grozi za przelew na konto spoza wykazu i jak to naprawić zawiadomieniem ZAW-NR w 7 dni.</summary>
+  </entry>
+  <entry>
+    <title>KSeF dla małej firmy 2026: limit 10 000 zł, terminy i co zrobić do końca roku</title>
+    <link href="https://mastersson.github.io/ksef-mala-firma-limit-10000/"/>
+    <id>https://mastersson.github.io/ksef-mala-firma-limit-10000/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Wystawiasz faktury do 10 000 zł brutto miesięcznie? Możesz zostać poza KSeF tylko do 31 grudnia 2026. Jak liczyć limit, co po jego przekroczeniu i czym wystawiać faktury za darmo.</summary>
+  </entry>
+  <entry>
+    <title>Działalność nierejestrowana 2026: limit kwartalny 10 813,50 zł i ewidencja sprzedaży</title>
+    <link href="https://mastersson.github.io/dzialalnosc-nierejestrowana-2026/"/>
+    <id>https://mastersson.github.io/dzialalnosc-nierejestrowana-2026/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Od 1 stycznia 2026 limit działalności nierejestrowanej liczy się kwartalnie i wynosi 10 813,50 zł. Jak liczyć przychód, co musi zawierać ewidencja sprzedaży i co zrobić po przekroczeniu limitu.</summary>
   </entry>
   <entry>
     <title>Ryczałt, liniowy czy skala w 2026? Kalkulator i porównanie ze składką zdrowotną</title>
@@ -29,262 +127,164 @@
     <summary>Ile płacisz ZUS na starcie firmy w 2026: ulga na start 6 miesięcy (tylko zdrowotna), składki preferencyjne 456,18 zł przez 24 miesiące, potem 1 926,76 zł. Kalkulator liczy Twoje daty.</summary>
   </entry>
   <entry>
-    <title>Kalkulator IKZE dla JDG 2026: ryczałt, liniowy, skala. Ile zwrotu przed 31.12</title>
-    <link href="https://mastersson.github.io/ikze-jdg-kalkulator-2026/"/>
-    <id>https://mastersson.github.io/ikze-jdg-kalkulator-2026/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Limit IKZE 2026 dla prowadzących działalność to 16 956 zł. Policz, ile podatku zaoszczędzisz na ryczałcie, liniowym i skali, ile możesz jeszcze wpłacić i do kiedy, żeby ulga weszła do PIT za 2026.</summary>
-  </entry>
-  <entry>
-    <title>Samochód w firmie 2026: limit 100 000 zł. Kalkulator straty w leasingu i zakupie</title>
-    <link href="https://mastersson.github.io/samochod-w-firmie-limit-100000-kalkulator-2026/"/>
-    <id>https://mastersson.github.io/samochod-w-firmie-limit-100000-kalkulator-2026/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Od 2026 r. auto z emisją od 50 g CO2/km ma limit kosztów 100 000 zł. Policz, ile z rat leasingu lub amortyzacji nie wejdzie w koszty i ile więcej podatku zapłacisz na liniowym i skali.</summary>
-  </entry>
-  <entry>
-    <title>Skala czy liniowy w 2027? Nowe progi 12/24/32% — kalkulator dla JDG i B2B</title>
-    <link href="https://mastersson.github.io/skala-czy-liniowy-2027-nowe-progi/"/>
-    <id>https://mastersson.github.io/skala-czy-liniowy-2027-nowe-progi/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Sejm uchwalił nową skalę PIT od 2027: 12% do 130 tys., 24% do 150 tys., 32% powyżej. Policz, czy na B2B opłaca się skala czy liniowy 19% z nową składką zdrowotną. Decyzja do 20 lutego 2027.</summary>
-  </entry>
-  <entry>
-    <title>Remanent na 31.12.2026 w JDG: spis z natury krok po kroku + kalkulator</title>
-    <link href="https://mastersson.github.io/remanent-spis-z-natury-2026/"/>
-    <id>https://mastersson.github.io/remanent-spis-z-natury-2026/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Spis z natury na koniec 2026 r. krok po kroku: kogo dotyczy (KPiR, ryczałt), co spisać, jak wycenić towar, jak wpisać do KPiR i jak remanent zmienia dochód. Darmowy kalkulator z eksportem CSV.</summary>
-  </entry>
-  <entry>
-    <title>Zaliczka na materiały w umowie z fachowcem: ile brać i jak zapisać (2026)</title>
-    <link href="https://mastersson.github.io/zaliczka-na-materialy-umowa-z-fachowcem/"/>
-    <id>https://mastersson.github.io/zaliczka-na-materialy-umowa-z-fachowcem/</id>
-    <updated>2026-11-14T12:00:00Z</updated>
-    <summary>Ile zaliczki brać od klienta i jak ją zapisać w umowie lub ofercie. Zaliczka a zadatek (art. 394 KC), ryczałt, odstąpienie klienta. Kalkulator: czy zaliczka pokryje materiał.</summary>
-  </entry>
-  <entry>
-    <title>Jak otworzyć fakturę XML z KSeF i zrobić z niej Excela (2026)</title>
-    <link href="https://mastersson.github.io/ksef-faktura-xml/"/>
-    <id>https://mastersson.github.io/ksef-faktura-xml/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
-    <summary>Faktura z KSeF to plik XML pełen znaczników. Zobacz 3 sposoby, żeby ją przeczytać, i jak w minutę zrobić zestawienie wszystkich faktur w Excelu i PDF.</summary>
-  </entry>
-  <entry>
-    <title>DAC7 na Vinted i OLX: kiedy platforma zgłasza Twoje dane i kiedy płacisz podatek</title>
-    <link href="https://mastersson.github.io/dac7-vinted-olx/"/>
-    <id>https://mastersson.github.io/dac7-vinted-olx/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
-    <summary>DAC7 to nie podatek, tylko zgłoszenie danych przez platformę od 30 transakcji albo 2000 euro w roku. Sprawdź, kiedy sprzedaż rzeczy używanych jest wolna od PIT i jak to udokumentować.</summary>
-  </entry>
-  <entry>
-    <title>Kosztorys i oferta dla fachowca: jak wycenić robotę w 10 minut (Excel)</title>
-    <link href="https://mastersson.github.io/kosztorys-fachowca-excel/"/>
-    <id>https://mastersson.github.io/kosztorys-fachowca-excel/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
-    <summary>Jak szybko policzyć robociznę i materiały z zapasem, ustawić VAT i dać klientowi czytelną ofertę. Gotowe kosztorysy Excel dla glazurnika, malarza, elektryka, ogrodnika i firmy przeprowadzkowej.</summary>
-  </entry>
-  <entry>
-    <title>Biała lista VAT: jak sprawdzić konto kontrahenta przed przelewem (2026)</title>
-    <link href="https://mastersson.github.io/biala-lista-vat-jak-sprawdzic-konto/"/>
-    <id>https://mastersson.github.io/biala-lista-vat-jak-sprawdzic-konto/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
-    <summary>Płacisz fakturę powyżej 15 000 zł? Sprawdź konto sprzedawcy na białej liście VAT w dniu przelewu. Co grozi za przelew na konto spoza wykazu i jak to naprawić zawiadomieniem ZAW-NR w 7 dni.</summary>
-  </entry>
-  <entry>
-    <title>KSeF dla małej firmy 2026: limit 10 000 zł, terminy i co zrobić do końca roku</title>
-    <link href="https://mastersson.github.io/ksef-mala-firma-limit-10000/"/>
-    <id>https://mastersson.github.io/ksef-mala-firma-limit-10000/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
-    <summary>Wystawiasz faktury do 10 000 zł brutto miesięcznie? Możesz zostać poza KSeF tylko do 31 grudnia 2026. Jak liczyć limit, co po jego przekroczeniu i czym wystawiać faktury za darmo.</summary>
-  </entry>
-  <entry>
-    <title>Działalność nierejestrowana 2026: limit kwartalny 10 813,50 zł i ewidencja sprzedaży</title>
-    <link href="https://mastersson.github.io/dzialalnosc-nierejestrowana-2026/"/>
-    <id>https://mastersson.github.io/dzialalnosc-nierejestrowana-2026/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
-    <summary>Od 1 stycznia 2026 limit działalności nierejestrowanej liczy się kwartalnie i wynosi 10 813,50 zł. Jak liczyć przychód, co musi zawierać ewidencja sprzedaży i co zrobić po przekroczeniu limitu.</summary>
-  </entry>
-  <entry>
     <title>Ile kosztuje położenie płytek za m2 w 2026 + kalkulator robocizny i materiałów</title>
     <link href="https://mastersson.github.io/ile-kosztuje-polozenie-plytek-za-m2/"/>
     <id>https://mastersson.github.io/ile-kosztuje-polozenie-plytek-za-m2/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Robocizna za ułożenie płytek w 2026: 110–180 zł/m2 standard, 180–280 zł wielkoformat, 230–360 zł mozaika. Kalkulator liczy robociznę, materiały z zapasem i cenę za m2 całości.</summary>
   </entry>
   <entry>
     <title>Wycena malowania mieszkania 2026: stawki za m2 + kalkulator robocizny i farby</title>
     <link href="https://mastersson.github.io/wycena-malowania-mieszkania/"/>
     <id>https://mastersson.github.io/wycena-malowania-mieszkania/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Malowanie dwukrotne to w 2026 r. 20-32 zl/m2 robocizny (biel) i 25-38 zl/m2 w kolorze, gladz 35-65 zl/m2. Kalkulator liczy robocizne, farbe z zapasem i cene za m2 calosci.</summary>
   </entry>
   <entry>
     <title>Ile kosztuje ułożenie kostki brukowej za m2 w 2026? Stawki + kalkulator</title>
     <link href="https://mastersson.github.io/ile-kosztuje-ulozenie-kostki-brukowej-za-m2/"/>
     <id>https://mastersson.github.io/ile-kosztuje-ulozenie-kostki-brukowej-za-m2/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Ułożenie kostki to w 2026 r. 82-105 zł/m2 (standard), 90-120 zł/m2 (szlachetna), 125-200 zł/m2 (granit). Kalkulator liczy korytowanie, wywóz ziemi, kruszywo w tonach i cenę za m2 całości.</summary>
   </entry>
   <entry>
     <title>Kalkulator opłacalności sprzedaży na Allegro 2026: ile zostaje z ceny</title>
     <link href="https://mastersson.github.io/kalkulator-oplacalnosci-sprzedazy-na-allegro/"/>
     <id>https://mastersson.github.io/kalkulator-oplacalnosci-sprzedazy-na-allegro/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Prowizja Allegro liczy się od ceny razem z dostawą i jest netto - dochodzi 23% VAT. Kalkulator liczy zysk na sztuce, marżę, wpływ zwrotów i cenę minimalną, przy której wychodzisz na zero.</summary>
   </entry>
   <entry>
     <title>Stawka za korepetycje 2026: jak policzyć, ile brać za godzinę (kalkulator)</title>
     <link href="https://mastersson.github.io/stawka-za-korepetycje-2026-jak-policzyc/"/>
     <id>https://mastersson.github.io/stawka-za-korepetycje-2026-jak-policzyc/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Ile brać za korepetycje w 2026? Kalkulator liczy minimalną stawkę za 60 minut z celu zarobkowego: przygotowanie, dojazd, odwołane lekcje, wakacje, koszty i podatek. Plus limit działalności nierejestrowanej.</summary>
   </entry>
   <entry>
     <title>Ile kosztuje gładź gipsowa za m2 w 2026 + kalkulator materiału i robocizny</title>
     <link href="https://mastersson.github.io/ile-kosztuje-gladz-gipsowa-za-m2/"/>
     <id>https://mastersson.github.io/ile-kosztuje-gladz-gipsowa-za-m2/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Gładź gipsowa 2026: robocizna 35-65 zł/m2, materiał 4,50-9 zł/m2 przy warstwie 2 mm. Kalkulator liczy kilogramy, pełne opakowania, grunt i cenę za m2 całości.</summary>
   </entry>
   <entry>
     <title>Ile kosztuje sucha zabudowa za m2 w 2026 + kalkulator płyt GK i profili</title>
     <link href="https://mastersson.github.io/ile-kosztuje-sucha-zabudowa-za-m2/"/>
     <id>https://mastersson.github.io/ile-kosztuje-sucha-zabudowa-za-m2/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Sucha zabudowa 2026: ścianka z płyt GK 80-130 zł/m2 robocizny, sufit podwieszany 90-140 zł/m2. Kalkulator liczy płyty, profile, wieszaki, wkręty i masę w pełnych opakowaniach.</summary>
   </entry>
   <entry>
     <title>Ile kosztuje tynk gipsowy za m2 w 2026 + kalkulator worków i robocizny</title>
     <link href="https://mastersson.github.io/ile-kosztuje-tynk-gipsowy-za-m2/"/>
     <id>https://mastersson.github.io/ile-kosztuje-tynk-gipsowy-za-m2/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Tynk gipsowy 2026: robocizna 30-50 zł/m2 maszynowo, materiał ok. 11-14 zł/m2 przy warstwie 10 mm. Kalkulator liczy kilogramy, pełne worki, grunt, narożniki i cenę za m2.</summary>
-  </entry>
-  <entry>
-    <title>Numer KSeF w przelewie od 2027: kogo dotyczy, co wpisać, przelew zbiorczy</title>
-    <link href="https://mastersson.github.io/ksef-numer-w-przelewie/"/>
-    <id>https://mastersson.github.io/ksef-numer-w-przelewie/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
-    <summary>Od 2027 r. płacąc za fakturę innemu podatnikowi VAT podajesz w przelewie numer KSeF albo identyfikator zbiorczy. Kogo to dotyczy, gdzie znaleźć numer, jak płacić zbiorczo i co sprawdzić w grudniu.</summary>
-  </entry>
-  <entry>
-    <title>Czytnik KSeF PRO Wspólnota: terminarz płatności faktur dla wspólnoty mieszkaniowej</title>
-    <link href="https://mastersson.github.io/ksef-wspolnota/"/>
-    <id>https://mastersson.github.io/ksef-wspolnota/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
-    <summary>Program dla wspólnot mieszkaniowych i zarządców: wczytuje faktury XML z KSeF, wyciąga termin płatności, grupuje po liczniku PPE, lokalu lub budynku i tworzy listę przelewów z numerem KSeF. Demo online, 249 zł/12 mies.</summary>
-  </entry>
-  <entry>
-    <title>Ile kosztuje skucie płytek i wywóz gruzu w 2026 + kalkulator</title>
-    <link href="https://mastersson.github.io/ile-kosztuje-skucie-plytek-i-wywoz-gruzu/"/>
-    <id>https://mastersson.github.io/ile-kosztuje-skucie-plytek-i-wywoz-gruzu/</id>
-    <updated>2026-11-13T12:00:00Z</updated>
-    <summary>Skucie płytek 2026: 50-80 zł/m2 robocizny, średnio ok. 63 zł/m2. Big bag z odbiorem 250-350 zł, kontener 2,7 m3 ok. 500-600 zł. Kalkulator liczy gruz w kg i m3 i cenę za m2.</summary>
-  </entry>
-  <entry>
-    <title>Czytnik faktur KSeF — darmowe demo · MasterSSon</title>
-    <link href="https://mastersson.github.io/ksef/"/>
-    <id>https://mastersson.github.io/ksef/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
-    <summary>Wszystkie faktury XML z KSeF w jednej tabeli: terminy płatności, duplikaty, zmienione konta, Excel i PDF. Offline, bez logowania. Wypróbuj demo na przykładowych fakturach.</summary>
   </entry>
   <entry>
     <title>Kalkulator opłacalności wynajmu krótkoterminowego · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/airbnb/"/>
     <id>https://mastersson.github.io/produkt/airbnb/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Obłożenie na 12 miesięcy, wszystkie koszty i uczciwe porównanie z najmem długoterminowym.</summary>
   </entry>
   <entry>
     <title>Kalkulator opłacalności sprzedaży na Allegro · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/allegro/"/>
     <id>https://mastersson.github.io/produkt/allegro/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Ile naprawdę zostaje po prowizji, wysyłce i opłatach oraz poniżej jakiej ceny sprzedaż nie ma sensu.</summary>
   </entry>
   <entry>
     <title>Kalkulator wyceny cateringu na wesele i event · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/catering/"/>
     <id>https://mastersson.github.io/produkt/catering/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Goście, menu, kelnerzy i transport: koszt na osobę, marża i cena oferty dla klienta.</summary>
   </entry>
   <entry>
     <title>Czytnik faktur KSeF — XML do Excela i PDF · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/czytnik-ksef/"/>
     <id>https://mastersson.github.io/produkt/czytnik-ksef/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Wszystkie faktury XML z KSeF w jednej tabeli Excel i jako czytelne PDF-y. Offline, bez abonamentu.</summary>
   </entry>
   <entry>
     <title>Czytnik faktur KSeF PRO — z kontrolą białej listy VAT · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/czytnik-ksef-pro/"/>
     <id>https://mastersson.github.io/produkt/czytnik-ksef-pro/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Wszystko z Czytnika KSeF plus sprawdzenie kont kontrahentów na białej liście VAT dla całej paczki faktur.</summary>
   </entry>
   <entry>
     <title>Rejestr sprzedaży Vinted i OLX z kontrolą progów DAC7 · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/dac7/"/>
     <id>https://mastersson.github.io/produkt/dac7/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Pilnuje progu 30 transakcji i 2000 € osobno na każdej platformie i pokazuje, od kiedy sprzedaż jest wolna od PIT.</summary>
   </entry>
   <entry>
     <title>Kalkulator opłacalności dropshippingu · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/dropshipping/"/>
     <id>https://mastersson.github.io/produkt/dropshipping/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Marża po wszystkich kosztach, z reklamą na sztukę, i czerwone flagi przy produktach, które dokładają.</summary>
   </entry>
   <entry>
     <title>Kosztorys i oferta dla elektryka · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/elektryk/"/>
     <id>https://mastersson.github.io/produkt/elektryk/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Punkty, bruzdy, rozdzielnica: wybierasz z cennika i masz kosztorys z VAT oraz ofertę dla klienta.</summary>
   </entry>
   <entry>
     <title>Ryczałt, podatek liniowy czy skala — co się bardziej opłaca w 2026 · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/forma-podatkowa/"/>
     <id>https://mastersson.github.io/produkt/forma-podatkowa/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Trzy formy opodatkowania naraz, na nowych zasadach składki zdrowotnej 2026 — która daje więcej na rękę.</summary>
   </entry>
   <entry>
     <title>Kosztorys i oferta dla glazurnika · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/glazurnik/"/>
     <id>https://mastersson.github.io/produkt/glazurnik/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Wpisujesz wymiary łazienki, wybierasz usługi i masz kosztorys z VAT oraz ofertę gotową do PDF.</summary>
   </entry>
   <entry>
     <title>Kalkulator wyceny projektu graficznego · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/grafik/"/>
     <id>https://mastersson.github.io/produkt/grafik/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Etapy projektu z czasem, dopłata za ekspres i dodatkowe poprawki, licencja jako osobna pozycja.</summary>
   </entry>
   <entry>
     <title>Kalkulator i harmonogram kredytu hipotecznego ze zmiennym WIBOR · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/hipoteka/"/>
     <id>https://mastersson.github.io/produkt/hipoteka/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Rata, odsetki i saldo miesiąc po miesiącu — na Twojej kwocie, marży, WIBOR-ze i nadpłacie.</summary>
   </entry>
   <entry>
     <title>Kalkulator stawki za korepetycje i lekcje online · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/korepetycje/"/>
     <id>https://mastersson.github.io/produkt/korepetycje/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Stawka za godzinę z Twojego celu zarobkowego, osobno dla lekcji u siebie, u ucznia i online.</summary>
   </entry>
   <entry>
     <title>Kosztorys i oferta dla malarza · MasterSSon</title>
     <link href="https://mastersson.github.io/produkt/malarz/"/>
     <id>https://mastersson.github.io/produkt/malarz/</id>
-    <updated>2026-11-12T12:00:00Z</updated>
+    <updated>2026-11-22T12:00:00Z</updated>
     <summary>Metry ścian i sufitu liczone z wymiarów pokoju, kosztorys z VAT i oferta w 10 minut.</summary>
+  </entry>
+  <entry>
+    <title>Ewidencja działalności nierejestrowanej z kontrolą limitu · MasterSSon</title>
+    <link href="https://mastersson.github.io/produkt/nierejestrowana/"/>
+    <id>https://mastersson.github.io/produkt/nierejestrowana/</id>
+    <updated>2026-11-22T12:00:00Z</updated>
+    <summary>Sumuje przychód w każdym kwartale i ostrzega, zanim przekroczysz limit 10 813,50 zł.</summary>
   </entry>
 </feed>

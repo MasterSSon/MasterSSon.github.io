@@ -5,7 +5,7 @@
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://mastersson.github.io/"/>
   <id>https://mastersson.github.io/</id>
-  <updated>2026-11-23T08:07:46Z</updated>
+  <updated>2026-11-23T12:07:12Z</updated>
   <author><name>MasterSSon</name></author>
   <entry>
     <title>MasterSSon — szablony Excel i aplikacje, które liczą za Ciebie</title>
@@ -20,6 +20,13 @@
     <id>https://mastersson.github.io/ikze-jdg-kalkulator-2026/</id>
     <updated>2026-11-23T12:00:00Z</updated>
     <summary>Limit IKZE 2026 dla JDG to 16 956 zł, w 2027 r. 18 059,40 zł (IKE 30 099 zł). Policz ulgę na ryczałcie, liniowym i skali, ile możesz jeszcze wpłacić do 31.12 i ile miesięcznie odkładać w 2027.</summary>
+  </entry>
+  <entry>
+    <title>Ile kosztuje docieplenie domu styropianem za m2 w 2026 + kalkulator</title>
+    <link href="https://mastersson.github.io/ile-kosztuje-docieplenie-domu-styropianem-za-m2/"/>
+    <id>https://mastersson.github.io/ile-kosztuje-docieplenie-domu-styropianem-za-m2/</id>
+    <updated>2026-11-23T12:00:00Z</updated>
+    <summary>Docieplenie styropianem 2026: robocizna ok. 115-131 zł/m2 netto, z materiałem ok. 370-430 zł/m2 netto (kb.pl). Kalkulator liczy paczki styropianu, klej, siatkę, kołki i tynk.</summary>
   </entry>
   <entry>
     <title>Skala czy liniowy w 2027? Nowe progi 12/24/32% — kalkulator dla JDG i B2B</title>
@@ -41,6 +48,13 @@
     <id>https://mastersson.github.io/ulga-na-internet-2026-ostatnia-szansa/</id>
     <updated>2026-11-23T12:00:00Z</updated>
     <summary>Ulga internetowa znika od 2027 r. Kto pierwszy raz odliczy internet w PIT za 2026, odliczy go też za 2027. Sprawdź, czy Ci przysługuje, jakie faktury są potrzebne i ile zwrotu dostaniesz (do 760 zł rocznie).</summary>
+  </entry>
+  <entry>
+    <title>Składki ZUS 2027 dla JDG: duży ZUS 2052 zł, preferencyjny, mały ZUS plus + kalkulator</title>
+    <link href="https://mastersson.github.io/skladki-zus-2027-kalkulator-jdg/"/>
+    <id>https://mastersson.github.io/skladki-zus-2027-kalkulator-jdg/</id>
+    <updated>2026-11-23T12:00:00Z</updated>
+    <summary>Prognozowane wynagrodzenie na 2027 r. to 10 033 zł, więc duży ZUS rośnie do 2052,15 zł z chorobowym. Policz swoje składki 2027: duży, preferencyjny, mały ZUS plus, zdrowotna na skali i liniowym, koszt na rok.</summary>
   </entry>
   <entry>
     <title>Czytnik faktur KSeF — darmowe demo · MasterSSon</title>
@@ -272,19 +286,5 @@
     <id>https://mastersson.github.io/produkt/forma-podatkowa/</id>
     <updated>2026-11-22T12:00:00Z</updated>
     <summary>Trzy formy opodatkowania naraz, na nowych zasadach składki zdrowotnej 2026 — która daje więcej na rękę.</summary>
-  </entry>
-  <entry>
-    <title>Kosztorys i oferta dla glazurnika · MasterSSon</title>
-    <link href="https://mastersson.github.io/produkt/glazurnik/"/>
-    <id>https://mastersson.github.io/produkt/glazurnik/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Wpisujesz wymiary łazienki, wybierasz usługi i masz kosztorys z VAT oraz ofertę gotową do PDF.</summary>
-  </entry>
-  <entry>
-    <title>Kalkulator wyceny projektu graficznego · MasterSSon</title>
-    <link href="https://mastersson.github.io/produkt/grafik/"/>
-    <id>https://mastersson.github.io/produkt/grafik/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Etapy projektu z czasem, dopłata za ekspres i dodatkowe poprawki, licencja jako osobna pozycja.</summary>
   </entry>
 </feed>

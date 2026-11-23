@@ -55,6 +55,7 @@
 
 ## Remonty: ceny robocizny i wyceny
 
+- [Ile kosztuje docieplenie domu styropianem za m2 w 2026 + kalkulator](https://mastersson.github.io/ile-kosztuje-docieplenie-domu-styropianem-za-m2/): Docieplenie styropianem 2026: robocizna ok. 115-131 zł/m2 netto, z materiałem ok. 370-430 zł/m2 netto (kb.pl). Kalkulator liczy paczki styropianu, klej, siatkę, kołki i tynk.
 - [Wycena Fachowca](https://mastersson.github.io/wycena/): Wycena i oferta dla klienta w 2 minuty, prosto z telefonu na budowie. Pomiar pomieszczeń, materiały z zapasem, PDF. Bez abonamentu.
 - [Kosztorys i oferta dla fachowca: jak wycenić robotę w 10 minut (Excel)](https://mastersson.github.io/kosztorys-fachowca-excel/): Jak szybko policzyć robociznę i materiały z zapasem, ustawić VAT i dać klientowi czytelną ofertę. Gotowe kosztorysy Excel dla glazurnika, malarza, elektryka, ogrodnika i firmy przeprowadzkowej.
 - [Ile kosztuje położenie płytek za m2 w 2026 + kalkulator robocizny i materiałów](https://mastersson.github.io/ile-kosztuje-polozenie-plytek-za-m2/): Robocizna za ułożenie płytek w 2026: 110–180 zł/m2 standard, 180–280 zł wielkoformat, 230–360 zł mozaika. Kalkulator liczy robociznę, materiały z zapasem i cenę za m2 całości.
@@ -78,6 +79,7 @@
 ## Inne
 
 - [Nadpłata kredytu czy inwestowanie (obligacje, IKE)? Kalkulator 2026](https://mastersson.github.io/nadplata-kredytu-czy-inwestowanie-2026/): Policz, czy wolne pieniądze lepiej dać na nadpłatę kredytu, czy na obligacje albo IKE: zaoszczędzone odsetki, skrócenie okresu, nowa rata, podatek 19%, prowizja i próg opłacalności. Stan stóp: listopad 2026.
+- [Składki ZUS 2027 dla JDG: duży ZUS 2052 zł, preferencyjny, mały ZUS plus + kalkulator](https://mastersson.github.io/skladki-zus-2027-kalkulator-jdg/): Prognozowane wynagrodzenie na 2027 r. to 10 033 zł, więc duży ZUS rośnie do 2052,15 zł z chorobowym. Policz swoje składki 2027: duży, preferencyjny, mały ZUS plus, zdrowotna na skali i liniowym, koszt na rok.
 - [Remanent na 31.12.2026 w JDG: spis z natury krok po kroku + kalkulator](https://mastersson.github.io/remanent-spis-z-natury-2026/): Spis z natury na koniec 2026 r. krok po kroku: kogo dotyczy (KPiR, ryczałt), co spisać, jak wycenić towar, jak wpisać do KPiR i jak remanent zmienia dochód. Darmowy kalkulator z eksportem CSV.
 - [Koniec roku 2026 w JDG: checklista na grudzień + darmowe kalkulatory](https://mastersson.github.io/jdg-koniec-roku-2026-checklista/): Co jednoosobowa firma musi załatwić przed 31.12.2026: remanent, wpłata na IKZE, forma opodatkowania na 2027, auto w firmie, KSeF od 1.01.2027, nadpłata kredytu. Każdy punkt z darmowym kalkulatorem.
 

@@ -5,14 +5,42 @@
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://mastersson.github.io/"/>
   <id>https://mastersson.github.io/</id>
-  <updated>2026-11-22T20:09:36Z</updated>
+  <updated>2026-11-23T08:07:46Z</updated>
   <author><name>MasterSSon</name></author>
   <entry>
     <title>MasterSSon — szablony Excel i aplikacje, które liczą za Ciebie</title>
     <link href="https://mastersson.github.io/"/>
     <id>https://mastersson.github.io/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
+    <updated>2026-11-23T12:00:00Z</updated>
     <summary>Kosztorysy dla fachowców, czytnik faktur KSeF, DAC7, ryczałt, odszkodowanie za lot i więcej. Wypróbuj demo, zanim kupisz.</summary>
+  </entry>
+  <entry>
+    <title>Kalkulator IKZE dla JDG 2026 i limity IKE/IKZE 2027: ile zwrotu przed 31.12</title>
+    <link href="https://mastersson.github.io/ikze-jdg-kalkulator-2026/"/>
+    <id>https://mastersson.github.io/ikze-jdg-kalkulator-2026/</id>
+    <updated>2026-11-23T12:00:00Z</updated>
+    <summary>Limit IKZE 2026 dla JDG to 16 956 zł, w 2027 r. 18 059,40 zł (IKE 30 099 zł). Policz ulgę na ryczałcie, liniowym i skali, ile możesz jeszcze wpłacić do 31.12 i ile miesięcznie odkładać w 2027.</summary>
+  </entry>
+  <entry>
+    <title>Skala czy liniowy w 2027? Nowe progi 12/24/32% — kalkulator dla JDG i B2B</title>
+    <link href="https://mastersson.github.io/skala-czy-liniowy-2027-nowe-progi/"/>
+    <id>https://mastersson.github.io/skala-czy-liniowy-2027-nowe-progi/</id>
+    <updated>2026-11-23T12:00:00Z</updated>
+    <summary>Sejm uchwalił nową skalę PIT od 2027: 12% do 130 tys., 24% do 150 tys., 32% powyżej. Policz, czy na B2B opłaca się skala czy liniowy 19% z nową składką zdrowotną. Decyzja do 20 lutego 2027.</summary>
+  </entry>
+  <entry>
+    <title>Nadpłata kredytu czy inwestowanie (obligacje, IKE)? Kalkulator 2026</title>
+    <link href="https://mastersson.github.io/nadplata-kredytu-czy-inwestowanie-2026/"/>
+    <id>https://mastersson.github.io/nadplata-kredytu-czy-inwestowanie-2026/</id>
+    <updated>2026-11-23T12:00:00Z</updated>
+    <summary>Policz, czy wolne pieniądze lepiej dać na nadpłatę kredytu, czy na obligacje albo IKE: zaoszczędzone odsetki, skrócenie okresu, nowa rata, podatek 19%, prowizja i próg opłacalności. Stan stóp: listopad 2026.</summary>
+  </entry>
+  <entry>
+    <title>Ulga na internet znika od 2027: ostatnia szansa w PIT za 2026 + kalkulator</title>
+    <link href="https://mastersson.github.io/ulga-na-internet-2026-ostatnia-szansa/"/>
+    <id>https://mastersson.github.io/ulga-na-internet-2026-ostatnia-szansa/</id>
+    <updated>2026-11-23T12:00:00Z</updated>
+    <summary>Ulga internetowa znika od 2027 r. Kto pierwszy raz odliczy internet w PIT za 2026, odliczy go też za 2027. Sprawdź, czy Ci przysługuje, jakie faktury są potrzebne i ile zwrotu dostaniesz (do 760 zł rocznie).</summary>
   </entry>
   <entry>
     <title>Czytnik faktur KSeF — darmowe demo · MasterSSon</title>
@@ -258,33 +286,5 @@
     <id>https://mastersson.github.io/produkt/grafik/</id>
     <updated>2026-11-22T12:00:00Z</updated>
     <summary>Etapy projektu z czasem, dopłata za ekspres i dodatkowe poprawki, licencja jako osobna pozycja.</summary>
-  </entry>
-  <entry>
-    <title>Kalkulator i harmonogram kredytu hipotecznego ze zmiennym WIBOR · MasterSSon</title>
-    <link href="https://mastersson.github.io/produkt/hipoteka/"/>
-    <id>https://mastersson.github.io/produkt/hipoteka/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Rata, odsetki i saldo miesiąc po miesiącu — na Twojej kwocie, marży, WIBOR-ze i nadpłacie.</summary>
-  </entry>
-  <entry>
-    <title>Kalkulator stawki za korepetycje i lekcje online · MasterSSon</title>
-    <link href="https://mastersson.github.io/produkt/korepetycje/"/>
-    <id>https://mastersson.github.io/produkt/korepetycje/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Stawka za godzinę z Twojego celu zarobkowego, osobno dla lekcji u siebie, u ucznia i online.</summary>
-  </entry>
-  <entry>
-    <title>Kosztorys i oferta dla malarza · MasterSSon</title>
-    <link href="https://mastersson.github.io/produkt/malarz/"/>
-    <id>https://mastersson.github.io/produkt/malarz/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Metry ścian i sufitu liczone z wymiarów pokoju, kosztorys z VAT i oferta w 10 minut.</summary>
-  </entry>
-  <entry>
-    <title>Ewidencja działalności nierejestrowanej z kontrolą limitu · MasterSSon</title>
-    <link href="https://mastersson.github.io/produkt/nierejestrowana/"/>
-    <id>https://mastersson.github.io/produkt/nierejestrowana/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Sumuje przychód w każdym kwartale i ostrzega, zanim przekroczysz limit 10 813,50 zł.</summary>
   </entry>
 </feed>

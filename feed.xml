@@ -5,21 +5,49 @@
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://mastersson.github.io/"/>
   <id>https://mastersson.github.io/</id>
-  <updated>2026-11-23T12:07:12Z</updated>
+  <updated>2026-11-24T08:07:22Z</updated>
   <author><name>MasterSSon</name></author>
   <entry>
     <title>MasterSSon — szablony Excel i aplikacje, które liczą za Ciebie</title>
     <link href="https://mastersson.github.io/"/>
     <id>https://mastersson.github.io/</id>
-    <updated>2026-11-23T12:00:00Z</updated>
+    <updated>2026-11-24T12:00:00Z</updated>
     <summary>Kosztorysy dla fachowców, czytnik faktur KSeF, DAC7, ryczałt, odszkodowanie za lot i więcej. Wypróbuj demo, zanim kupisz.</summary>
   </entry>
   <entry>
     <title>Kalkulator IKZE dla JDG 2026 i limity IKE/IKZE 2027: ile zwrotu przed 31.12</title>
     <link href="https://mastersson.github.io/ikze-jdg-kalkulator-2026/"/>
     <id>https://mastersson.github.io/ikze-jdg-kalkulator-2026/</id>
-    <updated>2026-11-23T12:00:00Z</updated>
+    <updated>2026-11-24T12:00:00Z</updated>
     <summary>Limit IKZE 2026 dla JDG to 16 956 zł, w 2027 r. 18 059,40 zł (IKE 30 099 zł). Policz ulgę na ryczałcie, liniowym i skali, ile możesz jeszcze wpłacić do 31.12 i ile miesięcznie odkładać w 2027.</summary>
+  </entry>
+  <entry>
+    <title>Ulga na internet znika od 2027: ostatnia szansa w PIT za 2026 + kalkulator</title>
+    <link href="https://mastersson.github.io/ulga-na-internet-2026-ostatnia-szansa/"/>
+    <id>https://mastersson.github.io/ulga-na-internet-2026-ostatnia-szansa/</id>
+    <updated>2026-11-24T12:00:00Z</updated>
+    <summary>Ulga internetowa znika od 2027 r. Kto pierwszy raz odliczy internet w PIT za 2026, odliczy go też za 2027. Sprawdź, czy Ci przysługuje, jakie faktury są potrzebne i ile zwrotu dostaniesz (do 760 zł rocznie).</summary>
+  </entry>
+  <entry>
+    <title>Składki ZUS 2027 dla JDG: duży ZUS 2052 zł, preferencyjny, mały ZUS plus + kalkulator</title>
+    <link href="https://mastersson.github.io/skladki-zus-2027-kalkulator-jdg/"/>
+    <id>https://mastersson.github.io/skladki-zus-2027-kalkulator-jdg/</id>
+    <updated>2026-11-24T12:00:00Z</updated>
+    <summary>Prognozowane wynagrodzenie na 2027 r. to 10 033 zł, więc duży ZUS rośnie do 2052,15 zł z chorobowym. Policz swoje składki 2027: duży, preferencyjny, mały ZUS plus, zdrowotna na skali i liniowym, koszt na rok.</summary>
+  </entry>
+  <entry>
+    <title>Darowizny w PIT za 2026: limit 6% i ile jeszcze odliczysz do 31 grudnia (kalkulator)</title>
+    <link href="https://mastersson.github.io/darowizny-pit-2026-limit-6-procent/"/>
+    <id>https://mastersson.github.io/darowizny-pit-2026-limit-6-procent/</id>
+    <updated>2026-11-24T12:00:00Z</updated>
+    <summary>Darowizny na organizacje pożytku publicznego, kult religijny i honorowe krwiodawstwo odliczysz do 6% dochodu. Liczy się data przelewu, więc na PIT za 2026 masz czas do 31.12. Kalkulator limitu i zwrotu podatku.</summary>
+  </entry>
+  <entry>
+    <title>Czytnik faktur KSeF — darmowe demo · MasterSSon</title>
+    <link href="https://mastersson.github.io/ksef/"/>
+    <id>https://mastersson.github.io/ksef/</id>
+    <updated>2026-11-23T12:00:00Z</updated>
+    <summary>Wszystkie faktury XML z KSeF w jednej tabeli: terminy płatności, duplikaty, zmienione konta, Excel i PDF. Offline, bez logowania. Wypróbuj demo na przykładowych fakturach.</summary>
   </entry>
   <entry>
     <title>Ile kosztuje docieplenie domu styropianem za m2 w 2026 + kalkulator</title>
@@ -43,25 +71,11 @@
     <summary>Policz, czy wolne pieniądze lepiej dać na nadpłatę kredytu, czy na obligacje albo IKE: zaoszczędzone odsetki, skrócenie okresu, nowa rata, podatek 19%, prowizja i próg opłacalności. Stan stóp: listopad 2026.</summary>
   </entry>
   <entry>
-    <title>Ulga na internet znika od 2027: ostatnia szansa w PIT za 2026 + kalkulator</title>
-    <link href="https://mastersson.github.io/ulga-na-internet-2026-ostatnia-szansa/"/>
-    <id>https://mastersson.github.io/ulga-na-internet-2026-ostatnia-szansa/</id>
+    <title>Koniec roku 2026 w JDG: checklista na grudzień + darmowe kalkulatory</title>
+    <link href="https://mastersson.github.io/jdg-koniec-roku-2026-checklista/"/>
+    <id>https://mastersson.github.io/jdg-koniec-roku-2026-checklista/</id>
     <updated>2026-11-23T12:00:00Z</updated>
-    <summary>Ulga internetowa znika od 2027 r. Kto pierwszy raz odliczy internet w PIT za 2026, odliczy go też za 2027. Sprawdź, czy Ci przysługuje, jakie faktury są potrzebne i ile zwrotu dostaniesz (do 760 zł rocznie).</summary>
-  </entry>
-  <entry>
-    <title>Składki ZUS 2027 dla JDG: duży ZUS 2052 zł, preferencyjny, mały ZUS plus + kalkulator</title>
-    <link href="https://mastersson.github.io/skladki-zus-2027-kalkulator-jdg/"/>
-    <id>https://mastersson.github.io/skladki-zus-2027-kalkulator-jdg/</id>
-    <updated>2026-11-23T12:00:00Z</updated>
-    <summary>Prognozowane wynagrodzenie na 2027 r. to 10 033 zł, więc duży ZUS rośnie do 2052,15 zł z chorobowym. Policz swoje składki 2027: duży, preferencyjny, mały ZUS plus, zdrowotna na skali i liniowym, koszt na rok.</summary>
-  </entry>
-  <entry>
-    <title>Czytnik faktur KSeF — darmowe demo · MasterSSon</title>
-    <link href="https://mastersson.github.io/ksef/"/>
-    <id>https://mastersson.github.io/ksef/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Wszystkie faktury XML z KSeF w jednej tabeli: terminy płatności, duplikaty, zmienione konta, Excel i PDF. Offline, bez logowania. Wypróbuj demo na przykładowych fakturach.</summary>
+    <summary>Co jednoosobowa firma musi załatwić przed 31.12.2026: remanent, wpłata na IKZE, forma opodatkowania na 2027, auto w firmie, KSeF od 1.01.2027, nadpłata kredytu. Każdy punkt z darmowym kalkulatorem.</summary>
   </entry>
   <entry>
     <title>Wycena Fachowca</title>
@@ -272,19 +286,5 @@
     <id>https://mastersson.github.io/produkt/dropshipping/</id>
     <updated>2026-11-22T12:00:00Z</updated>
     <summary>Marża po wszystkich kosztach, z reklamą na sztukę, i czerwone flagi przy produktach, które dokładają.</summary>
-  </entry>
-  <entry>
-    <title>Kosztorys i oferta dla elektryka · MasterSSon</title>
-    <link href="https://mastersson.github.io/produkt/elektryk/"/>
-    <id>https://mastersson.github.io/produkt/elektryk/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Punkty, bruzdy, rozdzielnica: wybierasz z cennika i masz kosztorys z VAT oraz ofertę dla klienta.</summary>
-  </entry>
-  <entry>
-    <title>Ryczałt, podatek liniowy czy skala — co się bardziej opłaca w 2026 · MasterSSon</title>
-    <link href="https://mastersson.github.io/produkt/forma-podatkowa/"/>
-    <id>https://mastersson.github.io/produkt/forma-podatkowa/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Trzy formy opodatkowania naraz, na nowych zasadach składki zdrowotnej 2026 — która daje więcej na rękę.</summary>
   </entry>
 </feed>

@@ -5,7 +5,7 @@
   <link href="https://pubsubhubbub.appspot.com/" rel="hub"/>
   <link href="https://mastersson.github.io/"/>
   <id>https://mastersson.github.io/</id>
-  <updated>2026-11-24T12:09:35Z</updated>
+  <updated>2026-11-24T12:11:29Z</updated>
   <author><name>MasterSSon</name></author>
   <entry>
     <title>MasterSSon — szablony Excel i aplikacje, które liczą za Ciebie</title>
@@ -27,6 +27,13 @@
     <id>https://mastersson.github.io/ikze-jdg-kalkulator-2026/</id>
     <updated>2026-11-24T12:00:00Z</updated>
     <summary>Limit IKZE 2026 dla JDG to 16 956 zł, w 2027 r. 18 059,40 zł (IKE 30 099 zł). Policz ulgę na ryczałcie, liniowym i skali, ile możesz jeszcze wpłacić do 31.12 i ile miesięcznie odkładać w 2027.</summary>
+  </entry>
+  <entry>
+    <title>Ile kosztuje montaż paneli podłogowych za m2 w 2026 + kalkulator</title>
+    <link href="https://mastersson.github.io/ile-kosztuje-montaz-paneli-podlogowych-za-m2/"/>
+    <id>https://mastersson.github.io/ile-kosztuje-montaz-paneli-podlogowych-za-m2/</id>
+    <updated>2026-11-24T12:00:00Z</updated>
+    <summary>Układanie paneli 2026: ok. 38,83-53,01 zł/m2 brutto, średnio 43,83 zł (kb.pl). Kalkulator liczy paczki paneli, podkład, listwy, narożniki i progi oraz koszt całości.</summary>
   </entry>
   <entry>
     <title>Skala czy liniowy w 2027? Nowe progi 12/24/32% — kalkulator dla JDG i B2B</title>
@@ -279,12 +286,5 @@
     <id>https://mastersson.github.io/produkt/czytnik-ksef-pro/</id>
     <updated>2026-11-22T12:00:00Z</updated>
     <summary>Wszystko z Czytnika KSeF plus sprawdzenie kont kontrahentów na białej liście VAT dla całej paczki faktur.</summary>
-  </entry>
-  <entry>
-    <title>Rejestr sprzedaży Vinted i OLX z kontrolą progów DAC7 · MasterSSon</title>
-    <link href="https://mastersson.github.io/produkt/dac7/"/>
-    <id>https://mastersson.github.io/produkt/dac7/</id>
-    <updated>2026-11-22T12:00:00Z</updated>
-    <summary>Pilnuje progu 30 transakcji i 2000 € osobno na każdej platformie i pokazuje, od kiedy sprzedaż jest wolna od PIT.</summary>
   </entry>
 </feed>

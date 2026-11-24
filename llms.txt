@@ -56,6 +56,7 @@
 
 ## Remonty: ceny robocizny i wyceny
 
+- [Ile kosztuje montaż paneli podłogowych za m2 w 2026 + kalkulator](https://mastersson.github.io/ile-kosztuje-montaz-paneli-podlogowych-za-m2/): Układanie paneli 2026: ok. 38,83-53,01 zł/m2 brutto, średnio 43,83 zł (kb.pl). Kalkulator liczy paczki paneli, podkład, listwy, narożniki i progi oraz koszt całości.
 - [Ile kosztuje docieplenie domu styropianem za m2 w 2026 + kalkulator](https://mastersson.github.io/ile-kosztuje-docieplenie-domu-styropianem-za-m2/): Docieplenie styropianem 2026: robocizna ok. 115-131 zł/m2 netto, z materiałem ok. 370-430 zł/m2 netto (kb.pl). Kalkulator liczy paczki styropianu, klej, siatkę, kołki i tynk.
 - [Wycena Fachowca](https://mastersson.github.io/wycena/): Wycena i oferta dla klienta w 2 minuty, prosto z telefonu na budowie. Pomiar pomieszczeń, materiały z zapasem, PDF. Bez abonamentu.
 - [Kosztorys i oferta dla fachowca: jak wycenić robotę w 10 minut (Excel)](https://mastersson.github.io/kosztorys-fachowca-excel/): Jak szybko policzyć robociznę i materiały z zapasem, ustawić VAT i dać klientowi czytelną ofertę. Gotowe kosztorysy Excel dla glazurnika, malarza, elektryka, ogrodnika i firmy przeprowadzkowej.

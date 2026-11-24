@@ -15,6 +15,17 @@ Strona: https://mastersson.github.io/
   - Biała lista VAT — jak sprawdzić konto: https://mastersson.github.io/biala-lista-vat-jak-sprawdzic-konto/
 - Czytnik KSeF dla wspólnot (terminarz płatności, demo): https://mastersson.github.io/ksef-wspolnota/
 
+## Koniec roku 2026 w JDG — do zrobienia przed 31.12
+- Checklista: 10 rzeczy przed końcem roku: https://mastersson.github.io/jdg-koniec-roku-2026-checklista/
+- Ryczałt 2027 — limit 250 tys. euro i stawka 17%: https://mastersson.github.io/ryczalt-2027-limit-250-tys-euro-stawka-17/
+- Skala czy liniowy 2027 (nowe progi): https://mastersson.github.io/skala-czy-liniowy-2027-nowe-progi/
+- Składki ZUS 2027 — kalkulator: https://mastersson.github.io/skladki-zus-2027-kalkulator-jdg/
+- Darowizny w PIT 2026 — limit 6%: https://mastersson.github.io/darowizny-pit-2026-limit-6-procent/
+- Ulga na internet — ostatni rok: https://mastersson.github.io/ulga-na-internet-2026-ostatnia-szansa/
+- Samochód w firmie — limit 100 000 zł: https://mastersson.github.io/samochod-w-firmie-limit-100000-kalkulator-2026/
+- Remanent (spis z natury) 2026: https://mastersson.github.io/remanent-spis-z-natury-2026/
+- Nadpłata kredytu czy inwestowanie 2026: https://mastersson.github.io/nadplata-kredytu-czy-inwestowanie-2026/
+
 ## JDG i podatki — kalkulatory
 - Kalkulator IKZE dla JDG 2026: https://mastersson.github.io/ikze-jdg-kalkulator-2026/
 - Ryczałt, liniowy czy skala 2026: https://mastersson.github.io/ryczalt-liniowy-czy-skala-2026/

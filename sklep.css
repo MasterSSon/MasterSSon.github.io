@@ -367,3 +367,62 @@ a{color:var(--accent-2)}
 .mbuy{background:linear-gradient(180deg,#FFFFFF,#F2F6FD);box-shadow:0 -10px 24px -10px rgba(16,35,63,.35)}
 
 @media (prefers-reduced-motion:reduce){.pokaz,.kup,.cta,.kat,.lista a,.podobne a,.tab{transition:none}.kat:hover,.lista a:hover,.podobne a:hover{transform:none}}
+
+/* ===== Motyw Console dla stron produktów (24.11.2026): te same kolory i czcionki co nowa strona główna (/glowna.css).
+   Grafit, bursztynowy „Kup”, niebieskie demo, zielone „za darmo”. Animowany tylko transform (zasada wydajności z 1.11). ===== */
+:root:root{
+  color-scheme:dark;
+  --bg:#17191D; --surface:#1F2227; --ink:#EEF0F3; --muted:#A7ADB6; --line:#383C43; --line2:#2A2D33;
+  --accent:#F2B33D; --accent-2:#F6C462; --on-accent:#221703; --accent-soft:#3A2F17;
+  --in:#3A3214; --in-line:#7A6728; --calc:#1B1E22; --hdr:#262A30; --sel:#F2B33D;
+  --good:#5FD08F; --good-bg:#16301F; --warn:#F2B85C; --warn-bg:#3A2C10; --bad:#FF8C7C; --bad-bg:#3F1A15;
+  --cta:#F2B33D; --cta-2:#D99A22; --on-cta:#221703; --zielen:#5FD08F; --zielen-bg:#16301F;
+  --bez:#2A2D33; --braz:#7FB2F0; --krem:#1B1E22; --cool:#7FB2F0; --cool-soft:#1C2A3B;
+  --shadow:0 1px 0 rgba(255,255,255,.04) inset,0 10px 24px -14px rgba(0,0,0,.7);
+  --shadow-wys:0 1px 0 rgba(255,255,255,.05) inset,0 16px 32px -16px rgba(0,0,0,.8);
+  --swiatlo:inset 0 1px 0 rgba(255,255,255,.05);
+  --f-display:'Host Grotesk',ui-sans-serif,system-ui,sans-serif; --f-body:'Host Grotesk',ui-sans-serif,system-ui,sans-serif;
+  --f-data:'Atkinson Hyperlegible Mono',ui-monospace,'Cascadia Mono',Consolas,monospace;
+}
+html,html[data-theme]{background:var(--bg)!important}
+body{background:var(--bg);color:var(--ink)}
+a{color:var(--cool)}
+h1,h2,h3{font-family:var(--f-display);font-weight:500;letter-spacing:-.02em;color:var(--ink)}
+::selection{background:rgba(242,179,61,.28)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* pasek u góry */
+.pasek{background:#121418!important;border-bottom:1px solid var(--line);box-shadow:0 12px 24px -18px rgba(0,0,0,.8)!important}
+.mini--slowo{font:500 22px/1 var(--f-display);letter-spacing:-.03em;color:var(--ink);text-decoration:none;padding:8px 0}
+.mini--slowo span{color:var(--accent)}
+.mini--slowo:hover{color:var(--accent)}
+.wroc{color:var(--muted)!important;text-decoration:none}
+.wroc:hover{color:var(--accent)!important}
+.okruchy,.okruchy a{color:var(--muted)}
+
+/* przyciski: bursztynowy „Kup / Pobierz”, z krawędzią 3D */
+.pokaz,.kup,.cta,.mbuy .kup{background:var(--accent)!important;color:var(--on-accent)!important;font-weight:700;border:1px solid var(--accent)!important;border-radius:8px;text-shadow:none!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 3px 0 #8A5E10!important}
+.pokaz:hover,.kup:hover,.cta:hover{background:var(--accent-2)!important;transform:translateY(-1px);box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 4px 0 #8A5E10!important}
+.pokaz:active,.kup:active,.cta:active{transform:translateY(2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 1px 0 #8A5E10!important}
+.kup.jasny{background:var(--cool-soft)!important;color:var(--cool)!important;border:1px solid #3B5878!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 3px 0 #0E1724!important}
+
+/* karty */
+.cena-box,.demo-sek.app,.podobne a,.faq,.kat{background:var(--surface)!important;border:1px solid var(--line)!important;box-shadow:var(--shadow)!important}
+.cena-box{border-radius:12px}
+.cena{font-family:var(--f-data);color:var(--ink)}
+.cena.darmo{color:var(--good)}
+.cena-pod{color:var(--muted)}
+.podobne a{border-radius:12px}
+.podobne a:hover{border-color:#5A5F68!important;box-shadow:var(--shadow-wys)!important}
+.podobne b{color:var(--ink)} .podobne span{color:var(--muted)} .podobne em{color:var(--accent);font-family:var(--f-data);font-style:normal}
+.faq{border-radius:10px} .faq summary{color:var(--ink)}
+.lead,.pod,.opis p,.opis li{color:var(--muted)}
+.opis h2,.demo-sek h2,.podobne h2{color:var(--ink)}
+.mbuy{background:#121418!important;border-top:1px solid var(--line)!important;box-shadow:0 -10px 24px -10px rgba(0,0,0,.8)!important}
+.mbuy b{color:var(--ink)}
+.stopka{background:#121418;border-top:1px solid var(--line);color:var(--muted)}
+
+/* demo arkusza: zostaje „arkusz” na ciemnym tle, żółte pola dalej widać jako pola do wpisania */
+#demo input,#demo select{color:var(--ink);background:var(--in);border-color:var(--in-line)}
+#demo th{background:var(--hdr);color:var(--ink)}

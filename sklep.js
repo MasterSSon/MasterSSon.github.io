@@ -282,27 +282,27 @@ P.push({id:'dac7', slug:'rejestr-sprzedazy-vinted-i-olx-z-kontrola-progow-dac7-e
   full:['Rejestr na 500 sprzedaży z listą platform', 'Kontrola progów DAC7 osobno dla każdej platformy, w zł i euro, z ostrzeżeniem', 'Data, od której sprzedaż rzeczy jest wolna od PIT (pół roku od końca miesiąca zakupu)', 'Wyliczenie ewentualnego przychodu przy sprzedaży przed tym terminem', 'Pole na dowód zakupu na wypadek pytań z urzędu', 'Instrukcja po polsku i przykłady'],
   limits:['Do 10 wierszy rejestru', 'Kurs euro na sztywno w demo', 'Bez zapisu i kopiowania wyników'],
   init:() => ({kurs:4.25, rows:[
-    {kup:'2025-11-10', sprz:'2026-02-14', n:'Kurtka zimowa Zara', pl:'Vinted', zk:320, zs:180, dow:'paragon'},
-    {kup:'2024-06-01', sprz:'2026-03-02', n:'Buty Nike Air', pl:'Vinted', zk:450, zs:260, dow:'zamówienie online'},
-    {kup:'2026-01-20', sprz:'2026-04-11', n:'Konsola PS4 Slim', pl:'OLX', zk:600, zs:750, dow:'faktura'},
-    {kup:'2023-05-12', sprz:'2026-05-03', n:'Torebka skórzana', pl:'Vinted', zk:900, zs:420, dow:''},
-    {kup:'2025-03-01', sprz:'2026-05-20', n:'Rower miejski', pl:'OLX', zk:1200, zs:950, dow:'paragon'},
-    {kup:'2022-01-01', sprz:'2026-06-02', n:'Książki, 10 szt.', pl:'Allegro Lokalnie', zk:200, zs:120, dow:''},
-    {kup:'2026-04-02', sprz:'2026-06-15', n:'Sukienka letnia', pl:'Vinted', zk:150, zs:210, dow:'paragon'},
-    {kup:'2023-09-10', sprz:'2026-06-28', n:'Laptop MacBook Pro', pl:'OLX', zk:9500, zs:7000, dow:'faktura'}]}),
+    {kup:'2026-11-10', sprz:'2027-02-14', n:'Kurtka zimowa Zara', pl:'Vinted', zk:320, zs:180, dow:'paragon'},
+    {kup:'2025-06-01', sprz:'2027-03-02', n:'Buty Nike Air', pl:'Vinted', zk:450, zs:260, dow:'zamówienie online'},
+    {kup:'2027-01-20', sprz:'2027-04-11', n:'Konsola PS4 Slim', pl:'OLX', zk:600, zs:750, dow:'faktura'},
+    {kup:'2024-05-12', sprz:'2027-05-03', n:'Torebka skórzana', pl:'Vinted', zk:900, zs:420, dow:''},
+    {kup:'2026-03-01', sprz:'2027-05-20', n:'Rower miejski', pl:'OLX', zk:1200, zs:950, dow:'paragon'},
+    {kup:'2023-01-01', sprz:'2027-06-02', n:'Książki, 10 szt.', pl:'Allegro Lokalnie', zk:200, zs:120, dow:''},
+    {kup:'2027-04-02', sprz:'2027-06-15', n:'Sukienka letnia', pl:'Vinted', zk:150, zs:210, dow:'paragon'},
+    {kup:'2024-09-10', sprz:'2027-06-28', n:'Laptop MacBook Pro', pl:'OLX', zk:9500, zs:7000, dow:'faktura'}]}),
   sheets:[{name:'Rejestr', render(s, c){
     const rows = s.rows.map(r => [c.date(r,'kup'), c.date(r,'sprz'), c.txt(r,'n',{w:'w-l'}), c.sel(r,'pl',PLAT), c.num(r,'zk'), c.num(r,'zs'), c.txt(r,'dow',{w:''}),
       c.out(() => { const f = freeFrom(r.kup), sd = pd(r.sprz); if (!f) return '–'; return {t:fmtD(f), c: sd && sd >= f ? 'good' : 'warn'}; }),
       c.out(() => { const v = dac7Inc(r); return {t:zl(v), c: v > 0 ? 'warn' : ''}; }), c.del(s.rows, r)]);
-    return [blk('Rejestr sprzedaży 2026', 'Zielona data: sprzedaż po terminie, bez PIT. Pomarańczowa: sprzedaż przed terminem.',
+    return [blk('Rejestr sprzedaży 2027', 'Zielona data: sprzedaż po terminie, bez PIT. Pomarańczowa: sprzedaż przed terminem.',
       xl({cols:[{label:'Data zakupu'},{label:'Data sprzedaży'},{label:'Przedmiot'},{label:'Platforma'},{label:'Cena zakupu',r:1},{label:'Cena sprzedaży',r:1},{label:'Dowód zakupu'},{label:'Wolne od PIT od',r:1},{label:'Przychód do PIT',r:1},{label:''}], rows, lock:'Wiersze ' + (s.rows.length+2) + '–501 · dostępne w pełnej wersji'}),
-      c.add(s.rows, () => ({kup:'2026-07-01', sprz:'2026-10-01', n:'Nowy przedmiot', pl:'Vinted', zk:0, zs:0, dow:''}), 10, '500'))];
+      c.add(s.rows, () => ({kup:'2027-07-01', sprz:'2027-10-01', n:'Nowy przedmiot', pl:'Vinted', zk:0, zs:0, dow:''}), 10, '500'))];
   }}, {name:'Progi DAC7', render(s, c){
     const agg = pl => { const rs = s.rows.filter(r => r.pl === pl && r.sprz); const n = rs.length, z = sum(rs, r => r.zs); return {n, z, e: z/s.kurs}; };
     const rows = PLAT.map(pl => [T(pl), c.out(() => F0.format(agg(pl).n) + ' / 30'), c.out(() => zl(agg(pl).z)), c.out(() => eur(agg(pl).e)),
       c.meter(() => { const a = agg(pl); const f = Math.max(a.n/30, a.e/2000); return [f, f >= 1 ? 'bad' : f >= .8 ? 'warn' : '']; }),
       c.out(() => { const a = agg(pl); const f = Math.max(a.n/30, a.e/2000); return f >= 1 ? {t:'Próg przekroczony', c:'pb'} : f >= .8 ? {t:'Blisko progu', c:'pw'} : {t:'Poniżej progu', c:'pg'}; })]);
-    return [blk('Kontrola progów DAC7 w 2026', 'Kurs przyjęty w arkuszu: 1 € = ' + F2.format(s.kurs) + ' zł',
+    return [blk('Kontrola progów DAC7 w 2027', 'Kurs przyjęty w arkuszu: 1 € = ' + F2.format(s.kurs) + ' zł',
       xl({cols:[{label:'Platforma'},{label:'Transakcje',r:1},{label:'Suma sprzedaży',r:1},{label:'Suma w euro',r:1},{label:'Wykorzystanie progu'},{label:'Status'}], rows})),
       h('p', {class:'legend'}, 'Platforma przekazuje dane sprzedawcy do urzędu skarbowego, gdy w roku osiągnie on 30 transakcji albo 2000 € sprzedaży. Arkusz liczy to dla każdej platformy osobno.'),
       h('div', {class:'kpis'},
@@ -313,33 +313,33 @@ P.push({id:'dac7', slug:'rejestr-sprzedazy-vinted-i-olx-z-kontrola-progow-dac7-e
 });
 
 /* ===== Ewidencja działalności nierejestrowanej ===== */
-const LIMIT_Q = 10813.5;
+const LIMIT_Q = 11137.5;
 P.push({id:'nierejestrowana', slug:'ewidencja-dzialalnosci-nierejestrowanej-z-kontrola-limitu-kwartalnego-excel-rax', name:'Ewidencja działalności nierejestrowanej z kontrolą limitu', price:29, cat:'podatki', file:'Ewidencja_nierejestrowana.xlsx',
-  short:'Sumuje przychód w każdym kwartale i ostrzega, zanim przekroczysz limit 10 813,50 zł.',
+  short:'Sumuje przychód w każdym kwartale i ostrzega, zanim przekroczysz limit 11 137,50 zł.',
   lead:'Dopisz albo zmień kwotę w rejestrze. Zakładka Kwartały pokaże od razu, ile jeszcze możesz zarobić w danym kwartale.',
   mini:[['I kw.','5 500 zł'],['II kw.','9 500 zł'],['III kw.','limit!']],
-  full:['Rejestr na 300 pozycji: data, opis, kwota, nr rachunku', 'Suma narastająca w każdym kwartale', 'Ostrzeżenie przy zbliżaniu się do limitu 10 813,50 zł', 'Podsumowanie kwartał po kwartale: ile jeszcze możesz wystawić', 'Instrukcja po polsku i przykładowe wpisy'],
+  full:['Rejestr na 300 pozycji: data, opis, kwota, nr rachunku', 'Suma narastająca w każdym kwartale', 'Ostrzeżenie przy zbliżaniu się do limitu 11 137,50 zł', 'Podsumowanie kwartał po kwartale: ile jeszcze możesz wystawić', 'Instrukcja po polsku i przykładowe wpisy'],
   limits:['Do 12 wierszy ewidencji', 'Bez zapisu i kopiowania wyników'],
   init:() => ({rows:[
-    {d:'2026-01-15', nr:'R/1/2026', o:'Projekt plakatu', k:1800},{d:'2026-02-20', nr:'R/2/2026', o:'Sesja zdjęciowa', k:2500},{d:'2026-03-28', nr:'R/3/2026', o:'Sprzedaż rękodzieła', k:1200},
-    {d:'2026-04-10', nr:'R/4/2026', o:'Korepetycje, kwiecień', k:2400},{d:'2026-05-12', nr:'R/5/2026', o:'Strona www dla piekarni', k:4000},{d:'2026-06-03', nr:'R/6/2026', o:'Korepetycje, maj i czerwiec', k:3100},
-    {d:'2026-07-08', nr:'R/7/2026', o:'Projekt logo', k:3500},{d:'2026-08-19', nr:'R/8/2026', o:'Sesja ślubna', k:5800},{d:'2026-09-22', nr:'R/9/2026', o:'Korepetycje, wrzesień', k:2000}]}),
+    {d:'2027-01-15', nr:'R/1/2027', o:'Projekt plakatu', k:1800},{d:'2027-02-20', nr:'R/2/2027', o:'Sesja zdjęciowa', k:2500},{d:'2027-03-28', nr:'R/3/2027', o:'Sprzedaż rękodzieła', k:1200},
+    {d:'2027-04-10', nr:'R/4/2027', o:'Korepetycje, kwiecień', k:2400},{d:'2027-05-12', nr:'R/5/2027', o:'Strona www dla piekarni', k:4000},{d:'2027-06-03', nr:'R/6/2027', o:'Korepetycje, maj i czerwiec', k:3100},
+    {d:'2027-07-08', nr:'R/7/2027', o:'Projekt logo', k:3500},{d:'2027-08-19', nr:'R/8/2027', o:'Sesja ślubna', k:5800},{d:'2027-09-22', nr:'R/9/2027', o:'Korepetycje, wrzesień', k:2000}]}),
   sheets:[{name:'Ewidencja', render(s, c){
     const qOf = r => { const d = pd(r.d); return d ? Math.floor(d.getMonth()/3) : -1; };
     const runQ = r => sum(s.rows.filter(x => qOf(x) === qOf(r) && (x.d < r.d || (x.d === r.d && s.rows.indexOf(x) <= s.rows.indexOf(r)))), x => x.k);
     const rows = s.rows.map(r => [c.date(r,'d'), c.txt(r,'nr',{w:''}), c.txt(r,'o',{w:'w-l'}), c.num(r,'k'),
       c.out(() => qOf(r) >= 0 ? ['I','II','III','IV'][qOf(r)] + ' kw.' : '–'),
       c.out(() => { const v = runQ(r); return {t:zl(v), c: v > LIMIT_Q ? 'bad' : v > .8*LIMIT_Q ? 'warn' : ''}; }), c.del(s.rows, r)]);
-    return [blk('Ewidencja przychodów 2026', 'Suma narastająca liczy się osobno w każdym kwartale',
+    return [blk('Ewidencja przychodów 2027', 'Suma narastająca liczy się osobno w każdym kwartale',
       xl({cols:[{label:'Data'},{label:'Nr rachunku'},{label:'Opis'},{label:'Kwota',r:1},{label:'Kwartał'},{label:'Narastająco w kwartale',r:1},{label:''}], rows, lock:'Wiersze ' + (s.rows.length+2) + '–301 · dostępne w pełnej wersji'}),
-      c.add(s.rows, () => ({d:'2026-10-05', nr:'R/' + (s.rows.length+1) + '/2026', o:'Nowy przychód', k:0}), 12, '300'))];
+      c.add(s.rows, () => ({d:'2027-10-05', nr:'R/' + (s.rows.length+1) + '/2027', o:'Nowy przychód', k:0}), 12, '300'))];
   }}, {name:'Kwartały', render(s, c){
     const qs = q => sum(s.rows.filter(r => { const d = pd(r.d); return d && Math.floor(d.getMonth()/3) === q; }), r => r.k);
-    const rows = [0,1,2,3].map(q => [T(['I','II','III','IV'][q] + ' kwartał 2026'), c.out(() => zl(qs(q))), T(zl(LIMIT_Q)),
+    const rows = [0,1,2,3].map(q => [T(['I','II','III','IV'][q] + ' kwartał 2027'), c.out(() => zl(qs(q))), T(zl(LIMIT_Q)),
       c.out(() => { const v = LIMIT_Q - qs(q); return {t:zl(v), c: v < 0 ? 'bad' : ''}; }),
       c.meter(() => { const f = qs(q)/LIMIT_Q; return [f, f > 1 ? 'bad' : f > .8 ? 'warn' : '']; }),
       c.out(() => { const f = qs(q)/LIMIT_Q; return f > 1 ? {t:'Limit przekroczony', c:'pb'} : f > .8 ? {t:'Uwaga, blisko limitu', c:'pw'} : {t:'W limicie', c:'pg'}; })]);
-    return [blk('Limit kwartalny', 'Od 2026 limit liczy się kwartalnie: 10 813,50 zł',
+    return [blk('Limit kwartalny', 'W 2027 r. limit kwartalny to 11 137,50 zł (225% z 4 950 zł)',
       xl({cols:[{label:'Kwartał'},{label:'Przychód',r:1},{label:'Limit',r:1},{label:'Możesz jeszcze wystawić',r:1},{label:'Wykorzystanie'},{label:'Status'}], rows})),
       h('p', {class:'legend'}, 'Przekroczenie limitu oznacza obowiązek rejestracji działalności. Arkusz ostrzega już przy 80% limitu.')];
   }}]
@@ -354,19 +354,19 @@ P.push({id:'ryczalt', slug:'rejestr-przychodow-i-kosztow-dla-freelancera-na-rycz
   full:['300 pozycji przychodów i 300 pozycji kosztów', 'Stawka ryczałtu z listy przy każdej pozycji (m.in. 8,5%, 12%, 15%)', 'Automatyczny podatek i suma narastająca w roku', 'Podsumowanie miesięczne: przychód i podatek do zapłaty', 'Pole na składkę zdrowotną, instrukcja po polsku, przykładowy miesiąc'],
   limits:['Do 8 przychodów i 6 kosztów', 'Bez zapisu i kopiowania wyników'],
   init:() => ({zdr:{8:830, 9:830}, przy:[
-    {d:'2026-09-05', nr:'FV 1/09/2026', o:'Agencja Pixel: landing page', k:6000, st:'0.12'},
-    {d:'2026-09-18', nr:'FV 2/09/2026', o:'Kawiarnia Ziarno: szkolenie', k:3500, st:'0.085'},
-    {d:'2026-10-02', nr:'FV 1/10/2026', o:'Agencja Pixel: utrzymanie strony', k:1200, st:'0.085'},
-    {d:'2026-10-14', nr:'FV 2/10/2026', o:'Sklep Rowerowy: sklep internetowy', k:9800, st:'0.12'}],
-    koszty:[{d:'2026-09-03', o:'Laptop, rata', k:450},{d:'2026-10-01', o:'Abonament na oprogramowanie', k:260},{d:'2026-10-10', o:'Hosting roczny', k:380}]}),
+    {d:'2027-09-05', nr:'FV 1/09/2027', o:'Agencja Pixel: landing page', k:6000, st:'0.12'},
+    {d:'2027-09-18', nr:'FV 2/09/2027', o:'Kawiarnia Ziarno: szkolenie', k:3500, st:'0.085'},
+    {d:'2027-10-02', nr:'FV 1/10/2027', o:'Agencja Pixel: utrzymanie strony', k:1200, st:'0.085'},
+    {d:'2027-10-14', nr:'FV 2/10/2027', o:'Sklep Rowerowy: sklep internetowy', k:9800, st:'0.12'}],
+    koszty:[{d:'2027-09-03', o:'Laptop, rata', k:450},{d:'2027-10-01', o:'Abonament na oprogramowanie', k:260},{d:'2027-10-10', o:'Hosting roczny', k:380}]}),
   sheets:[{name:'Przychody', render(s, c){
     const rows = s.przy.map(r => [c.date(r,'d'), c.txt(r,'nr',{w:''}), c.txt(r,'o',{w:'w-l'}), c.num(r,'k'), c.sel(r,'st',RATES), c.out(() => zl(r.k*Number(r.st))), c.del(s.przy, r)]);
-    return [blk('Przychody 2026', null, xl({cols:[{label:'Data'},{label:'Nr faktury'},{label:'Kontrahent i opis'},{label:'Kwota',r:1},{label:'Stawka'},{label:'Ryczałt',r:1},{label:''}], rows, lock:'Wiersze ' + (s.przy.length+2) + '–301 · dostępne w pełnej wersji'}),
-      c.add(s.przy, () => ({d:'2026-10-20', nr:'FV 3/10/2026', o:'Nowy kontrahent', k:0, st:'0.12'}), 8, '300'))];
+    return [blk('Przychody 2027', null, xl({cols:[{label:'Data'},{label:'Nr faktury'},{label:'Kontrahent i opis'},{label:'Kwota',r:1},{label:'Stawka'},{label:'Ryczałt',r:1},{label:''}], rows, lock:'Wiersze ' + (s.przy.length+2) + '–301 · dostępne w pełnej wersji'}),
+      c.add(s.przy, () => ({d:'2027-10-20', nr:'FV 3/10/2027', o:'Nowy kontrahent', k:0, st:'0.12'}), 8, '300'))];
   }}, {name:'Koszty', render(s, c){
     const rows = s.koszty.map(r => [c.date(r,'d'), c.txt(r,'o',{w:'w-l'}), c.num(r,'k'), c.del(s.koszty, r)]);
-    return [blk('Koszty 2026', 'Na ryczałcie koszty nie obniżają podatku. Rejestr pokazuje, ile realnie zostaje.', xl({cols:[{label:'Data'},{label:'Opis'},{label:'Kwota',r:1},{label:''}], rows, lock:'Wiersze ' + (s.koszty.length+2) + '–301 · dostępne w pełnej wersji'}),
-      c.add(s.koszty, () => ({d:'2026-10-20', o:'Nowy koszt', k:0}), 6, '300'))];
+    return [blk('Koszty 2027', 'Na ryczałcie koszty nie obniżają podatku. Rejestr pokazuje, ile realnie zostaje.', xl({cols:[{label:'Data'},{label:'Opis'},{label:'Kwota',r:1},{label:''}], rows, lock:'Wiersze ' + (s.koszty.length+2) + '–301 · dostępne w pełnej wersji'}),
+      c.add(s.koszty, () => ({d:'2027-10-20', o:'Nowy koszt', k:0}), 6, '300'))];
   }}, {name:'Podsumowanie', render(s, c){
     const mOf = d => { const x = pd(d); return x ? x.getMonth() : -1; };
     const months = [...new Set([...s.przy, ...s.koszty].map(r => mOf(r.d)).filter(m => m >= 0))].sort((a,b) => a-b);
@@ -375,7 +375,7 @@ P.push({id:'ryczalt', slug:'rejestr-przychodow-i-kosztow-dla-freelancera-na-rycz
     const K = m => sum(s.koszty.filter(r => mOf(r.d) === m), r => r.k);
     const cum = m => sum(s.przy.filter(r => mOf(r.d) <= m && mOf(r.d) >= 0), r => r.k);
     months.forEach(m => { if (s.zdr[m] == null) s.zdr[m] = 0; });
-    const rows = months.map(m => [T(MONTHS_FULL[m] + ' 2026'), c.out(() => zl(P_(m))), c.out(() => zl0(TX(m))), c.num(s.zdr, m, {label:'Składka zdrowotna'}), c.out(() => zl(K(m))), c.out(() => zl(cum(m))), c.out(() => ({t:zl(TX(m) + (s.zdr[m]||0)), c:'warn'}))]);
+    const rows = months.map(m => [T(MONTHS_FULL[m] + ' 2027'), c.out(() => zl(P_(m))), c.out(() => zl0(TX(m))), c.num(s.zdr, m, {label:'Składka zdrowotna'}), c.out(() => zl(K(m))), c.out(() => zl(cum(m))), c.out(() => ({t:zl(TX(m) + (s.zdr[m]||0)), c:'warn'}))]);
     return [blk('Podsumowanie miesięczne', 'Składkę zdrowotną wpisujesz ręcznie (żółte pole)', xl({cols:[{label:'Miesiąc'},{label:'Przychód',r:1},{label:'Ryczałt',r:1},{label:'Składka zdrowotna',r:1},{label:'Koszty',r:1},{label:'Przychód narastająco',r:1},{label:'Do zapłaty',r:1}], rows})),
       h('div', {class:'kpis'}, c.kpi('Przychód w roku', () => zl(sum(s.przy, r => r.k))), c.kpi('Ryczałt w roku', () => zl0(sum(months, TX))), c.kpi('Zostaje po podatku i kosztach', () => zl(sum(s.przy, r => r.k) - sum(months, TX) - sum(months, m => s.zdr[m]||0) - sum(s.koszty, r => r.k)), true))];
   }}]
@@ -687,26 +687,29 @@ P.push({id:'hipoteka', slug:'kalkulator-i-harmonogram-kredytu-hipotecznego-ze-zm
   }}]
 });
 
-/* ===== Ryczałt, liniowy czy skala (2026) ===== */
-const MINWYN26 = 4806, PRZECWYN26 = 9420, LIMLIN26 = 14100;
-P.push({id:'forma-podatkowa', slug:'ryczalt-podatek-liniowy-czy-skala-co-sie-bardziej-oplaca-w-2026-roku-excel-24m', name:'Ryczałt, podatek liniowy czy skala — co się bardziej opłaca w 2026', price:35, cat:'podatki', file:'Kalkulator_forma_podatkowa_2026.xlsx',
-  short:'Trzy formy opodatkowania naraz, na nowych zasadach składki zdrowotnej 2026 — która daje więcej na rękę.',
+/* ===== Ryczałt, liniowy czy skala (2027) ===== */
+const MINWYN27 = 4950, PRZECWYN_ZDR = 9420, LIMLIN = 14100;
+const SKALE = [['nowa','12% / 24% / 32% (progi 130 i 150 tys.)'],['stara','12% / 32% (próg 120 tys.)']];
+P.push({id:'forma-podatkowa', slug:'ryczalt-podatek-liniowy-czy-skala-co-sie-bardziej-oplaca-w-2026-roku-excel-24m', name:'Ryczałt, podatek liniowy czy skala — co się bardziej opłaca w 2027', price:35, cat:'podatki', file:'Kalkulator_forma_podatkowa_2027.xlsx',
+  short:'Trzy formy opodatkowania naraz, na kwotach 2027 i z wyborem nowej skali PIT — która daje więcej na rękę.',
   lead:'Zmień przychód, koszty albo stawkę ryczałtu. Składka zdrowotna, podatek i to, co zostaje na rękę, przeliczą się dla wszystkich trzech form naraz.',
-  mini:[['Ryczałt','98 277 zł'],['Liniowy','98 123 zł'],['Skala','102 040 zł']],
-  full:['Porównanie ryczałtu, liniowego (19%) i skali (12%/32%) na Twoim przychodzie i kosztach', 'Poprawnie policzona składka zdrowotna dla każdej formy, z progami ryczałtu 60/100/300 tys. zł', 'Minimum na liniowym i skali, limit odliczenia na liniowym, odliczenie 50% na ryczałcie', 'Ściągawka ze stawkami ryczałtu dla różnych działalności', 'Wynik: ile zostaje na rękę rocznie i miesięcznie, z wykresem i wskazaniem najkorzystniejszej formy'],
-  limits:['Oficjalne kwoty 2026 ustawione na stałe (w pełnej wersji edytowalne)', 'Bez zapisu i kopiowania wyników'],
-  init:() => ({przychod:180000, koszty:40000, stawka:'0.12', spol:12000, odlicz:true}),
+  mini:[['Ryczałt','98 277 zł'],['Liniowy','98 123 zł'],['Skala','103 640 zł']],
+  full:['Porównanie ryczałtu, liniowego (19%) i skali na Twoim przychodzie i kosztach, z nową skalą PIT 2027 (12/24/32%) albo starą (12/32%)', 'Poprawnie policzona składka zdrowotna dla każdej formy, z progami ryczałtu 60/100/300 tys. zł', 'Minimum na liniowym i skali, limit odliczenia na liniowym, odliczenie 50% na ryczałcie', 'Ściągawka ze stawkami ryczałtu dla różnych działalności', 'Wynik: ile zostaje na rękę rocznie i miesięcznie, z wykresem i wskazaniem najkorzystniejszej formy'],
+  limits:['Kwoty 2027 ustawione na stałe (w pełnej wersji edytowalne)', 'Bez zapisu i kopiowania wyników'],
+  init:() => ({przychod:180000, koszty:40000, stawka:'0.12', spol:12000, odlicz:true, skala:'nowa'}),
   sheets:[{name:'Porównanie', render(s, c){
     const dochod = () => s.przychod - s.koszty;
-    const zdrR = () => { const b = s.przychod<=60000?0.6:(s.przychod<=300000?1:1.8); return b*PRZECWYN26*0.09*12; };
-    const zdrL = () => Math.max(0.049*dochod(), 0.09*MINWYN26*12);
-    const zdrS = () => Math.max(0.09*dochod(), 0.09*MINWYN26*12);
+    const zdrR = () => { const b = s.przychod<=60000?0.6:(s.przychod<=300000?1:1.8); return b*PRZECWYN_ZDR*0.09*12; };
+    const zdrL = () => Math.max(0.049*dochod(), 0.09*MINWYN27*12);
+    const zdrS = () => Math.max(0.09*dochod(), 0.09*MINWYN27*12);
     const podstR = () => Math.max(0, s.przychod - s.spol - (s.odlicz ? 0.5*zdrR() : 0));
     const podatR = () => Number(s.stawka)*podstR();
-    const podstL = () => Math.max(0, dochod() - s.spol - Math.min(zdrL(), LIMLIN26));
+    const podstL = () => Math.max(0, dochod() - s.spol - Math.min(zdrL(), LIMLIN));
     const podatL = () => 0.19*podstL();
     const podstS = () => Math.max(0, dochod() - s.spol);
-    const podatS = () => podstS()<=30000 ? 0 : podstS()<=120000 ? 0.12*(podstS()-30000) : 10800+0.32*(podstS()-120000);
+    const podatS = () => { const x = podstS(); if (x <= 30000) return 0;
+      if (s.skala === 'stara') return x <= 120000 ? 0.12*(x-30000) : 10800 + 0.32*(x-120000);
+      return x <= 130000 ? 0.12*(x-30000) : x <= 150000 ? 12000 + 0.24*(x-130000) : 16800 + 0.32*(x-150000); };
     const netR = () => s.przychod - s.koszty - s.spol - zdrR() - podatR();
     const netL = () => s.przychod - s.koszty - s.spol - zdrL() - podatL();
     const netS = () => s.przychod - s.koszty - s.spol - zdrS() - podatS();
@@ -720,21 +723,22 @@ P.push({id:'forma-podatkowa', slug:'ryczalt-podatek-liniowy-czy-skala-co-sie-bar
     return [h('div', {class:'cols2'},
       blk('Dane wejściowe', null, xl({cols:[{label:'Parametr'},{label:'Wartość',r:1}], rows:[
         [T('Roczny przychód (zł)'), c.num(s,'przychod')], [T('Roczne koszty (zł)'), c.num(s,'koszty')], [T('Stawka ryczałtu'), c.sel(s,'stawka',RATES)],
-        [T('Roczne składki społeczne, bez zdrowotnej (zł)'), c.num(s,'spol')], [T('Odliczasz 50% zdrowotnej od przychodu (ryczałt)?'), c.chk(s,'odlicz')]]})),
+        [T('Roczne składki społeczne, bez zdrowotnej (zł)'), c.num(s,'spol')], [T('Odliczasz 50% zdrowotnej od przychodu (ryczałt)?'), c.chk(s,'odlicz')], [T('Skala PIT w 2027'), c.sel(s,'skala',SKALE)]]})),
       blk('Najkorzystniejsza forma', 'Przy wpisanych danych', xl({cols:[{label:'Wynik'}], rows:[[c.out(()=>({t:best(), c:'good'}))]]}))),
-      blk('Ryczałt vs liniowy vs skala', null, xl({cols:[{label:''},{label:'Ryczałt',r:1},{label:'Liniowy (19%)',r:1},{label:'Skala (12%/32%)',r:1}], rows})),
-      h('p', {class:'legend'}, 'Minimalne wynagrodzenie 2026: 4 806 zł. Przeciętne wynagrodzenie do składki zdrowotnej ryczałtu: 9 420 zł. Limit odliczenia na liniowym: 14 100 zł/rok. W pełnej wersji te kwoty edytujesz samodzielnie.')];
+      blk('Ryczałt vs liniowy vs skala', null, xl({cols:[{label:''},{label:'Ryczałt',r:1},{label:'Liniowy (19%)',r:1},{label:'Skala',r:1}], rows})),
+      h('p', {class:'legend'}, 'Minimalne wynagrodzenie 2027: 4 950 zł, więc minimalna składka zdrowotna na liniowym i skali to 445,50 zł miesięcznie (od lutego 2027). Nowa skala PIT (12% do 130 tys., 24% do 150 tys., 32% powyżej) przeszła Sejm i Senat i czeka na decyzję Prezydenta do 27.11.2026, dlatego możesz przełączyć na starą. Przeciętne wynagrodzenie do składki ryczałtu (9 420 zł) i limit odliczenia na liniowym (14 100 zł) to kwoty 2026, nowe ogłosi GUS i MF w styczniu 2027. W pełnej wersji wszystkie kwoty edytujesz.')];
   }}]
 });
 
 /* ===== Harmonogram ZUS: ulga na start ===== */
+const PRZECWYN27 = 10033;
 P.push({id:'zus-start', slug:'harmonogram-zus-dla-nowej-firmy-ulga-na-start-preferencyjny-zus-pelny-zus-excel-tp2', name:'Harmonogram ZUS dla nowej firmy: ulga na start, preferencyjny ZUS, pełny ZUS', price:29, cat:'podatki', file:'Harmonogram_ZUS_ulga_na_start.xlsx',
   short:'Dokładne daty: koniec ulgi na start, start i koniec preferencyjnego ZUS, start pełnej składki.',
   lead:'Zmień datę rejestracji albo wyłącz ulgę na start. Daty graniczne i harmonogram składek przeliczą się od razu.',
-  mini:[['Koniec ulgi','6 mies.'],['Preferencyjny','24 mies.'],['Składka pref.','456 zł']],
-  full:['Automatyczne daty: koniec ulgi na start (6 mies.), start i koniec preferencyjnego ZUS (24 mies.), start pełnego ZUS', '48-miesięczny harmonogram z orientacyjną wysokością składki społecznej w każdym okresie', 'Licznik przychodu narastająco z własnym limitem do monitorowania i ostrzeżeniem po przekroczeniu', 'Edytowalne stawki: emerytalna, rentowa, wypadkowa, chorobowa, na wartościach 2026', 'Instrukcja po polsku'],
-  limits:['Pokazane pierwsze 12 miesięcy', 'Stawki ZUS 2026 ustawione na stałe (w pełnej wersji edytowalne)'],
-  init:() => ({data:'2026-10-01', ulga:true}),
+  mini:[['Koniec ulgi','6 mies.'],['Preferencyjny','24 mies.'],['Składka pref.','470 zł']],
+  full:['Automatyczne daty: koniec ulgi na start (6 mies.), start i koniec preferencyjnego ZUS (24 mies.), start pełnego ZUS', '48-miesięczny harmonogram z orientacyjną wysokością składki społecznej w każdym okresie', 'Licznik przychodu narastająco z własnym limitem do monitorowania i ostrzeżeniem po przekroczeniu', 'Edytowalne stawki: emerytalna, rentowa, wypadkowa, chorobowa, na wartościach 2027', 'Instrukcja po polsku'],
+  limits:['Pokazane pierwsze 12 miesięcy', 'Stawki ZUS 2027 ustawione na stałe (w pełnej wersji edytowalne)'],
+  init:() => ({data:'2027-01-01', ulga:true}),
   sheets:[{name:'Harmonogram', render(s, c){
     const addM = (date, n) => new Date(date.getFullYear(), date.getMonth()+n, date.getDate());
     const start = () => pd(s.data) || new Date();
@@ -743,7 +747,7 @@ P.push({id:'zus-start', slug:'harmonogram-zus-dla-nowej-firmy-ulga-na-start-pref
     const koniecPref = () => { const d = addM(startPref(), 24); d.setDate(d.getDate()-1); return d; };
     const startPelny = () => { const d = new Date(koniecPref()); d.setDate(d.getDate()+1); return d; };
     const statusAt = d => { if (s.ulga && d <= koniecUlga()) return 'Ulga na start'; if (d <= koniecPref()) return 'Preferencyjny ZUS'; return 'Pełny ZUS'; };
-    const skladkaAt = d => { const st = statusAt(d); if (st === 'Ulga na start') return 0; if (st === 'Preferencyjny ZUS') return 0.3*MINWYN26*0.3164; return 0.6*PRZECWYN26*0.3409; };
+    const skladkaAt = d => { const st = statusAt(d); if (st === 'Ulga na start') return 0; if (st === 'Preferencyjny ZUS') return 0.3*MINWYN27*0.3164; return 0.6*PRZECWYN27*0.3409; };
     const months = Array.from({length:12}, (_,i) => addM(start(), i));
     const rows = months.map((d,i) => [T(i+1), c.out(() => fmtD(addM(start(), i))), c.out(() => statusAt(addM(start(), i))), c.out(() => zl(skladkaAt(addM(start(), i))))]);
     return [h('div', {class:'cols2'},
@@ -752,7 +756,7 @@ P.push({id:'zus-start', slug:'harmonogram-zus-dla-nowej-firmy-ulga-na-start-pref
         [T('Koniec ulgi na start'), c.out(()=>fmtD(koniecUlga()))], [T('Start preferencyjnego ZUS'), c.out(()=>fmtD(startPref()))],
         [T('Koniec preferencyjnego ZUS'), c.out(()=>fmtD(koniecPref()))], [T('Start pełnego ZUS'), c.out(()=>fmtD(startPelny()))]]}))),
       blk('Harmonogram miesięczny', 'Pierwsze 12 miesięcy od rejestracji', xl({cols:[{label:'Mies.'},{label:'Data'},{label:'Status'},{label:'Składka społeczna (orient.)',r:1}], rows, lock:'Miesiące 13–48 · w pełnej wersji, z licznikiem przychodu i limitem do monitorowania'})),
-      h('p', {class:'legend'}, 'Preferencyjny ZUS liczony od 30% minimalnego wynagrodzenia (4 806 zł w 2026 r.), pełny ZUS od 60% prognozowanego przeciętnego wynagrodzenia (9 420 zł). Stawki: emerytalna 19,52%, rentowa 8%, wypadkowa 1,67%, chorobowa dobrowolna 2,45%, Fundusz Pracy 2,45% (tylko pełny ZUS).')];
+      h('p', {class:'legend'}, 'Preferencyjny ZUS liczony od 30% minimalnego wynagrodzenia (4 950 zł w 2027 r., podstawa 1 485 zł), pełny ZUS od 60% prognozowanego przeciętnego wynagrodzenia (10 033 zł w 2027 r., podstawa 6 019,80 zł). Stawki: emerytalna 19,52%, rentowa 8%, wypadkowa 1,67%, chorobowa dobrowolna 2,45%, Fundusz Pracy 2,45% (tylko pełny ZUS).')];
   }}]
 });
 
